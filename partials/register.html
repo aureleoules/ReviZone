@@ -1,0 +1,88 @@
+<section id="register">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Inscription</h1>
+            </div>
+        </div>
+        <div class="row">
+            <form id="infosperso" class="form-horizontal" ng-submit="signup()">
+                <div class="col-md-5 well col-sm-12">
+                    <h3>Informations <span class="text-primary">personnelles</span></h3>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="inputPrenom">Prénom:</label>
+                                <input type="text" class="form-control" ng-model="userInfos.name" id="inputPrenom" placeholder="Prénom" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="inputNom">Nom de famille:</label>
+                                <input type="text" class="form-control" ng-model="userInfos.surname" id="inputNom" placeholder="Nom" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="inputPseudo">Pseudonyme:</label>
+                                <input type="text" class="form-control" ng-model="userInfos.pseudo" id="inputPseudo" placeholder="Pseudo" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-12">
+                                <label for="inputPassword">Mot de passe:</label>
+                                <input type="password" class="form-control" id="inputPassword" ng-model="userInfos.password" placeholder="Mot de passe" required>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+
+                <div class="col-md-5 col-md-push-2 col-sm-12 well">
+                    <h3>Informations <span class="text-primary">scolaires</span></h3>
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="inputCodePostal">Code Postal de votre établissement scolaire:</label>
+                                <input ng-change="checkIfReady()" type="number" class="form-control" ng-model="userInfos.codepostal" id="inputCodePostal" placeholder="Code postal" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                    type="number" maxlength="5" minlength="4" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="inputPatronyme">Nom de l'établissement</label>
+                                <select ng-disabled="!userInfos.codepostal" class="form-control" ng-model="userInfos.etablissement" id="select" required>
+                                        <option value=''>Choisir</option>
+                                        <option value='{{etablissement.numero_uai}}' ng-repeat="etablissement in etablissements | orderBy:'appellation_officielle'">{{ etablissement.appellation_officielle}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- "classe for (classe, key) in programme -->
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="inputClasse">Classe:</label>
+                                <select class="form-control" id="inputClasse" ng-model="userInfos.classe" required>
+                                        <option value=''>Classe</option>
+                                        <option value='{{classe}}' ng-repeat="(classe, key) in programme">{{classe}}</option>
+                                    </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-12">
+                                <label for="inputClasse">Numéro de classe:</label>
+                                <select class="form-control" id="inputClasse" ng-model="userInfos.numero_classe" required>
+                                        <option value=''>Numéro de classe</option>
+                                        <option ng-repeat="n in [] | range:16" value='{{n}}'>N°{{ n }}</option>
+                                    </select>
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 25px">S'inscrire</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>

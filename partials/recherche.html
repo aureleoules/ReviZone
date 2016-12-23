@@ -1,0 +1,62 @@
+<section id="recheche">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Recherche</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="well">
+                    <div id="recherche" class="form-horizontal">
+                        <h3 ng-click="slide()">Critères de <span class="text-primary">recherche</span><span style="float: right"><a href="" ng-click="slide()" style="color: #fff"><i class="fa {{icon}}"></i></a></span></h3>
+                        <fieldset id="rechercheDiv">
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="keywordsInput">Mots clés:</label>
+                                    <input type="text" class="form-control tagsinput" id="tagsInput" value="" placeholder="Mots clés" ng-model="tagsInput" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="classeInput">Classe:</label>
+                                    <select class="form-control" id="classe" ng-model="classeInput" ng-options="classe for (classe, matiere) in programme">
+                                <option value=''>Tous</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="matiereInput">Matière</label>
+                                    <select class="form-control" id="matiere" ng-disabled="!classeInput" ng-model="matiereInput" ng-options="matiere for (matiere, chapitre) in classeInput">
+                                <option value=''>Tous</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-12">
+                                    <label for="chapitreInput">Chapitre</label>
+                                    <select class="form-control" id="chapitre" ng-disabled="!classeInput || !matiereInput" ng-model="chapitreInput" ng-options="chapitre for chapitre in matiereInput">
+                                <option value=''>Tous</option>
+                                </select>
+                                </div>
+                            </div>
+                            <a href="" style="width: 100%; margin-top: 20px; padding: 10px" class="btn btn-primary" ng-click="rechercher()">Rechercher <i class="ico-r fa fa-search"></i></a>
+                        </fieldset>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row" id="dataResult">
+            <div class="col-md-12">
+                <div class="well" ng-repeat="item in result">
+                    <a style="color: #fff" href="#cours/{{item._id}}">{{item.matiere}} - {{item.chapitre}} - écrit par {{item.auteur}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(".tagsinput").tagsinput();
+    </script>
+</section>

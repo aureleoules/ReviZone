@@ -1,0 +1,29 @@
+<section id="liste">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div style="background-color: white; color: #616161; padding: 8px; margin: 50px 0 10px;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="toolbar">
+                                <h3 class="text-center"><u class="text-danger"><b><span class="text-danger">{{cours.matiere}} :</b> {{cours.chapitre}}</span></u></h3>
+                            </div>
+                            <div id="editor-container" style="height: 500px; resize: vertical; overflow-x: hidden;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var toolbarOptions = [];
+
+        var quill = new Quill('#editor-container', {
+            theme: 'snow', // or 'bubble'
+            readOnly: true,
+            modules: {
+                toolbar: '#toolbar'
+            }
+        });
+    </script>
+</section>

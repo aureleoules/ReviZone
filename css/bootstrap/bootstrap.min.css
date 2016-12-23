@@ -3228,8 +3228,7 @@ textarea.input-lg, select[multiple].input-lg {
 }
 
 .btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
-    outline: 5px auto -webkit-focus-ring-color;
-    outline-offset: -2px
+
 }
 
 .btn:hover, .btn:focus, .btn.focus {
@@ -3240,8 +3239,6 @@ textarea.input-lg, select[multiple].input-lg {
 .btn:active, .btn.active {
     outline: 0;
     background-image: none;
-    -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125)
 }
 
 .btn.disabled, .btn[disabled], fieldset[disabled] .btn {
@@ -3302,32 +3299,28 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 .btn-primary {
     color: #ffffff;
-    background-color: #df691a !important;
-    border-color: transparent
+    background-color: #df691a!important;
+    border-color: transparent!important;
 }
 
 .btn-primary:focus, .btn-primary.focus {
     color: #ffffff;
-    background-color: #b15315 ;
-    border-color: rgba(0, 0, 0, 0)
+    background-color: #b15315;
 }
 
 .btn-primary:hover {
     color: #ffffff;
-    background-color: #b15315 !important;
-    border-color: rgba(0, 0, 0, 0)
+    background-color: #b15315!important;
 }
 
 .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
     color: #ffffff;
-    background-color: #b15315;
-    border-color: rgba(0, 0, 0, 0)
+    background-color: #b15315!important;
 }
 
 .btn-primary:active:hover, .btn-primary.active:hover, .open>.dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open>.dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open>.dropdown-toggle.btn-primary.focus {
     color: #ffffff;
-    background-color: #914411 !important;
-    border-color: rgba(0, 0, 0, 0)
+    background-color: #914411!important;
 }
 
 .btn-primary:active, .btn-primary.active, .open>.dropdown-toggle.btn-primary {
@@ -3335,7 +3328,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
 }
 
 .btn-primary.disabled:hover, .btn-primary[disabled]:hover, fieldset[disabled] .btn-primary:hover, .btn-primary.disabled:focus, .btn-primary[disabled]:focus, fieldset[disabled] .btn-primary:focus, .btn-primary.disabled.focus, .btn-primary[disabled].focus, fieldset[disabled] .btn-primary.focus {
-    background-color: #df691a;
+    background-color: #df691a!important;
     border-color: transparent
 }
 
@@ -3390,7 +3383,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 .btn-info {
     color: #ffffff;
-    background-color: #5bc0de;
+    background-color: #5bc0de!important;
     border-color: transparent
 }
 
@@ -3402,7 +3395,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 .btn-info:hover {
     color: #ffffff;
-    background-color: #31b0d5;
+    background-color: #31b0d5!important;
     border-color: rgba(0, 0, 0, 0)
 }
 
@@ -4690,7 +4683,7 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 
 .navbar-default .navbar-nav>li>a:hover, .navbar-default .navbar-nav>li>a:focus {
     color: #ebebeb;
-    background-color: #485563
+    background-color: #485563;
 }
 
 .navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.active>a:hover, .navbar-default .navbar-nav>.active>a:focus {
@@ -5014,10 +5007,9 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 
 .label {
     display: inline;
-    padding: .2em .6em .3em;
+    padding: 6px 8px 6px 8px;
     font-size: 75%;
     font-weight: bold;
-    line-height: 1;
     color: #ffffff;
     text-align: center;
     white-space: nowrap;
@@ -5065,7 +5057,7 @@ a.label:hover, a.label:focus {
 }
 
 .label-info {
-    background-color: #5bc0de
+    background-color: #dd7028
 }
 
 .label-info[href]:hover, .label-info[href]:focus {

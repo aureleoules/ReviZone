@@ -1,4 +1,4 @@
-<section id="header">
+<section id="header" ng-controller="AppCtrl">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -8,33 +8,44 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><i class="fa fa-graduation-cap"></i> ReviZone</a>
+                <a class="navbar-brand" href="#home"><i class="fa fa-graduation-cap"></i> ReviZone</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#home">Accueil</a></li>
-                    <li><a href="#">Comment ça marche ?</a></li>
+                    <li><a href="#home">Accueil</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Matières <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#">Histoire</a></li>
-                            <li><a href="#">Géographie</a></li>
+                            <li><a href="#">Histoire <i class="ico-r fa fa-map"></i></a></li>
+                            <li><a href="#">Géographie <i class="ico-r fa fa-globe"></i></a></li>
                             <li class="divider"></li>
-                            <li><a href="#">Mathematiques</a></li>
-                            <li><a href="#">Physique Chimie</a></li>
-                            <li><a href="#">SVT</a></li>
+                            <li><a href="#">Mathematiques <i class="ico-r fa fa-calculator"></i></a></li>
+                            <li><a href="#">Physique Chimie <i class="ico-r fa fa-flask"></i></a></li>
+                            <li><a href="#">SVT <i class="ico-r fa fa-heartbeat"></i></a></li>
                             <li class="divider"></li>
-                            <li><a href="#">Français</a></li>
-                            <li><a href="#">Anglais</a></li>
-                            <li><a href="#">Espagnol</a></li>
-                            <li><a href="#">Allemand</a></li>
+                            <li><a href="#">Français <i class="ico-r fa fa-pencil"></i></a></li>
+                            <li><a href="#">Anglais <i class="ico-r fa fa-language"></i></a></li>
+                            <li><a href="#">Espagnol <i class="ico-r fa fa-language"></i></a></li>
                         </ul>
                     </li>
+                    <li ng-show="isAuthenticated()"><a class="btn btn-primary" href="#rediger">Rédiger un cours <i class="fa fa-pencil-square-o ico-r"></i></a></li>
+                    <li><a class="btn btn-info" href="#trouver">Trouver un cours <i class="fa fa-file-text-o ico-r"></i></a></li>
+
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#register" class="btn btn-primary">S'INSCRIRE</a></li>
-                    <li><a href="#login" class="btn btn-default">SE CONNECTER</a></li>
+                    <li ng-show="!isAuthenticated()"><a href="#register" class="btn btn-primary">S'INSCRIRE</a></li>
+                    <li ng-show="!isAuthenticated()"><a href="#login" class="btn btn-default">SE CONNECTER</a></li>
+                    <li ng-show="isAuthenticated()" class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{userData.name | uppercase}} {{userData.surname | uppercase}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="#"><i class="fa fa-user"></i> Informations personnelles</a></li>
+                            <li><a href="#"><i class="fa fa-book"></i> Mes cours</a></li>
+                            <li><a href="#"><i class="fa fa-wrench"></i> Paramètres</a></li>
+                            <li class="divider"></li>
+                            <li><a class="btn btn-danger" ng-click="logout()" href="#">Déconnexion</a></li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
         </div>

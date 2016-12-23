@@ -1,0 +1,32 @@
+<section id="profile">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7 well" style="margin-top: 50px">
+                <h3><span class="text-primary">Cours rédigés</span> par {{user.name}} {{user.surname}}</h3>
+                <div class="list-group">
+                    <li class="list-group-item">
+                        <a href="#" class="list-group-item active"><span class="badge">Lu 13 fois</span>Le développement durable</a>
+                        <a href="#" class="list-group-item"><span class="badge">Lu 56 fois</span>Les fonctions usuelles</a>
+                        <a href="#" class="list-group-item"><span class="badge">Lu 11 fois</span>Present perfect</a>
+                        <a href="#" class="list-group-item"><span class="badge">Lu 125 fois</span>Le théatre</a>
+
+                    </li>
+                </div>
+            </div>
+            <div class="col-md-4 col-md-push-1 well" style="margin-top: 50px">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Informations</h3>
+                    </div>
+                    <div class="panel-body">
+                        Etudie au <span class="text-primary">{{etablissement.appellation_officielle}}</span> à <span class="text-primary">{{etablissement.localite_acheminement_uai}}</span>
+                        <br>
+                        En classe de <span class="text-primary">{{user.scolaire.classe}}</span>
+                        <br>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

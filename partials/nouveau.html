@@ -1,0 +1,99 @@
+<section id="new">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-xs-12">
+                <h1>Rédiger un cours</h1>
+            </div>
+        </div>
+        <div class="row">
+            <!-- <div class="col-md-4 col-xs-12">
+                <label for="classe" class="col-lg-2 control-label">Classe</label>
+                <select id="classeSelector" class="form-control" id="classe">
+                    <option  ng-repeat="classe in classes | orderBy: 'name'">{{classe}}</option>
+                </select>
+            </div> -->
+            <div class="col-md-4 col-xs-12">
+                <label for="classe" class="col-lg-2 control-label">Classe</label>
+                <select class="form-control" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme">
+                <option value=''>Choisir</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <label for="matiere" class="col-lg-2 control-label">Matière</label>
+                <select class="form-control" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres">
+                <option value=''>Choisir</option>
+                </select>
+            </div>
+            <div class="col-md-4 col-xs-12">
+                <label for="chapitre" class="col-lg-2 control-label">Chapitre</label>
+                <select class="form-control" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres">
+                <option value=''>Choisir</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 col-xs-12" style="margin-top: 10px">
+                <input type="text" class="form-control" id="titre" placeholder="Titre de la leçon" ng-model="titre">
+            </div>
+        </div>
+        <!-- Create the toolbar container -->
+        <div style="background-color: #fff; color: #616161; padding: 8px; margin: 10px 0 10px">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="editor-container" style="height: 500px;  resize: vertical; overflow-x: hidden;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label>
+                    <input id="isPublic" type="checkbox" checked> Rendre public
+                </label>
+            </div>
+        </div>
+        <button class="btn btn-primary" ng-click="save()">Save</button>
+    </div>
+    <script type="text/javascript">
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+            ['blockquote', 'code-block', 'image', 'formula'],
+            [{
+                'list': 'ordered'
+            }, {
+                'list': 'bullet'
+            }], // superscript/subscript
+            [{
+                'direction': 'rtl'
+            }],
+            [{
+                'font': []
+            }], // custom dropdown
+            [{
+                'header': [1, 2, 3, 4, 5, 6, false]
+            }],
+
+            [{
+                'color': []
+            }, {
+                'background': []
+            }], // dropdown with defaults from theme
+
+            [{
+                'align': []
+            }],
+            [{
+                'script': 'sub'
+            }, {
+                'script': 'super'
+            }]
+        ];
+        var quill = new Quill('#editor-container', {
+            modules: {
+                formula: true,
+                toolbar: toolbarOptions
+            },
+            placeholder: 'Ecris ton cours...',
+            theme: 'snow' // or 'bubble'
+        });
+    </script>
+</section>
