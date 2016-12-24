@@ -3,43 +3,33 @@ var app = angular.module('revizone.controllers', []);
 //Home Page Controller
 app.controller('homeCtrl', function($scope) {});
 
-app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory) {
+app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory) { //création d'un nouveau cours
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
     var author, classe;
-    AuthService.getUser().then(function(userData)  {
-        $scope.user = userData;
-        // $("#classe option:contains($scope.user.scolaire.classe)").remove();
-        // $('#classe option:selected').text($scope.user.scolaire.classe);
-        // $('#classe option:selected').val($scope.user.scolaire.classe);
-
-    });
-    $scope.save = function()  {
-        var delta = quill.getContents();
-        var classeSel = $('#classe option:selected').text();
-        var matiereSel = $('#matiere option:selected').text();
-        var chapitreSel = $('#chapitre option:selected').text();
-        var isPublic = $('#isPublic').prop('checked');
-        console.log(quill.getLength());
-        if (classeSel !== "Choisir" || matiereSel !== "Choisir" || chapitreSel !== "Choisir")  {
-            AuthService.getUser().then(function(userData)  {
+    $scope.save = function()  { //fonction de sauvegarde du cours
+        var delta = quill.getContents(); //récupere le contenu du cours
+        var classeSel = $('#classe option:selected').text(); //classe séléctionnée
+        var matiereSel = $('#matiere option:selected').text(); //matiere séléctionnée
+        var chapitreSel = $('#chapitre option:selected').text(); //chapitre séléctionné
+        if (classeSel !== "Choisir" || matiereSel !== "Choisir" || chapitreSel !== "Choisir")  { //Si l'utilisateur a défini la classe; matiere; chapitre alors on y va
+            AuthService.getUser().then(function(userData)  { //on récupere les données de l'user
                 author = userData.pseudo;
-                var cours = {
+                var cours = { //défini l'objet cours
                     classe: classeSel,
                     matiere: matiereSel,
                     chapitre: chapitreSel,
                     cours: delta,
                     auteur: author,
-                    isPublic: isPublic,
                     titre: $scope.titre,
                     cours_length: quill.getLength()
                 }
 
-                $http.post(API_ENDPOINT.url + '/newCours', cours).then(function(result) {
-                    if (result.data.success === false) {
+                $http.post(API_ENDPOINT.url + '/newCours', cours).then(function(result) { //envois du cours
+                    if (result.data.success === false) { //error
                         UtilsFactory.makeAlert(result.data.msg);
-                    } else {
+                    } else { //success
                         $location.path('/cours/' + result.data._id);
                     }
                 });
@@ -49,37 +39,48 @@ app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $lo
     }
 });
 
-app.controller('profileCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location) {
+app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location) { //page de profil
     var pseudo;
-    if ($location.path() === '/me') {
-        pseudo = user.pseudo;
-    } else {
-        pseudo = $routeParams.user;
-    }
-
-    $http.get(API_ENDPOINT.url + '/getProfile', {
-        params:  {
-            pseudo: pseudo
-        }
-    }).then(function(result) {
-        $scope.user = result.data[0];
-        $http.get(API_ENDPOINT.url + '/getEtablissementById', {
+    var callback = function()  {
+        $http.get(API_ENDPOINT.url + '/getProfile', {
             params:  {
-                id: $scope.user.scolaire.etablissement
+                pseudo: pseudo
             }
         }).then(function(result) {
-            $scope.etablissement = result.data[0];
+            $scope.user = result.data[0];
+            $http.get(API_ENDPOINT.url + '/getEtablissementById', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
+                params:  {
+                    id: $scope.user.scolaire.etablissement
+                }
+            }).then(function(result) {
+                $scope.etablissement = result.data[0];
+            });
+            $http.get(API_ENDPOINT.url + '/getListCours', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
+                params:  {
+                    user: $scope.user.pseudo
+                }
+            }).then(function(result) {
+                $scope.listCours = result.data;
+            });
         });
-    });
-
-
+    };
+    if ($location.path() === '/profil') { //si l'utilisateur va sur /profil alors il tombe sur son profile
+        AuthService.getUser().then(function(user)  {
+            pseudo = user.pseudo;
+            callback();
+        });
+    } else { //sinon il tombe sur le profile de l'user demandé
+        pseudo = $routeParams.user;
+        callback();
+    }
 });
 
 
-app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT) {
+app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFactory) {
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
+    $scope.showSadFace = false;
 
     $scope.rechercher = function()  {
         var criteres =   {
@@ -91,16 +92,26 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT) {
         $http.get(API_ENDPOINT.url + '/chercherCours', {
             params: criteres
         }).then(function(result) {
-            $scope.result = result.data;
-            console.log(result.data);
-            $scope.slide();
+            if (result.data.success === false) {
+                UtilsFactory.makeAlert(result.data.msg, 'danger')
+            } else {
+                $scope.result = result.data;
+                if(!$scope.result.length > 0) {
+                    $scope.showSadFace = true;
+                } else {
+                    $scope.showSadFace = false;
+                }
+                console.log(JSON.stringify($scope.result));
+                $scope.slide();
+            }
         });
+        console.log($scope.showSadFace);
         console.log(JSON.stringify(criteres));
     }
     $scope.icon = "fa-caret-down";
     $scope.slide = function() {
         $("#rechercheDiv").slideToggle();
-        if($scope.icon === "fa-caret-down") {
+        if ($scope.icon === "fa-caret-down") {
             $scope.icon = "fa-caret-up";
         } else {
             $scope.icon = "fa-caret-down";

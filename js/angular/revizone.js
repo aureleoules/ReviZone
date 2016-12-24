@@ -38,10 +38,15 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: 'partials/login.html',
         controller: 'loginCtrl'
     }).
-    when('/profile/:user', {
-        title: "Profile",
-        templateUrl: 'partials/profile.html',
-        controller: 'profileCtrl'
+    when('/profil/:user', {
+        title: "Profil",
+        templateUrl: 'partials/profil.html',
+        controller: 'profilCtrl'
+    }).
+    when('/profil', {
+        title: "Profil",
+        templateUrl: 'partials/profil.html',
+        controller: 'profilCtrl'
     }).
     when('/rediger', {
         title: "Rédiger un cours",
@@ -63,8 +68,8 @@ app.config(function($routeProvider, $locationProvider) {
 app.run(['$rootScope', '$location', 'AuthService', function($rootScope, $location, AuthService) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
         if (!AuthService.isAuthenticated()) {
-            var allowedRoutes = ['/', '', '/home', '/login', '/404', '/register'];
-            var isAllowed = allowedRoutes.indexOf($location.path()) > -1 || ($location.path().substring(0, '/cours/'.length)) === '/cours/'; //checks if the $location.path() is contained in the allowedRoutes array.
+            var allowedRoutes = ['/', '', '/home', '/login', '/404', '/register', '/trouver'];
+            var isAllowed = allowedRoutes.indexOf($location.path()) > -1 || ($location.path().substring(0, '/cours/'.length)) === '/cours/' || ($location.path().substring(0, '/profil/'.length)) === '/profil/'; //checks if the $location.path() is contained in the allowedRoutes array.
             if (!isAllowed)  { //if not allowed -> /login path
                 event.preventDefault();
                 $location.path('/login');

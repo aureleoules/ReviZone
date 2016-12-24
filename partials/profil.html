@@ -1,0 +1,30 @@
+<section id="profile">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-7" style="margin-top: 50px">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title"><b>Cours</b> de {{user.name}} {{user.surname}}</h2>
+                    </div>
+                    <div class="panel-body">
+                        <a ng-repeat="item in listCours | orderBy:'createdAt'" href="#cours/{{item._id}}" class="list-group-item"><span class="badge">Lu {{item.lectures}} fois</span><span class="label label-primary">{{item.classe}}</span> : <span class=""><b>{{item.matiere}}</b>  -  {{item.chapitre}}</span></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-md-push-1" style="margin-top: 50px">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">@{{user.pseudo}}</h3>
+                    </div>
+                    <div class="panel-body">
+                        <b>Cours rédigé<span ng-if="user.cours.length > 1">s</span></b>: {{user.cours.length}}
+                        <br>
+                        <b>Classe:</b> {{user.scolaire.classe}}
+                        <br>
+                        <b>Etudie au</b> {{etablissement.appellation_officielle}} <b>à</b> {{etablissement.localite_acheminement_uai.toLowerCase().charAt(0).toUpperCase()}}{{etablissement.localite_acheminement_uai.toLowerCase().slice(1)}} <!--Make first letter of city uppercase-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

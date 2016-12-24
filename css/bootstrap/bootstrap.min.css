@@ -19,7 +19,7 @@
 /*! normalize.css v3.0.3 | MIT License | github.com/necolas/normalize.css */
 
 html {
-    font-family: sans-serif;
+    font-family: "Lato", Helvetica, Arial, sans-serif;
     -ms-text-size-adjust: 100%;
     -webkit-text-size-adjust: 100%
 }
@@ -1352,7 +1352,7 @@ html {
 }
 
 body {
-    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Lato", Helvetica, Arial, sans-serif;
     font-size: 15px;
     line-height: 1.42857143;
     color: #ebebeb;
@@ -5057,7 +5057,7 @@ a.label:hover, a.label:focus {
 }
 
 .label-info {
-    background-color: #dd7028
+    background-color: #5bc0de;
 }
 
 .label-info[href]:hover, .label-info[href]:focus {
