@@ -3471,7 +3471,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
 
 .btn-danger {
     color: #ffffff;
-    background-color: #d9534f;
+    background-color: #d9534f !important;
     border-color: transparent
 }
 
@@ -3643,14 +3643,11 @@ tbody.collapse.in {
     z-index: 1000;
     display: none;
     float: left;
-    min-width: 160px;
-    padding: 5px 0;
-    margin: 2px 0 0;
+    padding: 7px;
     list-style: none;
     font-size: 15px;
     text-align: left;
     background-color: #4e5d6c;
-    border: 1px solid transparent;
     border-radius: 0;
     -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);

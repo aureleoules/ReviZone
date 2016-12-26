@@ -13,29 +13,26 @@ app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $lo
         var classeSel = $('#classe option:selected').text(); //classe séléctionnée
         var matiereSel = $('#matiere option:selected').text(); //matiere séléctionnée
         var chapitreSel = $('#chapitre option:selected').text(); //chapitre séléctionné
-        if (classeSel !== "Choisir" || matiereSel !== "Choisir" || chapitreSel !== "Choisir")  { //Si l'utilisateur a défini la classe; matiere; chapitre alors on y va
-            AuthService.getUser().then(function(userData)  { //on récupere les données de l'user
-                author = userData.pseudo;
-                var cours = { //défini l'objet cours
-                    classe: classeSel,
-                    matiere: matiereSel,
-                    chapitre: chapitreSel,
-                    cours: delta,
-                    auteur: author,
-                    titre: $scope.titre,
-                    cours_length: quill.getLength()
+        AuthService.getUser().then(function(userData)  { //on récupere les données de l'user
+            var cours = { //défini l'objet cours
+                classe: classeSel,
+                matiere: matiereSel,
+                chapitre: chapitreSel,
+                cours: delta,
+                titre: $scope.titre,
+                cours_length: quill.getLength()
+            }
+
+            $http.post(API_ENDPOINT.url + '/newCours', cours).then(function(result) { //envois du cours
+                if (result.data.success === false) { //error
+                    UtilsFactory.makeAlert(result.data.msg);
+                } else { //success
+                    $location.path('/cours/' + result.data._id);
                 }
-
-                $http.post(API_ENDPOINT.url + '/newCours', cours).then(function(result) { //envois du cours
-                    if (result.data.success === false) { //error
-                        UtilsFactory.makeAlert(result.data.msg);
-                    } else { //success
-                        $location.path('/cours/' + result.data._id);
-                    }
-                });
-
             });
-        }
+
+        });
+
     }
 });
 
@@ -55,12 +52,12 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
             }).then(function(result) {
                 $scope.etablissement = result.data[0];
             });
-            $http.get(API_ENDPOINT.url + '/getListCours', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
-                params:  {
-                    user: $scope.user.pseudo
-                }
-            }).then(function(result) {
+            $http.get(API_ENDPOINT.url + '/getListCours').then(function(result) {
                 $scope.listCours = result.data;
+                $scope.lecturesTotal = 0;
+                for (var i = 0; i < $scope.listCours.length; i++)  {
+                    $scope.lecturesTotal += $scope.listCours[i].lectures;
+                }
             });
         });
     };
@@ -96,7 +93,7 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
                 UtilsFactory.makeAlert(result.data.msg, 'danger')
             } else {
                 $scope.result = result.data;
-                if(!$scope.result.length > 0) {
+                if (!$scope.result.length > 0)  {
                     $scope.showSadFace = true;
                 } else {
                     $scope.showSadFace = false;
@@ -129,6 +126,26 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
         $scope.cours = result.data[0];
         quill.setContents(result.data[0].content);
     });
+    $http.get(API_ENDPOINT.url + '/getCoursRate', {
+        params: {
+            coursId: coursId
+        }
+    }).then(function(result) {
+        var rate = result.data.rate;
+        $("#star-" + rate).prop('checked', true);
+    });
+    $scope.rate = function(stars)  {
+        $http.post(API_ENDPOINT.url + '/rateCours', {
+            stars: stars,
+            coursId: coursId
+        }).then(function(result)  {
+            if (result.data.success === false)  {
+                UtilsFactory.makeAlert(result.data.msg, 'danger');
+            } else {
+                UtilsFactory.makeAlert(result.data.msg, "success");
+            }
+        });
+    }
 });
 
 app.controller('loginCtrl', function($scope, AuthService, $location) {
