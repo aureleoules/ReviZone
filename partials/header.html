@@ -1,4 +1,4 @@
-<section id="header" ng-controller="AppCtrl">
+<header id="header" ng-controller="AppCtrl">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="navbar-header">
@@ -13,18 +13,18 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="#home">Accueil</a></li>
+                    <li><a href="#accueil">Accueil</a></li>
                     <li ng-show="isAuthenticated()"><a class="btn btn-primary" href="#rediger">Rédiger un cours <i class="fa fa-pencil-square-o ico-r"></i></a></li>
                     <li><a class="btn btn-info" href="#trouver">Trouver un cours <i class="fa fa-file-text-o ico-r"></i></a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
-                    <li ng-show="!isAuthenticated()"><a href="#register" class="btn btn-primary">S'INSCRIRE</a></li>
-                    <li ng-show="!isAuthenticated()"><a href="#login" class="btn btn-default">SE CONNECTER</a></li>
+                    <li ng-show="!isAuthenticated()"><a href="#inscription" class="btn btn-primary">S'INSCRIRE</a></li>
+                    <li ng-show="!isAuthenticated()"><a href="#connexion" class="btn btn-default">SE CONNECTER</a></li>
                     <li ng-show="isAuthenticated()" class="dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{userData.name | uppercase}} {{userData.surname | uppercase}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a href="#profil"><i class="fa fa-user"></i> Profil</a></li>
-                            <li><a href="#"><i class="fa fa-book"></i> Mes cours</a></li>
+                            <li><a href="#profil"><i class="fa fa-user-circle-o"></i> Profil</a></li>
+                            <li><a href="#classe"><i class="fa fa-users"></i> Ma classe</a></li>
                             <li><a href="#"><i class="fa fa-wrench"></i> Paramètres</a></li>
                             <li class="divider"></li>
                             <li><a class="btn btn-danger" ng-click="logout()" href="#">Déconnexion</a></li>
@@ -34,4 +34,4 @@
             </div>
         </div>
     </nav>
-</section>
+</header>

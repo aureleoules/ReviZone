@@ -1,4 +1,4 @@
-var app = angular.module('revizone', ['ngRoute', 'revizone.controllers']);
+var app = angular.module('revizone', ['ngRoute', 'revizone.controllers', 'ngDialog']);
 app.filter('range', function() {
     return function(input, total) {
         total = parseInt(total);
@@ -15,15 +15,15 @@ app.config(function($routeProvider, $locationProvider) {
     $locationProvider.hashPrefix('');
     $routeProvider.
     when('/', {
-        redirectTo: '/home',
+        redirectTo: '/accueil',
         controller: 'AppCtrl'
     }).
-    when('/home', {
+    when('/accueil', {
         title: "Accueil",
         templateUrl: 'partials/home.html',
         controller: 'homeCtrl'
     }).
-    when('/register', {
+    when('/inscription', {
         title: "Inscription",
         templateUrl: 'partials/register.html',
         controller: 'registerCtrl'
@@ -33,7 +33,17 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: 'partials/recherche.html',
         controller: 'rechercheCtrl'
     }).
-    when('/login', {
+    when('/modifier/:coursId', {
+        title: "Modification de cours",
+        templateUrl: 'partials/modifier.html',
+        controller: 'modifierCtrl'
+    }).
+    when('/classe', {
+        title: "Ma classe",
+        templateUrl: 'partials/classe.html',
+        controller: 'classeCtrl'
+    }).
+    when('/connexion', {
         title: "Connexion",
         templateUrl: 'partials/login.html',
         controller: 'loginCtrl'
@@ -68,13 +78,14 @@ app.config(function($routeProvider, $locationProvider) {
 app.run(['$rootScope', '$location', 'AuthService', function($rootScope, $location, AuthService) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
         if (!AuthService.isAuthenticated()) {
-            var allowedRoutes = ['/', '', '/home', '/login', '/404', '/register', '/trouver'];
+            var allowedRoutes = ['/', '', '/home', '/connexion', '/404', '/inscription', '/trouver', 'modifier'];
             var isAllowed = allowedRoutes.indexOf($location.path()) > -1 || ($location.path().substring(0, '/cours/'.length)) === '/cours/' || ($location.path().substring(0, '/profil/'.length)) === '/profil/'; //checks if the $location.path() is contained in the allowedRoutes array.
             if (!isAllowed)  { //if not allowed -> /login path
                 event.preventDefault();
                 $location.path('/login');
             }
         }
+
     });
     $rootScope.$on('$routeChangeSuccess', function(event, current, previous, userInfo) {
         $rootScope.title = current.$$route.title; //change the HTML index title to the current root title;

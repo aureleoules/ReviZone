@@ -1,0 +1,67 @@
+<section id="modifier" class="mg-top-40">
+    <div class="container">
+        <!-- Create the toolbar container -->
+        <div style="background-color: #fff; color: #616161; padding: 8px; margin-bottom:15px">
+            <div class="row">
+                <div class="col-md-12">
+                    <center>
+                        <h3 style="width: 80%; padding-bottom: 7px" class="text-center text-danger"><u><b>{{cours.matiere}} :</b> {{cours.chapitre}}</u></h3>
+                        <h4 class="text-center text-danger"><u>{{cours.titre}}</u></h4>
+                    </center>
+                    <div id="editor-container" style="height: 500px;  resize: vertical; overflow-x: hidden;"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <a style="margin: 0 5px 5px 0" href="" ng-click="modifier()" class="btn btn-primary">Enregistrer</a>
+                <a style="margin: 0 5px 5px 0" href="" ng-click="modifier('quit')" class="btn btn-primary">Enregistrer et quitter</a>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="text/javascript">
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+            ['blockquote', 'code-block', 'image', 'formula'],
+            [{
+                'list': 'ordered'
+            }, {
+                'list': 'bullet'
+            }], // superscript/subscript
+            [{
+                'direction': 'rtl'
+            }],
+            [{
+                'font': []
+            }], // custom dropdown
+            [{
+                'header': [1, 2, 3, 4, 5, 6, false]
+            }],
+
+            [{
+                'color': []
+            }, {
+                'background': []
+            }], // dropdown with defaults from theme
+
+            [{
+                'align': []
+            }],
+            [{
+                'script': 'sub'
+            }, {
+                'script': 'super'
+            }]
+        ];
+        var quill = new Quill('#editor-container', {
+            modules: {
+                formula: true,
+                toolbar: toolbarOptions
+            },
+            placeholder: 'Ecris ton cours...',
+            theme: 'snow' // or 'bubble'
+        });
+    </script>
+</section>

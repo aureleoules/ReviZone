@@ -1,0 +1,33 @@
+<section id="classe" class="mg-top-40">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6" >
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Liste des élèves de ma <strong>classe</strong></h2>
+                    </div>
+                    <div class="panel-body">
+                            <a ng-repeat="user in classe | orderBy:'name'" href="#profil/{{user.pseudo}}" class="list-group-item">{{user.name}} {{user.surname}} | <small>@{{user.pseudo}}</small></a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-md-push-1">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Informations de ma <strong>classe</strong></h3>
+                    </div>
+                    <div class="panel-body">
+                        <strong>Nom de l'établissement:</strong> {{etablissement.appellation_officielle}}
+                        <br>
+                        <strong>Situé à </strong> {{etablissement.localite_acheminement_uai.toLowerCase().charAt(0).toUpperCase()}}{{etablissement.localite_acheminement_uai.toLowerCase().slice(1)}}
+                        <!--Make first letter of city uppercase-->
+                        <br>
+                        <strong>Classe:</strong> {{classe[0].scolaire.classe}} n°{{classe[0].scolaire.numero_classe}}
+                        <br>
+                        <strong>Elèves</strong>: {{classe.length}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
