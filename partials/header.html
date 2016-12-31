@@ -21,7 +21,8 @@
                     <li ng-show="!isAuthenticated()"><a href="#inscription" class="btn btn-primary">S'INSCRIRE</a></li>
                     <li ng-show="!isAuthenticated()"><a href="#connexion" class="btn btn-default">SE CONNECTER</a></li>
                     <li ng-show="isAuthenticated()" class="dropdown">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{userData.name | uppercase}} {{userData.surname | uppercase}} <span class="caret"></span></a>
+                        <!-- <img ng-src="{{userData.picture}}" height="25" width="25"> -->
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{userData.name | uppercase}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#profil"><i class="fa fa-user-circle-o"></i> Profil</a></li>
                             <li><a href="#classe"><i class="fa fa-users"></i> Ma classe</a></li>
@@ -31,6 +32,7 @@
                         </ul>
                     </li>
                 </ul>
+
             </div>
         </div>
     </nav>

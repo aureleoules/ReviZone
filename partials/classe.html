@@ -2,18 +2,18 @@
     <div class="container">
         <div class="row">
             <div class="col-md-6" >
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
+                <div class="panel panel-primary rounded">
+                    <div class="panel-heading rounded-top">
                         <h2 class="panel-title">Liste des élèves de ma <strong>classe</strong></h2>
                     </div>
                     <div class="panel-body">
-                            <a ng-repeat="user in classe | orderBy:'name'" href="#profil/{{user.pseudo}}" class="list-group-item">{{user.name}} {{user.surname}} | <small>@{{user.pseudo}}</small></a>
+                            <a ng-repeat="user in classe | orderBy:'name'" href="#profil/{{user.pseudo}}" class="list-group-item">{{user.name}} | <small>@{{user.pseudo}}</small></a>
                     </div>
                 </div>
             </div>
             <div class="col-md-5 col-md-push-1">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
+                <div class="panel panel-info rounded">
+                    <div class="panel-heading rounded-top">
                         <h3 class="panel-title">Informations de ma <strong>classe</strong></h3>
                     </div>
                     <div class="panel-body">

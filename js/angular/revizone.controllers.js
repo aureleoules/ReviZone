@@ -1,9 +1,23 @@
 var app = angular.module('revizone.controllers', []);
 
 //Home Page Controller
-app.controller('homeCtrl', function($scope) {});
+app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, API_ENDPOINT) {
+    $scope.isAuthenticated = AuthService.isAuthenticated();
+    if ($scope.isAuthenticated)  {
+        $http.get(API_ENDPOINT.url + '/getUserFeed').then(function(result) {
+            if (result.data.success === true)  {
+                $scope.feed = result.data.feed;
+                if ($scope.feed.length < 1)  {
+                    $scope.showFeed = false;
+                } else {
+                    $scope.showFeed = true;
+                }
+            }
+        });
+    }
+});
 
-app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory, $window, ngDialog) { //création d'un nouveau cours
+app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory, ngDialog) { //création d'un nouveau cours
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
@@ -39,14 +53,7 @@ app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $lo
         });
 
     }
-    var win = $window;
-    $scope.$watch('nouveauForm.$dirty', function(value) {
-        if (value) {
-            win.onbeforeunload = function() {
-                return "Des changements n'ont pas été enregistré.";
-            };
-        }
-    });
+
     $scope.quit = function()  {
         $scope.dialog =   {
             text: "Êtes-vous certain de vouloir quitter sans enregistrer?",
@@ -141,14 +148,23 @@ app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService
 
 app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location, UtilsFactory) { //page de profil
     var pseudo;
+    $scope.isAuthenticated = AuthService.isAuthenticated();
     var callback = function()  {
+        $http.get(API_ENDPOINT.url + '/getPicture', {
+            params:  {
+                pseudo: pseudo
+            }
+        }).then(function(result) {
+            $scope.imageSrc = result.data[0].picture;
+            console.log($scope.imageSrc);
+        });
         $http.get(API_ENDPOINT.url + '/getProfile', {
             params:  {
                 pseudo: pseudo
             }
         }).then(function(result) {
             $scope.user = result.data[0];
-            if(!$scope.user) {
+            if (!$scope.user)  {
                 $location.path('/accueil');
                 UtilsFactory.makeAlert("Cet utilisateur n'existe pas.", "danger")
                 return;
@@ -172,16 +188,17 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
                 }
             });
         });
-
-        $http.get(API_ENDPOINT.url + '/isFollowed', {
-            params:  {
-                pseudo: pseudo
-            }
-        }).then(function(result) {
-            if(result.data.success === true) {
-                $scope.isFollowed = result.data.isFollowed;
-            }
-        });
+        if ($scope.isAuthenticated)  {
+            $http.get(API_ENDPOINT.url + '/isFollowed', {
+                params:  {
+                    pseudo: pseudo
+                }
+            }).then(function(result) {
+                if (result.data.success === true)  {
+                    $scope.isFollowed = result.data.isFollowed;
+                }
+            });
+        }
     };
     if ($location.path() === '/profil') { //si l'utilisateur va sur /profil alors il tombe sur son profile
         AuthService.getUser().then(function(user)  {
@@ -344,12 +361,30 @@ app.controller('loginCtrl', function($scope, AuthService, $location) {
     };
 });
 
-app.controller('registerCtrl', function($scope, AuthService, $location, $http, API_ENDPOINT, UtilsFactory) {
+app.controller('registerCtrl', function($scope, AuthService, $location, $http, API_ENDPOINT, UtilsFactory, fileReader) {
+    $scope.userInfos = {};
+    $scope.imageSrc = "./imgs/profile_picture.svg";
+    $scope.selectImage = function()  {
+        $('#file').click();
+    }
+    $scope.getFile = function() {
+        fileReader.readAsDataUrl($scope.file, $scope)
+            .then(function(result) {
+                $scope.imageSrc = result;
+            });
+    };
+
     $scope.signup = function() {
         AuthService.register($scope.userInfos).then(function(msg) {
+            $http.post(API_ENDPOINT.url + '/savePicture', {
+                img: $scope.imageSrc,
+                pseudo: $scope.userInfos.pseudo
+            }).then(function(response)  {
+                console.log(response.data)
+            });
             $location.path('/connexion');
         }, function(error)  {
-            UtilsFactory.makeAlert(error, "danger", "", 1000);
+            UtilsFactory.makeAlert(error, "danger");
         });
     };
     var isCodePostalReady;

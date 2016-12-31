@@ -10,6 +10,17 @@ app.filter('range', function() {
         return input;
     };
 });
+app.directive("ngFileSelect", function() {
+    return {
+        link: function($scope, el) {
+            el.bind("change", function(e) {
+                $scope.file = (e.srcElement || e.target).files[0];
+                $scope.getFile();
+            })
+
+        }
+    }
+});
 app.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(false);
     $locationProvider.hashPrefix('');
@@ -78,7 +89,7 @@ app.config(function($routeProvider, $locationProvider) {
 app.run(['$rootScope', '$location', 'AuthService', function($rootScope, $location, AuthService) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
         if (!AuthService.isAuthenticated()) {
-            var allowedRoutes = ['/', '', '/home', '/connexion', '/404', '/inscription', '/trouver', 'modifier'];
+            var allowedRoutes = ['/', '', '/accueil', '/connexion', '/404', '/inscription', '/trouver', 'modifier'];
             var isAllowed = allowedRoutes.indexOf($location.path()) > -1 || ($location.path().substring(0, '/cours/'.length)) === '/cours/' || ($location.path().substring(0, '/profil/'.length)) === '/profil/'; //checks if the $location.path() is contained in the allowedRoutes array.
             if (!isAllowed)  { //if not allowed -> /login path
                 event.preventDefault();
