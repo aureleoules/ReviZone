@@ -147,20 +147,27 @@ app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService
 });
 
 app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location, UtilsFactory) { //page de profil
-    var pseudo;
     $scope.isAuthenticated = AuthService.isAuthenticated();
-    var callback = function()  {
+    AuthService.getUser().then(function(user)  {
+        $scope.username = user.pseudo;
+        if ($location.path() === '/profil') { //si l'utilisateur va sur /profil alors il tombe sur son profile
+            callback($scope.username);
+        } else { //sinon il tombe sur le profile de l'user demandé
+            callback($routeParams.user);
+        }
+    });
+
+    function callback(currentUser)  {
         $http.get(API_ENDPOINT.url + '/getPicture', {
             params:  {
-                pseudo: pseudo
+                pseudo: currentUser
             }
         }).then(function(result) {
             $scope.imageSrc = result.data[0].picture;
-            console.log($scope.imageSrc);
         });
         $http.get(API_ENDPOINT.url + '/getProfile', {
             params:  {
-                pseudo: pseudo
+                pseudo: currentUser
             }
         }).then(function(result) {
             $scope.user = result.data[0];
@@ -178,7 +185,7 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
             });
             $http.get(API_ENDPOINT.url + '/getListCours', {
                 params:  {
-                    pseudo: pseudo
+                    pseudo: currentUser
                 }
             }).then(function(result) {
                 $scope.listCours = result.data;
@@ -191,7 +198,7 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
         if ($scope.isAuthenticated)  {
             $http.get(API_ENDPOINT.url + '/isFollowed', {
                 params:  {
-                    pseudo: pseudo
+                    pseudo: currentUser
                 }
             }).then(function(result) {
                 if (result.data.success === true)  {
@@ -200,38 +207,34 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
             });
         }
     };
-    if ($location.path() === '/profil') { //si l'utilisateur va sur /profil alors il tombe sur son profile
-        AuthService.getUser().then(function(user)  {
-            pseudo = user.pseudo;
-            callback();
-        });
-    } else { //sinon il tombe sur le profile de l'user demandé
-        pseudo = $routeParams.user;
-        callback();
-    }
+
     $scope.follow = function()  {
-        $http.post(API_ENDPOINT.url + '/followUser', {
-            user: pseudo
-        }).then(function(result)  {
-            if (result.data.success === false)  {
-                UtilsFactory.makeAlert(result.data.msg, 'danger');
-            } else {
-                $scope.isFollowed = true;
-            }
-        });
+        if ($routeParams.user !== undefined)  {
+            $http.post(API_ENDPOINT.url + '/followUser', {
+                user: $routeParams.user
+            }).then(function(result)  {
+                if (result.data.success === false)  {
+                    UtilsFactory.makeAlert(result.data.msg, 'danger');
+                } else {
+                    $scope.isFollowed = true;
+                }
+            });
+        }
     }
     $scope.unfollow = function()  {
-        $http.delete(API_ENDPOINT.url + '/unFollowUser', {
-            params: {
-                user: pseudo
-            }
-        }).then(function(result)  {
-            if (result.data.success === false)  {
-                UtilsFactory.makeAlert(result.data.msg, 'danger');
-            } else {
-                $scope.isFollowed = false;
-            }
-        });
+        if ($routeParams.user !== undefined)  {
+            $http.delete(API_ENDPOINT.url + '/unFollowUser', {
+                params: {
+                    user: $routeParams.user
+                }
+            }).then(function(result)  {
+                if (result.data.success === false)  {
+                    UtilsFactory.makeAlert(result.data.msg, 'danger');
+                } else {
+                    $scope.isFollowed = false;
+                }
+            });
+        }
     }
 });
 

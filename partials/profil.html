@@ -36,7 +36,7 @@
                             <b>Lectures sur ses cours:</b> {{lecturesTotal}}
                         </p>$
                     -->
-                        <!-- <div ng-show="isAuthenticated">
+                <!-- <div ng-show="isAuthenticated">
                             <a ng-if="!isFollowed" class="label label-primary" href="" ng-click="follow()">Suivre @{{user.pseudo}}</a>
                             <a ng-if="isFollowed" class="label label-danger" href="" ng-click="unfollow()">Ne plus suivre @{{user.pseudo}}</a>
                         </div>
@@ -48,18 +48,23 @@
                     <div>
                         <div class="twPc-button">
                             <div ng-show="isAuthenticated">
-                                <a ng-if="!isFollowed" class="label label-primary followBtn" href="" ng-click="follow()">Suivre @{{user.pseudo}}</a>
-                                <a ng-if="isFollowed" class="label label-danger followBtn" href="" ng-click="unfollow()">Ne plus suivre @{{user.pseudo}}</a>
+                                <div ng-hide="user.pseudo === username">
+                                    <a ng-if="!isFollowed" class="label label-primary followBtn" href="" ng-click="follow()">Suivre @{{user.pseudo}}</a>
+                                    <a ng-if="isFollowed" class="label label-danger followBtn" href="" ng-click="unfollow()">Ne plus suivre @{{user.pseudo}}</a>
+                                </div>
+                                <div ng-show="user.pseudo === username">
+                                    <a ng class="label label-info followBtn" href="" ng-click="edit()">Modifier mes informations</a>
+                                </div>
                             </div>
                         </div>
 
-                        <a href="https://twitter.com/mertskaplan" class="twPc-avatarLink">
+                        <a href="" class="twPc-avatarLink">
                             <img src="{{imageSrc}}" class="twPc-avatarImg">
                         </a>
 
                         <div class="twPc-divUser">
                             <div class="twPc-divName">
-                                <a href="#profil/#{{user.pseudo}}">{{user.name}}</a>
+                                <a href="#profil/{{user.pseudo}}">{{user.name}}</a>
                             </div>
                             <span>
 				<a href="#profil/{{user.pseudo}}">@{{user.pseudo}}</a>
@@ -69,19 +74,19 @@
                         <div class="twPc-divStats">
                             <ul class="twPc-Arrange">
                                 <li class="twPc-ArrangeSizeFit">
-                                    <a href="https://twitter.com/mertskaplan" title="9.840 Tweet">
+                                    <a href="" title="{{listCours.length}} cours">
                                         <span class="twPc-StatLabel twPc-block">Cours</span>
                                         <span class="twPc-StatValue">{{listCours.length}}</span>
                                     </a>
                                 </li>
                                 <li class="twPc-ArrangeSizeFit">
-                                    <a href="https://twitter.com/mertskaplan/following" title="885 Following">
+                                    <a href="" title="{{lecturesTotal}} lectures">
                                         <span class="twPc-StatLabel twPc-block">Lectures</span>
                                         <span class="twPc-StatValue">{{lecturesTotal}}</span>
                                     </a>
                                 </li>
                                 <li class="twPc-ArrangeSizeFit">
-                                    <a href="https://twitter.com/mertskaplan/followers" title="1.810 Followers">
+                                    <a href="" title="Moyenne de 4.5/5">
                                         <span class="twPc-StatLabel twPc-block">Note moyenne</span>
                                         <span class="twPc-StatValue">4.5/5</span>
                                     </a>
