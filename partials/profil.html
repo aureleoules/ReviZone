@@ -2,8 +2,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-7">
-                <div class="panel panel-primary rounded">
-                    <div class="panel-heading rounded-top">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
                         <h2 class="panel-title"><b>Classeur</b> de {{user.name}}</h2>
                     </div>
                     <div class="panel-body">
@@ -19,56 +19,30 @@
                 </div>
             </div>
             <div class="col-md-4 col-md-push-1">
-                <!-- <div class="panel panel-info rounded">
-                    <div class="panel-heading rounded-top">
-                        <h3 class="panel-title">@{{user.pseudo}}</h3>
-                    </div>
-                    <img src="{{imageSrc}}">
-                    <div class="panel-body">
-                        <p>
-                            <b>Cours rédigés</b>: {{listCours.length}}
-                            <br>
-                            <b>Classe:</b> {{user.scolaire.classe}}
-                            <br>
-                            <b>Etudie au</b> {{etablissement.appellation_officielle}} <b>à</b> {{etablissement.localite_acheminement_uai.toLowerCase().charAt(0).toUpperCase()}}{{etablissement.localite_acheminement_uai.toLowerCase().slice(1)}}
-                            Make first letter of city uppercase
-                            <br>
-                            <b>Lectures sur ses cours:</b> {{lecturesTotal}}
-                        </p>$
-                    -->
-                <!-- <div ng-show="isAuthenticated">
-                            <a ng-if="!isFollowed" class="label label-primary" href="" ng-click="follow()">Suivre @{{user.pseudo}}</a>
-                            <a ng-if="isFollowed" class="label label-danger" href="" ng-click="unfollow()">Ne plus suivre @{{user.pseudo}}</a>
-                        </div>
-                    </div>
-                </div> -->
                 <div class="twPc-div">
                     <a class="twPc-bg twPc-block"></a>
-
-                    <div>
-                        <div class="twPc-button">
-                            <div ng-show="isAuthenticated">
-                                <div ng-hide="user.pseudo === username">
-                                    <a ng-if="!isFollowed" class="label label-primary followBtn" href="" ng-click="follow()">Suivre @{{user.pseudo}}</a>
-                                    <a ng-if="isFollowed" class="label label-danger followBtn" href="" ng-click="unfollow()">Ne plus suivre @{{user.pseudo}}</a>
-                                </div>
-                                <div ng-show="user.pseudo === username">
-                                    <a ng class="label label-info followBtn" href="" ng-click="edit()">Modifier mes informations</a>
-                                </div>
+                    <div class="twPc-button">
+                        <div ng-show="isAuthenticated">
+                            <div ng-hide="user.pseudo === username">
+                                <a ng-if="!isFollowed" class="label label-info followBtn" href="" ng-click="follow()">Suivre @{{user.pseudo}}</a>
+                                <a ng-if="isFollowed" class="label label-danger followBtn" href="" ng-click="unfollow()">Ne plus suivre @{{user.pseudo}}</a>
+                            </div>
+                            <div ng-show="user.pseudo === username">
+                                <a ng class="label label-info followBtn" href="" ng-click="edit()">Modifier mes informations</a>
                             </div>
                         </div>
+                    </div>
 
-                        <a href="" class="twPc-avatarLink">
-                            <img src="{{imageSrc}}" class="twPc-avatarImg">
-                        </a>
+                    <a href="" class="twPc-avatarLink">
+                        <img src="{{imageSrc}}" class="twPc-avatarImg">
+                    </a>
+                    <div class="">
 
                         <div class="twPc-divUser">
                             <div class="twPc-divName">
                                 <a href="#profil/{{user.pseudo}}">{{user.name}}</a>
                             </div>
-                            <span>
-				<a href="#profil/{{user.pseudo}}">@{{user.pseudo}}</a>
-                            </span>
+                            <a href="#profil/{{user.pseudo}}">@{{user.pseudo}}</a>
                         </div>
 
                         <div class="twPc-divStats">
@@ -76,19 +50,19 @@
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="" title="{{listCours.length}} cours">
                                         <span class="twPc-StatLabel twPc-block">Cours</span>
-                                        <span class="twPc-StatValue">{{listCours.length}}</span>
+                                        <span class="twPc-StatValue text-success">{{listCours.length}}</span>
                                     </a>
                                 </li>
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="" title="{{lecturesTotal}} lectures">
                                         <span class="twPc-StatLabel twPc-block">Lectures</span>
-                                        <span class="twPc-StatValue">{{lecturesTotal}}</span>
+                                        <span class="twPc-StatValue text-success">{{lecturesTotal}}</span>
                                     </a>
                                 </li>
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="" title="Moyenne de 4.5/5">
                                         <span class="twPc-StatLabel twPc-block">Note moyenne</span>
-                                        <span class="twPc-StatValue">4.5/5</span>
+                                        <span class="twPc-StatValue text-success">4.5/5</span>
                                     </a>
                                 </li>
                             </ul>

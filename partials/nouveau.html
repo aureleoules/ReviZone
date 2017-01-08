@@ -7,32 +7,41 @@
         </div>
         <form name="nouveauForm">
             <div class="row">
-                <div class="col-md-4 col-xs-12">
-                    <label for="classe" class="col-lg-2 control-label">Classe</label>
-                    <select class="form-control" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme">
-                <option value=''>Choisir</option>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group has-primary">
+                        <label for="classe" class="col-lg-2 control-label">Classe</label>
+                        <select class="form-control" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme">
+                        <option value=''>Choisir</option>
                 </select>
+                    </div>
                 </div>
-                <div class="col-md-4 col-xs-12">
-                    <label for="matiere" class="col-lg-2 control-label">Matière</label>
-                    <select class="form-control" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres">
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group has-primary">
+
+                        <label for="matiere" class="col-lg-2 control-label">Matière</label>
+                        <select class="form-control" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres">
                 <option value=''>Choisir</option>
                 </select>
+                    </div>
                 </div>
-                <div class="col-md-4 col-xs-12">
-                    <label for="chapitre" class="col-lg-2 control-label">Chapitre</label>
-                    <select class="form-control" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres">
-                <option value=''>Choisir</option>
-                </select>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group has-primary">
+                        <label for="chapitre" class="col-lg-2 control-label">Chapitre</label>
+                        <select class="form-control" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres">
+                            <option value=''>Choisir</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3 col-xs-12">
+                    <div class="form-group has-primary">
+                        <label for="titre" class="col-lg-12 control-label">Sous-titre <small>(facultatif)</small></label>
+                        <input type="text" class="form-control" id="titre" placeholder="Sous-titre de la leçon" ng-model="titre">
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12 col-xs-12" style="margin-top: 10px">
-                    <input type="text" class="form-control" id="titre" placeholder="Titre de la leçon" ng-model="titre">
-                </div>
-            </div>
+
             <!-- Create the toolbar container -->
-            <div style="background-color: #fff; color: #616161; padding: 8px; margin: 10px 0 10px">
+            <div style="background-color: #fff; color: #2c3e50; margin: 10px 0 10px">
                 <div class="row">
                     <div class="col-md-12">
                         <div id="editor-container" style="height: 500px;  resize: vertical; overflow-x: hidden;"></div>

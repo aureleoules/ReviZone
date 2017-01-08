@@ -7,6 +7,17 @@ app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, AP
         $http.get(API_ENDPOINT.url + '/getUserFeed').then(function(result) {
             if (result.data.success === true)  {
                 $scope.feed = result.data.feed;
+                $scope.pictures = {};
+                $scope.feed.forEach(function(item, key)  {
+                    $http.get(API_ENDPOINT.url + '/getPicture', {
+                        params: {
+                            pseudo: item.auteur
+                        }
+                    }).then(function(response)  {
+                        console.log(response.data);
+                        $scope.feed[key].picture = response.data[0].picture;
+                    });
+                });
                 if ($scope.feed.length < 1)  {
                     $scope.showFeed = false;
                 } else {
@@ -74,23 +85,26 @@ app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService
     $scope.isAuthenticated = function()  {
         return AuthService.isAuthenticated();
     }
-    coursId = $routeParams.coursId;
+    if (!$scope.isAuthenticated())  {
+        $location.path('/cours/' + $routeParams.coursId);
+    } else {
+        coursId = $routeParams.coursId;
 
-    $http.get(API_ENDPOINT.url + '/getCours', {
-        params: {
-            coursId: coursId
-        }
-    }).then(function(result) {
-        $scope.cours = result.data[0];
-        quill.setContents(result.data[0].content);
-        AuthService.getUser().then(function(user)  {
-            if (user.pseudo !== $scope.cours.auteur)  {
-                UtilsFactory.makeAlert('Ce cours ne vous appartient pas.', 'danger');
-                $location.path('/accueil');
+        $http.get(API_ENDPOINT.url + '/getCours', {
+            params: {
+                coursId: coursId
             }
+        }).then(function(result) {
+            $scope.cours = result.data[0];
+            quill.setContents(result.data[0].content);
+            AuthService.getUser().then(function(user)  {
+                if (user.pseudo !== $scope.cours.auteur)  {
+                    UtilsFactory.makeAlert('Ce cours ne vous appartient pas.', 'danger');
+                    $location.path('/cours/' + $routeParams.coursId);
+                }
+            });
         });
-    });
-
+    }
     $scope.modifier = function(arg)  {
         var cours = {
             content: quill.getContents(),
@@ -163,7 +177,9 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
                 pseudo: currentUser
             }
         }).then(function(result) {
-            $scope.imageSrc = result.data[0].picture;
+            if (result.data[0])  {
+                $scope.imageSrc = result.data[0].picture;
+            }
         });
         $http.get(API_ENDPOINT.url + '/getProfile', {
             params:  {
@@ -258,6 +274,16 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
                 UtilsFactory.makeAlert(result.data.msg, 'danger')
             } else {
                 $scope.result = result.data;
+                $scope.result.forEach(function(item, key)  {
+                    $http.get(API_ENDPOINT.url + '/getPicture', {
+                        params: {
+                            pseudo: item.auteur
+                        }
+                    }).then(function(response)  {
+                        console.log(response.data);
+                        $scope.result[key].picture = response.data[0].picture;
+                    });
+                });
                 if (!$scope.result.length > 0)  {
                     $scope.showSadFace = true;
                 } else {
@@ -330,7 +356,7 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
         $scope.dialog =   {
             text: "Êtes-vous certain de vouloir supprimer ce cours?",
             confirmBtn: "Je veux supprimer ce cours"
-        }
+        };
         ngDialog.open({
             template: './modals/confirmation.html',
             className: 'ngdialog-theme-default',
@@ -350,6 +376,16 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
                 $location.path('/profil');
             }
         });
+    }
+    $scope.export = function(argu)  {
+        if (argu === 'pdf')  {
+            var doc = new jsPDF();
+            doc.fromHTML($('#editor-container').html(), 15, 15, {
+                'width': 170
+            });
+            doc.save($scope.cours.classe + " - " + $scope.cours.matiere + " - " + $scope.cours.chapitre + " par " + $scope.cours.auteur + ".pdf");
+        }
+
     }
 });
 

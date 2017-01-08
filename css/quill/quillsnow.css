@@ -295,25 +295,25 @@
   margin: 0 0 0 auto;
 }
 .ql-editor .ql-bg-black {
-  background-color: #2c3e50;
+  background-color: #000;
 }
 .ql-editor .ql-bg-red {
-  background-color: #c0392b;
+  background-color: #e60000;
 }
 .ql-editor .ql-bg-orange {
-  background-color: #d35400;
+  background-color: #f90;
 }
 .ql-editor .ql-bg-yellow {
-  background-color: #f1c40f;
+  background-color: #ff0;
 }
 .ql-editor .ql-bg-green {
-  background-color: #27ae60;
+  background-color: #008a00;
 }
 .ql-editor .ql-bg-blue {
-  background-color: #2980b9;
+  background-color: #06c;
 }
 .ql-editor .ql-bg-purple {
-  background-color: #8e44ad;
+  background-color: #93f;
 }
 .ql-editor .ql-color-white {
   color: #ecf0f1;
@@ -365,7 +365,7 @@
   text-align: right;
 }
 .ql-editor.ql-blank::before {
-  color: #fff;
+  color: rgba(0,0,0,0.6);
   content: attr(data-placeholder);
   font-style: italic;
   pointer-events: none;
@@ -494,7 +494,7 @@
 }
 .ql-snow .ql-stroke {
   fill: none;
-  stroke: #fff;
+  stroke: #444;
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2;
@@ -507,7 +507,7 @@
 }
 .ql-snow .ql-fill,
 .ql-snow .ql-stroke.ql-fill {
-  fill: #fff;
+  fill: #444;
 }
 .ql-snow .ql-empty {
   fill: none;
@@ -588,7 +588,7 @@
   max-width: 100%;
 }
 .ql-snow .ql-picker {
-  color: #fff;
+  color: #444;
   display: inline-block;
   float: left;
   font-size: 14px;
@@ -662,7 +662,7 @@
 }
 .ql-snow .ql-color-picker .ql-picker-options {
   padding: 3px 5px;
-  width: 152px;
+  width: 112px;
 }
 .ql-snow .ql-color-picker .ql-picker-item {
   border: 1px solid transparent;
@@ -792,7 +792,7 @@
   background-color: #000;
 }
 .ql-toolbar.ql-snow {
-  border: 1px solid #fff;
+  border: 1px solid #ccc;
   box-sizing: border-box;
   font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
   padding: 8px;
@@ -828,10 +828,10 @@
   margin-top: 10px;
   padding: 5px 12px;
   white-space: nowrap;
-  margin-left: 25px 
+  margin-left: 15%
 }
 .ql-snow .ql-tooltip::before {
-  content: "Ouvrir l'URL:";
+  content: "Visit URL:";
   line-height: 26px;
   margin-right: 8px;
 }
@@ -873,17 +873,17 @@
 }
 .ql-snow .ql-tooltip.ql-editing a.ql-action::after {
   border-right: 0px;
-  content: 'Sauvegarder';
+  content: 'Ok';
   padding-right: 0px;
 }
 .ql-snow .ql-tooltip[data-mode=link]::before {
-  content: "Entrer le lien:";
+  content: "Entrer un lien:";
 }
 .ql-snow .ql-tooltip[data-mode=formula]::before {
-  content: "Entrer la formule:";
+  content: "Entrer une formule:";
 }
 .ql-snow .ql-tooltip[data-mode=video]::before {
-  content: "Entrer la video:";
+  content: "Entrer une video:";
 }
 .ql-snow a {
   color: #06c;

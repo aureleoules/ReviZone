@@ -1,23 +1,18 @@
-<section id="recheche">
+<section id="recherche">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <h1>Recherche</h1>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="well rounded">
+                <div class="well rounded border">
                     <div id="recherche" class="form-horizontal">
                         <h3 ng-click="slide()" style="cursor: pointer">Critères de <span class="text-primary">recherche</span><span style="float: right"><a href="" ng-click="slide()" style="color: #fff"><i class="fa {{icon}}"></i></a></span></h3>
                         <fieldset id="rechercheDiv">
-                            <div class="form-group">
+                            <div class="form-group has-primary">
                                 <div class="col-md-12">
                                     <label for="keywordsInput">Mots clés:</label>
                                     <input type="text" class="form-control tagsinput" id="tagsInput" value="" placeholder="Mots clés" ng-model="tagsInput" />
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group has-primary">
                                 <div class="col-md-12">
                                     <label for="classeInput">Classe:</label>
                                     <select class="form-control" id="classe" ng-model="classeInput" ng-options="classe for (classe, matiere) in programme">
@@ -25,7 +20,7 @@
                                 </select>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group has-primary">
                                 <div class="col-md-12">
                                     <label for="matiereInput">Matière</label>
                                     <select class="form-control" id="matiere" ng-disabled="!classeInput" ng-model="matiereInput" ng-options="matiere for (matiere, chapitre) in classeInput">
@@ -33,7 +28,7 @@
                                 </select>
                                 </div>
                             </div>
-                            <div class="form-group">
+                            <div class="form-group has-primary">
                                 <div class="col-md-12">
                                     <label for="chapitreInput">Chapitre</label>
                                     <select class="form-control" id="chapitre" ng-disabled="!classeInput || !matiereInput" ng-model="chapitreInput" ng-options="chapitre for chapitre in matiereInput">
@@ -50,18 +45,25 @@
         </div>
         <div class="row" id="dataResult">
             <div class="col-md-12">
-                <div ng-show="result" class="well" ng-repeat="item in result | orderBy:'-lectures'">
-                    <a href="#cours/{{item._id}}" class="list-group-item"><span class="badge">Lu {{item.lectures}} fois</span><span class="label label-primary">{{item.classe}}</span> : <span class=""><b>{{item.matiere}}</b>  -  {{item.chapitre}}</span></a>
-                    <span style="margin-left: 10px" class="badge">Rédigé par <a style="color: inherit" href="#profil/{{item.auteur}}">@{{item.auteur}}</a></span>
+                <div ng-show="result" class="item-cours" ng-repeat="cours in result | orderBy:'-lectures'">
+                    <a href="#profil/{{cours.auteur}}"><img class="cours-avatar" width="35px" height="35px" ng-src="{{cours.picture}}" /></a>
+                    <a href="#profil/{{cours.auteur}}">@{{cours.auteur}}</a>
+                    <p>
+                        <a href="#cours/{{cours._id}}" style="color: inherit">
+                            <strong>{{cours.matiere}}</strong> - {{cours.chapitre}}
+                        </a>
+                        <br>
+                        <i class="cours-titre">{{cours.titre}}</i>
+                    </p>
                 </div>
-
+                
                 <div ng-show="showSadFace">
                     <div ng-show="icon === 'fa-caret-up'">
                         <center>
                             <i class="fa fa-frown-o fa-5x"></i>
                             <h3>Aucun cours correspondant à cette recherche n'a été trouvé.</h3>
                             <a href="#rediger">Rédiger le cours manquant</a>
-                        <center>
+                            <center>
                     </div>
                 </div>
             </div>

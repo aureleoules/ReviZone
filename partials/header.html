@@ -8,29 +8,33 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#home"><i class="fa fa-graduation-cap"></i> ReviZone</a>
+                <a class="navbar-brand" href="#accueil"><i class="fa fa-graduation-cap"></i> ReviZone</a>
             </div>
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="#accueil">Accueil</a></li>
-                    <li ng-show="isAuthenticated()"><a class="btn btn-primary" href="#rediger">Rédiger un cours <i class="fa fa-pencil-square-o ico-r"></i></a></li>
-                    <li><a class="btn btn-info" href="#trouver">Trouver un cours <i class="fa fa-file-text-o ico-r"></i></a></li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li ng-show="!isAuthenticated()"><a href="#inscription" class="btn btn-primary">S'INSCRIRE</a></li>
-                    <li ng-show="!isAuthenticated()"><a href="#connexion" class="btn btn-default">SE CONNECTER</a></li>
-                    <li ng-show="isAuthenticated()" class="dropdown">
-                        <!-- <img ng-src="{{userData.picture}}" height="25" width="25"> -->
+                <div class="navbar-form navbar-left">
+                    <a ng-show="isAuthenticated()" class="btn btn-info" href="#rediger">Rédiger un cours <i class="fa fa-pencil-square-o ico-r"></i></a>
+                    <a class="btn btn-primary" href="#trouver">Trouver un cours <i class="fa fa-file-text-o ico-r"></i></a>
+                </div>
+                <div class="navbar-form navbar-right">
+                    <a ng-show="!isAuthenticated()"href="#inscription" class="btn btn-info">S'INSCRIRE</a>
+                    <a ng-show="!isAuthenticated()" href="#connexion" class="btn btn-primary">SE CONNECTER</a>
+                </div>
+
+                    <!-- <img ng-src="{{userData.picture}}" height="25" width="25"> -->
+                    <ul class="nav navbar-nav navbar-right">
+                        <li ng-show="isAuthenticated()" class="dropdown">
                         <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{userData.name | uppercase}} <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#profil"><i class="fa fa-user-circle-o"></i> Profil</a></li>
                             <li><a href="#classe"><i class="fa fa-users"></i> Ma classe</a></li>
-                            <li><a href="#"><i class="fa fa-wrench"></i> Paramètres</a></li>
                             <li class="divider"></li>
-                            <li><a class="btn btn-danger" ng-click="logout()" href="#">Déconnexion</a></li>
+                            <li><button class="btn btn-danger" style="width: 100%" ng-click="logout()">Déconnexion</button></li>
                         </ul>
-                    </li>
+                </li>
                 </ul>
 
             </div>
