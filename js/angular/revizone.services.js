@@ -115,16 +115,48 @@ angular.module('revizone')
     })
 
 .factory('AuthInterceptor', function($rootScope, $q, AUTH_EVENTS) {
-    return {
-        responseError: function(response) {
-            $rootScope.$broadcast({
-                401: AUTH_EVENTS.notAuthenticated,
-            }[response.status], response);
-            return $q.reject(response);
+        return {
+            responseError: function(response) {
+                $rootScope.$broadcast({
+                    401: AUTH_EVENTS.notAuthenticated,
+                }[response.status], response);
+                return $q.reject(response);
+            }
+        };
+    })
+    .filter('startFrom', function() {
+        return function(input, start) {
+            start = +start; //parse to int
+            return input.slice(start);
         }
-    };
-})
+    })
+    .filter('range', function() {
+        return function(input, total) {
+            total = parseInt(total);
 
-.config(function($httpProvider) {
-    $httpProvider.interceptors.push('AuthInterceptor');
-});
+            for (var i = 1; i < total; i++) {
+                input.push(i);
+            }
+
+            return input;
+        };
+    })
+    .filter('num', function() {
+        return function(input) {
+            return parseInt(input, 10);
+        };
+    })
+    .directive("ngFileSelect", function() {
+        return {
+            link: function($scope, el) {
+                el.bind("change", function(e) {
+                    $scope.file = (e.srcElement || e.target).files[0];
+                    $scope.getFile();
+                })
+
+            }
+        }
+    })
+    .config(function($httpProvider) {
+        $httpProvider.interceptors.push('AuthInterceptor');
+    });

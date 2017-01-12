@@ -14,7 +14,6 @@ app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, AP
                             pseudo: item.auteur
                         }
                     }).then(function(response)  {
-                        console.log(response.data);
                         $scope.feed[key].picture = response.data[0].picture;
                     });
                 });
@@ -25,10 +24,40 @@ app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, AP
                 }
             }
         });
+        AuthService.getUser().then(function(user)  {
+            $scope.user = user;
+            $http.get(API_ENDPOINT.url + '/getListCours', {
+                params:  {
+                    pseudo: $scope.user.pseudo
+                }
+            }).then(function(result) {
+                $scope.listCours = result.data;
+                var rates = []; //calcul de la moyenne de chaque note de chaque cours.
+
+                for (var i = 0; i < $scope.listCours.length; i++)  {
+                    for (var y = 0; y < $scope.listCours[i].rates.length; y++)  {
+                        rates.push($scope.listCours[i].rates[y].rate);
+                    }
+                }
+                var num = 0;
+                for (var i = 0; i < rates.length; i++)  {
+                    num += rates[i];
+                }
+                $scope.average = Math.round(num / rates.length); //fin du calcul de la moyenne.
+                if (isNaN($scope.average))  {
+                    $scope.average = '- ';
+                }
+                $scope.lecturesTotal = 0;
+                for (var i = 0; i < $scope.listCours.length; i++)  {
+                    $scope.lecturesTotal += $scope.listCours[i].lectures;
+                }
+            });
+        });
+
     }
 });
 
-app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory, ngDialog) { //création d'un nouveau cours
+app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory, ngDialog, fileReader) { //création d'un nouveau cours
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
@@ -56,7 +85,7 @@ app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $lo
                     if (arg === "quit")  {
                         $location.path('/cours/' + result.data._id);
                     } else {
-                        $location.path('/modifier/' + result.data._id);
+                        $location.path('/cours/' + result.data._id + '/modifier');
                     }
                 }
             });
@@ -79,6 +108,21 @@ app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $lo
     $scope.confirm = function()  {
         $location.path('/accueil');
     }
+    $scope.fromPicture = function()  {
+        $('#file').click();
+    }
+    $scope.getFile = function() {
+        fileReader.readAsDataUrl($scope.file, $scope)
+            .then(function(result) {
+                $scope.imageSrc = result;
+                $http.post(API_ENDPOINT.url + '/OCR', {
+                    base64Image: $scope.imageSrc
+                }).then(function(result)  {
+                    var text = result.data.ParsedResults[0].ParsedText;
+                    quill.setText(text);
+                });
+            });
+    };
 });
 
 app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory, $routeParams) {
@@ -160,41 +204,52 @@ app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService
     // }
 });
 
-app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location, UtilsFactory) { //page de profil
+app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location, UtilsFactory, ngDialog, $rootScope, fileReader) { //page de profil
     $scope.isAuthenticated = AuthService.isAuthenticated();
-    AuthService.getUser().then(function(user)  {
-        $scope.username = user.pseudo;
-        if ($location.path() === '/profil') { //si l'utilisateur va sur /profil alors il tombe sur son profile
-            callback($scope.username);
-        } else { //sinon il tombe sur le profile de l'user demandé
-            callback($routeParams.user);
-        }
-    });
-
-    function callback(currentUser)  {
-        $http.get(API_ENDPOINT.url + '/getPicture', {
-            params:  {
-                pseudo: currentUser
-            }
-        }).then(function(result) {
-            if (result.data[0])  {
-                $scope.imageSrc = result.data[0].picture;
+    if ($scope.isAuthenticated)  {
+        AuthService.getUser().then(function(user)  {
+            $scope.user = user;
+            if ($location.path() === '/profil') { //si l'utilisateur va sur /profil alors il tombe sur son profile
+                callback($scope.user.pseudo);
+            } else { //sinon il tombe sur le profile de l'user demandé
+                callback($routeParams.user);
             }
         });
+    } else {
+        callback($routeParams.user);
+    }
+    var isCodePostalReady;
+    $scope.checkIfReady = function()  {
+        if ($('#inputCodePostal').val().length >= 4) {
+            getEtablissements();
+        }
+    }
+
+    var getEtablissements = function()  {
+        $http.get(API_ENDPOINT.url + '/getetablissements', {
+            params:  {
+                code_postal: $scope.editedUser.scolaire.code_postal
+            }
+        }).then(function(result) {
+            $scope.etablissements = result.data;
+        });
+    }
+
+    function callback(currentUser)  {
         $http.get(API_ENDPOINT.url + '/getProfile', {
             params:  {
                 pseudo: currentUser
             }
         }).then(function(result) {
-            $scope.user = result.data[0];
-            if (!$scope.user)  {
+            $scope.profile = result.data[0];
+            if (!$scope.profile)  {
                 $location.path('/accueil');
                 UtilsFactory.makeAlert("Cet utilisateur n'existe pas.", "danger")
                 return;
             }
             $http.get(API_ENDPOINT.url + '/getEtablissementById', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
                 params:  {
-                    id: $scope.user.scolaire.etablissement
+                    id: $scope.profile.scolaire.etablissement
                 }
             }).then(function(result) {
                 $scope.etablissement = result.data[0];
@@ -205,6 +260,21 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
                 }
             }).then(function(result) {
                 $scope.listCours = result.data;
+                var rates = []; //calcul de la moyenne de chaque note de chaque cours.
+
+                for (var i = 0; i < $scope.listCours.length; i++)  {
+                    for (var y = 0; y < $scope.listCours[i].rates.length; y++)  {
+                        rates.push($scope.listCours[i].rates[y].rate);
+                    }
+                }
+                var num = 0;
+                for (var i = 0; i < rates.length; i++)  {
+                    num += rates[i];
+                }
+                $scope.average = Math.round(num / rates.length); //fin du calcul de la moyenne.
+                if (isNaN($scope.average))  {
+                    $scope.average = '- ';
+                }
                 $scope.lecturesTotal = 0;
                 for (var i = 0; i < $scope.listCours.length; i++)  {
                     $scope.lecturesTotal += $scope.listCours[i].lectures;
@@ -252,6 +322,75 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
             });
         }
     }
+    $scope.selectImage = function()  {
+        $('#file').click();
+    }
+    $scope.getFile = function() {
+        fileReader.readAsDataUrl($scope.file, $scope).then(function(result) {
+                $scope.imageSrc = result;
+        });
+    };
+    $scope.edit = function() {
+        $scope.editedUser = angular.copy($scope.user);
+        $scope.editedUser.scolaire.code_postal = parseInt($scope.editedUser.scolaire.code_postal);
+        $scope.imageSrc = $scope.editedUser.picture;
+        getEtablissements();
+        $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
+            $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
+        });
+        if ($routeParams.user === undefined  || $routeParams.user === $scope.user.pseudo)  {
+            ngDialog.open({
+                template: './modals/editProfile.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+            $rootScope.$on('ngDialog.closing', function(e, $dialog) {});
+        }
+        $scope.save = function()  {
+            $scope.editedUser['picture'] = $scope.imageSrc;
+            console.log($scope.editedUser);
+            $http.put(API_ENDPOINT.url + '/editUser', {
+                user: $scope.editedUser
+            }).then(function(result) {
+                if (result.data.success === true)  {
+                    UtilsFactory.makeAlert(result.data.msg, "success");
+                    $http.get(API_ENDPOINT.url + '/getProfile', {
+                        params:  {
+                            pseudo: $scope.user.pseudo
+                        }
+                    }).then(function(result) {
+                        $scope.user = result.data[0];
+
+                    });
+                } else {
+                    UtilsFactory.makeAlert(result.data.msg, "danger");
+                }
+            });
+        }
+
+
+        var passwordChng;
+        $scope.changePassword = function() {
+            $scope.passwords =   {};
+            passwordChng = ngDialog.open({
+                template: './modals/changePassword.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+        };
+        $scope.savePassword = function()  {
+            $http.put(API_ENDPOINT.url + '/editPassword', {
+                passwords: $scope.passwords
+            }).then(function(result) {
+                if (result.data.success === true)  {
+                    UtilsFactory.makeAlert(result.data.msg, "success");
+                    passwordChng.close();
+                } else {
+                    UtilsFactory.makeAlert(result.data.msg, "danger");
+                }
+            });
+        }
+    }
 });
 
 app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFactory) {
@@ -259,13 +398,32 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
     $scope.showSadFace = false;
-
-    $scope.rechercher = function()  {
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
+    var coursLength;
+    $scope.numberOfPages = function() {
+        return Math.ceil(coursLength / $scope.pageSize);
+    }
+    $scope.searchLess = function()  {
+        if ($scope.currentPage > 1)  {
+            $scope.currentPage--;
+            $scope.rechercher($scope.currentPage);
+        }
+    }
+    $scope.searchMore = function()  {
+        if ($scope.currentPage < $scope.numberOfPages())  {
+            $scope.currentPage++;
+            $scope.rechercher($scope.currentPage);
+        }
+    }
+    $scope.rechercher = function(page, slide)  {
+        $scope.currentPage = page;
         var criteres =   {
             keywords: $('#tagsInput').val(),
             classe: $('#classe option:selected').text(),
             matiere: $('#matiere option:selected').text(),
-            chapitre: $('#chapitre option:selected').text()
+            chapitre: $('#chapitre option:selected').text(),
+            page: $scope.currentPage
         }
         $http.get(API_ENDPOINT.url + '/chercherCours', {
             params: criteres
@@ -273,14 +431,14 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
             if (result.data.success === false) {
                 UtilsFactory.makeAlert(result.data.msg, 'danger')
             } else {
-                $scope.result = result.data;
+                $scope.result = result.data.cours;
+                coursLength = result.data.coursLength;
                 $scope.result.forEach(function(item, key)  {
                     $http.get(API_ENDPOINT.url + '/getPicture', {
                         params: {
                             pseudo: item.auteur
                         }
                     }).then(function(response)  {
-                        console.log(response.data);
                         $scope.result[key].picture = response.data[0].picture;
                     });
                 });
@@ -289,6 +447,8 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
                 } else {
                     $scope.showSadFace = false;
                 }
+            }
+            if (slide === true)  {
                 $scope.slide();
             }
         });
@@ -348,7 +508,7 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
             if (result.data.success === false)  {
                 UtilsFactory.makeAlert(result.data.msg, 'danger');
             } else {
-                UtilsFactory.makeAlert(result.data.msg, "success");
+                //UtilsFactory.makeAlert(result.data.msg, "success");
             }
         });
     }
@@ -402,7 +562,7 @@ app.controller('loginCtrl', function($scope, AuthService, $location) {
 
 app.controller('registerCtrl', function($scope, AuthService, $location, $http, API_ENDPOINT, UtilsFactory, fileReader) {
     $scope.userInfos = {};
-    $scope.imageSrc = "./imgs/profile_picture.svg";
+    $scope.imageSrc = "http://i.imgur.com/Dknt6vC.png";
     $scope.selectImage = function()  {
         $('#file').click();
     }
@@ -418,9 +578,7 @@ app.controller('registerCtrl', function($scope, AuthService, $location, $http, A
             $http.post(API_ENDPOINT.url + '/savePicture', {
                 img: $scope.imageSrc,
                 pseudo: $scope.userInfos.pseudo
-            }).then(function(response)  {
-                console.log(response.data)
-            });
+            }).then(function(response)  {});
             $location.path('/connexion');
         }, function(error)  {
             UtilsFactory.makeAlert(error, "danger");
@@ -496,6 +654,7 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT) 
             }
         }).then(function(result) {
             $scope.etablissement = result.data[0];
+
         });
     });
 });

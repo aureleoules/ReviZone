@@ -19,20 +19,20 @@
                     <a ng-show="isAuthenticated()" class="btn btn-info" href="#rediger">Rédiger un cours <i class="fa fa-pencil-square-o ico-r"></i></a>
                     <a class="btn btn-primary" href="#trouver">Trouver un cours <i class="fa fa-file-text-o ico-r"></i></a>
                 </div>
-                <div class="navbar-form navbar-right">
-                    <a ng-show="!isAuthenticated()"href="#inscription" class="btn btn-info">S'INSCRIRE</a>
-                    <a ng-show="!isAuthenticated()" href="#connexion" class="btn btn-primary">SE CONNECTER</a>
+                <div class="navbar-form navbar-right" ng-show="!isAuthenticated()">
+                    <a href="#inscription" class="btn btn-info">S'INSCRIRE</a>
+                    <a href="#connexion" class="btn btn-primary">SE CONNECTER</a>
                 </div>
 
-                    <!-- <img ng-src="{{userData.picture}}" height="25" width="25"> -->
+
                     <ul class="nav navbar-nav navbar-right">
                         <li ng-show="isAuthenticated()" class="dropdown">
-                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{userData.name | uppercase}} <span class="caret"></span></a>
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{{userData.name | uppercase}} <img style="margin-top: -6px; margin-left: 3px"ng-src="{{userData.picture}}" height="28" width="28" class="img-circle"/>  <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#profil"><i class="fa fa-user-circle-o"></i> Profil</a></li>
                             <li><a href="#classe"><i class="fa fa-users"></i> Ma classe</a></li>
-                            <li class="divider"></li>
-                            <li><button class="btn btn-danger" style="width: 100%" ng-click="logout()">Déconnexion</button></li>
+                            <li class="divider desktop-only"></li>
+                            <li><center><button class="btn btn-danger" style="width: 95%" ng-click="logout()" >Déconnexion</button></center></li>
                         </ul>
                 </li>
                 </ul>

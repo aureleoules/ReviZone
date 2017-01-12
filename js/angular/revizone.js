@@ -1,26 +1,5 @@
 var app = angular.module('revizone', ['ngRoute', 'revizone.controllers', 'ngDialog']);
-app.filter('range', function() {
-    return function(input, total) {
-        total = parseInt(total);
 
-        for (var i = 1; i < total; i++) {
-            input.push(i);
-        }
-
-        return input;
-    };
-});
-app.directive("ngFileSelect", function() {
-    return {
-        link: function($scope, el) {
-            el.bind("change", function(e) {
-                $scope.file = (e.srcElement || e.target).files[0];
-                $scope.getFile();
-            })
-
-        }
-    }
-});
 app.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(false);
     $locationProvider.hashPrefix('');

@@ -1,7 +1,7 @@
 <section id="home" class="mg-top-40">
     <div class="container">
         <div class="row">
-            <div class="col-md-8 well">
+            <div class="col-md-7 well">
                 <div ng-show="showFeed" class="item-cours" ng-repeat="cours in feed | orderBy:'-createdAt'">
                     <a href="#profil/{{cours.auteur}}"><img class="cours-avatar" width="35px" height="35px" ng-src="{{cours.picture}}" /></a>
                     <a href="#profil/{{cours.auteur}}">@{{cours.auteur}}</a>
@@ -22,12 +22,49 @@
                 </div>
 
             </div>
-            <div class="col-md-3 col-md-push-1">
-                <div class="well rounded">
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor
-                        in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
+            <div class="col-md-4 col-md-push-1">
+                <div class="twPc-div">
+                    <a class="twPc-bg twPc-block"></a>
+                    <div class="twPc-button">
+                        <div ng-show="isAuthenticated">
+                            <a ng class="label label-success followBtn" href="#profil/{{user.pseudo}}">Voir mon profil</a>
+                        </div>
+                    </div>
+                    <a href="" class="twPc-avatarLink">
+                        <img ng-src="{{user.picture}}" class="twPc-avatarImg">
+                    </a>
+                    <div class="">
+
+                        <div class="twPc-divUser">
+                            <div class="twPc-divName">
+                                <a href="#profil/{{user.pseudo}}">{{user.name}}</a>
+                            </div>
+                            <a href="#profil/{{user.pseudo}}">@{{user.pseudo}}</a>
+                        </div>
+
+                        <div class="twPc-divStats">
+                            <ul class="twPc-Arrange">
+                                <li class="twPc-ArrangeSizeFit">
+                                    <a href="" title="{{listCours.length}} cours">
+                                        <span class="twPc-StatLabel twPc-block">Cours</span>
+                                        <span class="twPc-StatValue text-success">{{listCours.length}}</span>
+                                    </a>
+                                </li>
+                                <li class="twPc-ArrangeSizeFit">
+                                    <a href="" title="{{lecturesTotal}} lectures">
+                                        <span class="twPc-StatLabel twPc-block">Lectures</span>
+                                        <span class="twPc-StatValue text-success">{{lecturesTotal}}</span>
+                                    </a>
+                                </li>
+                                <li class="twPc-ArrangeSizeFit">
+                                    <a href="" title="Moyenne de {{average}}/5">
+                                        <span class="twPc-StatLabel twPc-block">Note moyenne</span>
+                                        <span class="twPc-StatValue text-success">{{average}}/5</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

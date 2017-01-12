@@ -99,5 +99,6 @@
             placeholder: 'Ecris ton cours...',
             theme: 'snow' // or 'bubble'
         });
+        $('.ql-toolbar').append(`<a style="color: inherit" ng-click="fromPicture()" href="">Depuis une image</a><input ng-file-select="onFileSelect($files)" type="file" id="file" name="file" accept="image/x-png,image/gif,image/jpeg" style="visibility: hidden; width: 1px; height: 1px" />`)
     </script>
 </section>

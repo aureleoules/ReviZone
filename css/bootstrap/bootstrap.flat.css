@@ -1446,7 +1446,15 @@ hr {
     border: 0;
     border-top: 1px solid #ecf0f1
 }
+@media (max-width: 991px) {
+    .mobile-only {
+        display:block !important;
+    }
 
+    .desktop-only {
+        display:none !important;
+    }
+}
 .sr-only {
     position: absolute;
     width: 1px;
@@ -3508,9 +3516,6 @@ a.btn.disabled, fieldset[disabled] a.btn {
 }
 
 .btn-danger:focus, .btn-danger.focus {
-    color: #fff;
-    background-color: #d62c1a;
-    border-color: #921e12
 }
 
 .btn-danger:hover {
@@ -3676,7 +3681,7 @@ tbody.collapse.in {
     display: none;
     float: left;
     min-width: 150px;
-    padding: 5px 0;
+    padding: 1px 0 5px;
     margin: 2px 0 0;
     list-style: none;
     font-size: 15px;
@@ -3709,7 +3714,7 @@ tbody.collapse.in {
     clear: both;
     font-weight: normal;
     line-height: 1.42857143;
-    color: #7b8a8b;
+    color: #4b5d6f;
     white-space: nowrap
 }
 
@@ -7073,7 +7078,8 @@ table-bordered>thead>tr>th, .table-bordered>thead>tr>th, table-bordered>tbody>tr
 .form-control, input {
     border-width: 2px;
     -webkit-box-shadow: none;
-    box-shadow: none
+    box-shadow: none;
+    margin-bottom: 10px;
 }
 
 .form-control:focus, input:focus {

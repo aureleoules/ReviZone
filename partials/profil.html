@@ -4,7 +4,7 @@
             <div class="col-md-7">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h2 class="panel-title"><b>Classeur</b> de {{user.name}}</h2>
+                        <h2 class="panel-title"><b>Classeur</b> de {{profile.name}}</h2>
                     </div>
                     <div class="panel-body">
                         <div ng-hide="listCours.length < 1">
@@ -12,7 +12,7 @@
                         </div>
                         <div ng-show="listCours.length < 1">
                             <center> <i class="fa fa-frown-o fa-3x"></i>
-                                <p>Aucun cours rédigé par <a class="text-info" href="#/profil/{{user.pseudo}}">@{{user.pseudo}}</a>.</p>
+                                <p>Aucun cours rédigé par <a class="text-info" href="#/profil/{{profile.pseudo}}">@{{profile.pseudo}}</a>.</p>
                             </center>
                         </div>
                     </div>
@@ -23,26 +23,29 @@
                     <a class="twPc-bg twPc-block"></a>
                     <div class="twPc-button">
                         <div ng-show="isAuthenticated">
-                            <div ng-hide="user.pseudo === username">
-                                <a ng-if="!isFollowed" class="label label-info followBtn" href="" ng-click="follow()">Suivre @{{user.pseudo}}</a>
-                                <a ng-if="isFollowed" class="label label-danger followBtn" href="" ng-click="unfollow()">Ne plus suivre @{{user.pseudo}}</a>
+                            <div ng-hide="profile.pseudo === user.pseudo">
+                                <a ng-if="!isFollowed" class="label label-info followBtn" href="" ng-click="follow()">Suivre @{{profile.pseudo}}</a>
+                                <a ng-if="isFollowed" class="label label-danger followBtn" href="" ng-click="unfollow()">Ne plus suivre @{{profile.pseudo}}</a>
                             </div>
-                            <div ng-show="user.pseudo === username">
+                            <div ng-show="profile.pseudo === user.pseudo">
                                 <a ng class="label label-info followBtn" href="" ng-click="edit()">Modifier mes informations</a>
                             </div>
+                        </div>
+                        <div ng-show="!isAuthenticated">
+                            <a style="cursor: default;"data-toggle="tooltip" data-placement="top" title="Connectez-vous pour suivre @{{profile.pseudo}}" class="label label-info followBtn" href="">Suivre @{{profile.pseudo}}</a>
                         </div>
                     </div>
 
                     <a href="" class="twPc-avatarLink">
-                        <img src="{{imageSrc}}" class="twPc-avatarImg">
+                        <img src="{{profile.picture}}" ng-click="selectImage()" class="twPc-avatarImg">
                     </a>
                     <div class="">
 
                         <div class="twPc-divUser">
                             <div class="twPc-divName">
-                                <a href="#profil/{{user.pseudo}}">{{user.name}}</a>
+                                <a  href="#profil/{{user.pseudo}}">{{profile.name}}<span style="color: #8e44ad" ng-if="profile.pseudo === 'Fluxxyyy'"><b> BETA TESTEUR</b></span></a>
                             </div>
-                            <a href="#profil/{{user.pseudo}}">@{{user.pseudo}}</a>
+                            <a href="#profil/{{user.pseudo}}">@{{profile.pseudo}}</a>
                         </div>
 
                         <div class="twPc-divStats">
@@ -60,16 +63,30 @@
                                     </a>
                                 </li>
                                 <li class="twPc-ArrangeSizeFit">
-                                    <a href="" title="Moyenne de 4.5/5">
+                                    <a href="" title="Moyenne de {{average}}/5">
                                         <span class="twPc-StatLabel twPc-block">Note moyenne</span>
-                                        <span class="twPc-StatValue text-success">4.5/5</span>
+                                        <span class="twPc-StatValue text-success">{{average}}/5</span>
                                     </a>
                                 </li>
                             </ul>
+                            <ul class="twPc-Arrange">
+                                <li class="twPc-ArrangeSizeFit">
+                                    <a href="">
+                                        <span class="text-success">{{etablissement.appellation_officielle | uppercase}} - {{profile.scolaire.classe | uppercase}} {{profile.scolaire.numero_classe}}</span>
+                                        <br><span class="text-primary">{{etablissement.localite_acheminement_uai | uppercase}}</span>
+                                    </a>
+                                </li>
+                            </ul>
+                            <input ng-file-select="onFileSelect($files)" type="file" id="file" name="file" style="visibility: hidden; width: 1px; height: 1px" />
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $('[data-toggle="tooltip"]').tooltip({
+            'placement': 'top'
+        });
+    </script>
 </section>
