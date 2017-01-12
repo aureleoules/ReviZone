@@ -26,7 +26,6 @@ app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, AP
         });
         AuthService.getUser().then(function(user)  {
             $scope.user = user;
-            console.log($scope.user);
             $http.get(API_ENDPOINT.url + '/getListCours', {
                 params:  {
                     pseudo: $scope.user.pseudo
