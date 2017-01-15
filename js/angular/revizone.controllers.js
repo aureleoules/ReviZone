@@ -663,8 +663,8 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT) 
     });
 });
 
-app.controller('404Ctrl', function($scope) {
-    $http.get(API_ENDPOINT.url + '/getEtablissementById').then(function(result) {
-        $scope.randomCours = result.data.cours;
-    });
+app.controller('404Ctrl', function($scope, $http, API_ENDPOINT) {
+    $http.get(API_ENDPOINT.url + '/getRandomCours').then(function(result) {
+        $scope.randomCours = result.data.cours[0];
+    }); 
 });
