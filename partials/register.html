@@ -6,7 +6,7 @@
             </div>
         </div>
         <div class="row">
-            <div id="infosperso" class="form-horizontal">
+            <form id="infosperso" class="form-horizontal" ng-submit="signup()">
                 <div class="col-md-8 col-centered col-sm-12">
                     <div class="well border rounded">
                         <h3>Informations <span class="text-primary">personnelles</span></h3>
@@ -86,16 +86,13 @@
                         </fieldset>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="form-group">
-                <div class="col-md-12">
-                    <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px" ng-click="signup()">S'inscrire</button>
+                <div class="container-fluid form-group">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px">S'inscrire</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
-
     </div>
 </section>
 <div ng-include="'partials/footer.html'"></div>
