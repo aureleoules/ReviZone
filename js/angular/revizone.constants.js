@@ -5,6 +5,6 @@ angular.module('revizone')
 })
 
 .constant('API_ENDPOINT', {
-  url: 'http://64.137.171.80:8089/api'
+  url: 'http://revizone.fr:8089/api'
   //  For a simulator use: url: 'http://127.0.0.1:8080/api'
 });
