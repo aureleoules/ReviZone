@@ -1446,15 +1446,16 @@ hr {
     border: 0;
     border-top: 1px solid #ecf0f1
 }
+
 @media (max-width: 991px) {
     .mobile-only {
-        display:block !important;
+        display: block !important;
     }
-
     .desktop-only {
-        display:none !important;
+        display: none !important;
     }
 }
+
 .sr-only {
     position: absolute;
     width: 1px;
@@ -3515,8 +3516,7 @@ a.btn.disabled, fieldset[disabled] a.btn {
     border-color: #e74c3c
 }
 
-.btn-danger:focus, .btn-danger.focus {
-}
+.btn-danger:focus, .btn-danger.focus {}
 
 .btn-danger:hover {
     color: #fff;
@@ -6997,10 +6997,6 @@ button.close {
     .hidden-print {
         display: none!important
     }
-}
-
-.navbar {
-    border-width: 0
 }
 
 .navbar-default .badge {

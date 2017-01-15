@@ -23,6 +23,11 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: 'partials/recherche.html',
         controller: 'rechercheCtrl'
     }).
+    when('/cgu', {
+        title: "Conditions Générales d'Utilisation",
+        templateUrl: 'partials/cgu.html',
+        controller: 'cguCtrl'
+    }).
     when('/classe', {
         title: "Ma classe",
         templateUrl: 'partials/classe.html',
@@ -73,7 +78,7 @@ app.config(function($routeProvider, $locationProvider) {
 app.run(['$rootScope', '$location', 'AuthService', function($rootScope, $location, AuthService) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
         if (!AuthService.isAuthenticated()) {
-            var allowedRoutes = ['/', '', '/accueil', '/connexion', '/404', '/inscription', '/trouver'];
+            var allowedRoutes = ['/', '', '/accueil', '/connexion', '/404', '/inscription', '/trouver', '/cgu'];
             var isAllowed = allowedRoutes.indexOf($location.path()) > -1 || ($location.path().substring(0, '/cours/'.length)) === '/cours/' || ($location.path().substring(0, '/profil/'.length)) === '/profil/'; //checks if the $location.path() is contained in the allowedRoutes array.
             if (!isAllowed)  { //if not allowed -> /login path
                 event.preventDefault();
