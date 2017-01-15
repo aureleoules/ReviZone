@@ -556,7 +556,6 @@ app.controller('loginCtrl', function($scope, AuthService, $location) {
             $location.path('/accueil');
         }, function(errMsg) {
             UtilsFactory.makeAlert(errMsg, "danger", "", 1000);
-
         });
     };
 });
@@ -580,7 +579,11 @@ app.controller('registerCtrl', function($scope, AuthService, $location, $http, A
                 img: $scope.imageSrc,
                 pseudo: $scope.userInfos.pseudo
             }).then(function(response)  {});
-            $location.path('/connexion');
+            AuthService.login($scope.userInfos).then(function(msg) {
+                $location.path('/accueil');
+            }, function(errMsg) {
+                UtilsFactory.makeAlert(errMsg, "danger", "", 1000);
+            });
         }, function(error)  {
             UtilsFactory.makeAlert(error, "danger");
         });
