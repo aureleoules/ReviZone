@@ -6,20 +6,18 @@
     <title ng-bind="'ReviZone - ' + title">ReviZone</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="favicon.ico">
-
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha256-/SIrNqv8h6QGKDuNoLGA4iret+kyesCkHGzVUUV0shc=" crossorigin="anonymous"></script>
+    <script src="js/angular/angular.min.js" charset="utf-8"></script>
+    <script src="js/angular/revizone.js" charset="utf-8"></script>
+    <script src="js/angular/revizone.controllers.js" charset="utf-8"></script>
     <!-- JQUERY-->
-
-
 </head>
 
 <body>
     <div ng-include="'partials/header.html'"></div>
     <div autoscroll="true" ng-view></div>
-    
-    <script type="text/javascript" src="js/jquery/jquery.min.js"></script>
-    <script src="js/angular/angular.min.js" charset="utf-8"></script>
-    <script src="js/angular/revizone.js" charset="utf-8"></script>
-    <script src="js/angular/revizone.controllers.js" charset="utf-8"></script>
+
+
     <script src="js/angular/revizone.constants.js" charset="utf-8"></script>
     <script src="js/angular/angular-route.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="css/bootstrap/bootstrap.flat.min.css">
