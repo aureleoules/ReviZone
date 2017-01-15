@@ -6,90 +6,96 @@
             </div>
         </div>
         <div class="row">
-            <form id="infosperso" class="form-horizontal" ng-submit="signup()">
-                <div class="col-md-8 col-centered well col-sm-12 border rounded">
-                    <h3>Informations <span class="text-primary">personnelles</span></h3>
-                    <fieldset>
-                        <div class="form-group has-primary">
-                            <div class="col-md-12">
-                                <label for="inputPrenom">Prénom et nom</label>
-                                <input autocomplete="off" type="text" class="form-control" ng-model="userInfos.name" id="inputNom" placeholder="Prénom et nom" required>
+            <div id="infosperso" class="form-horizontal">
+                <div class="col-md-8 col-centered col-sm-12">
+                    <div class="well border rounded">
+                        <h3>Informations <span class="text-primary">personnelles</span></h3>
+                        <fieldset>
+                            <div class="form-group has-primary">
+                                <div class="col-md-12">
+                                    <label for="inputPrenom">Prénom et nom</label>
+                                    <input autocomplete="off" type="text" class="form-control" ng-model="userInfos.name" id="inputNom" placeholder="Prénom et nom" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group has-primary">
-                            <div class="col-md-12">
-                                <label for="inputEmail">Adresse email: <small>(Facultatif)</small></label>
-                                <input type="email" class="form-control" ng-model="userInfos.email" id="inputEmail" placeholder="Email">
+                            <div class="form-group has-primary">
+                                <div class="col-md-12">
+                                    <label for="inputEmail">Adresse email: <small>(Facultatif)</small></label>
+                                    <input type="email" class="form-control" ng-model="userInfos.email" id="inputEmail" placeholder="Email">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group has-primary">
-                            <div class="col-md-9">
-                                <label for="inputPseudo">Pseudonyme:</label>
-                                <input autocomplete="off" type="text" class="form-control" ng-model="userInfos.pseudo" id="inputPseudo" placeholder="Pseudo" required>
+                            <div class="form-group has-primary">
+                                <div class="col-md-9">
+                                    <label for="inputPseudo">Pseudonyme:</label>
+                                    <input autocomplete="off" type="text" class="form-control" ng-model="userInfos.pseudo" id="inputPseudo" placeholder="Pseudo" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="inputImg">Photo de profil:</label>
+                                    <input ng-file-select="onFileSelect($files)" type="file" id="file" name="file" style="visibility: hidden; width: 1px; height: 1px" />
+                                    <a href="" class="text-success" ng-click="selectImage()"><img ng-src="{{imageSrc}}" height="39" width="39"> Changer</a>
+                                </div>
                             </div>
-                            <div class="col-md-3">
-                                <label for="inputImg">Photo de profil:</label>
-                                <input ng-file-select="onFileSelect($files)" type="file" id="file" name="file" style="visibility: hidden; width: 1px; height: 1px" />
-                                <a href="" class="text-success" ng-click="selectImage()"><img ng-src="{{imageSrc}}" height="39" width="39"> Changer</a>
+                            <div class="form-group has-primary">
+                                <div class="col-md-12">
+                                    <label for="inputPassword">Mot de passe:</label>
+                                    <input autocomplete="off" type="password" class="form-control" id="inputPassword" ng-model="userInfos.password" placeholder="Mot de passe" required>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group has-primary">
-                            <div class="col-md-12">
-                                <label for="inputPassword">Mot de passe:</label>
-                                <input autocomplete="off" type="password" class="form-control" id="inputPassword" ng-model="userInfos.password" placeholder="Mot de passe" required>
-                            </div>
-                        </div>
-                        <input type="checkbox"> J'accepte les <a href="#cgu" target="_blank">Conditions Générales d'Utilisation</a>.
-                    </fieldset>
-                </div>
-                <div class="col-md-3 col-centered col-md-offset-1 col-sm-12 well border rounded">
-                    <h3>Informations <span class="text-primary">scolaires</span></h3>
-                    <fieldset>
-                        <div class="form-group has-primary">
-                            <div class="col-md-12">
-                                <label for="inputCodePostal">Code postal:</label>
-                                <input autocomplete="off" ng-change="checkIfReady()" type="number" class="form-control" ng-model="userInfos.codepostal" id="inputCodePostal" placeholder="Code postal" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
-                                    type="number" maxlength="5" minlength="4" required>
-                            </div>
-                        </div>
-                        <div class="form-group has-primary">
-                            <div class="col-md-12">
-                                <label for="inputPatronyme">Nom de l'établissement</label>
-                                <select ng-disabled="!userInfos.codepostal" class="form-control" ng-model="userInfos.etablissement" id="select" required>
-                                        <option value=''>Choisir</option>
-                                        <option value='{{etablissement.numero_uai}}' ng-repeat="etablissement in etablissements | orderBy:'appellation_officielle'">{{ etablissement.appellation_officielle}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <!-- "classe for (classe, key) in programme -->
-                        <div class="form-group has-primary">
-                            <div class="col-md-12">
-                                <label for="inputClasse">Classe:</label>
-                                <select class="form-control" id="inputClasse" ng-model="userInfos.classe" required>
-                                        <option value=''>Classe</option>
-                                        <option value='{{classe}}' ng-repeat="(classe, key) in programme">{{classe}}</option>
-                                    </select>
-                            </div>
-                        </div>
-                        <div class="form-group has-primary">
-                            <div class="col-md-12">
-                                <label for="inputClasse">Numéro de classe:</label>
-                                <select class="form-control" id="inputClasse" ng-model="userInfos.numero_classe" required>
-                                        <option value=''>Numéro de classe</option>
-                                        <option ng-repeat="n in [] | range:16" value='{{n}}'>N°{{ n }}</option>
-                                    </select>
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-12">
-                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px">S'inscrire</button>
+                            <input type="checkbox"> J'accepte les <a href="#cgu" target="_blank">Conditions Générales d'Utilisation</a>.
+                        </fieldset>
                     </div>
                 </div>
-            </form>
+                <div class="col-md-3 col-centered col-md-offset-1 col-sm-12">
+                    <div class="well border rounded">
+                        <h3>Informations <span class="text-primary">scolaires</span></h3>
+                        <fieldset>
+                            <div class="form-group has-primary">
+                                <div class="col-md-12">
+                                    <label for="inputCodePostal">Code postal:</label>
+                                    <input autocomplete="off" ng-change="checkIfReady()" type="number" class="form-control" ng-model="userInfos.codepostal" id="inputCodePostal" placeholder="Code postal" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
+                                        type="number" maxlength="5" minlength="4" required>
+                                </div>
+                            </div>
+                            <div class="form-group has-primary">
+                                <div class="col-md-12">
+                                    <label for="inputPatronyme">Nom de l'établissement</label>
+                                    <select ng-disabled="!userInfos.codepostal" class="form-control" ng-model="userInfos.etablissement" id="select" required>
+                                            <option value=''>Choisir</option>
+                                            <option value='{{etablissement.numero_uai}}' ng-repeat="etablissement in etablissements | orderBy:'appellation_officielle'">{{ etablissement.appellation_officielle}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- "classe for (classe, key) in programme -->
+                            <div class="form-group has-primary">
+                                <div class="col-md-12">
+                                    <label for="inputClasse">Classe:</label>
+                                    <select class="form-control" id="inputClasse" ng-model="userInfos.classe" required>
+                                            <option value=''>Classe</option>
+                                            <option value='{{classe}}' ng-repeat="(classe, key) in programme">{{classe}}</option>
+                                        </select>
+                                </div>
+                            </div>
+                            <div class="form-group has-primary">
+                                <div class="col-md-12">
+                                    <label for="inputClasse">Numéro de classe:</label>
+                                    <select class="form-control" id="inputClasse" ng-model="userInfos.numero_classe" required>
+                                            <option value=''>Numéro de classe</option>
+                                            <option ng-repeat="n in [] | range:16" value='{{n}}'>N°{{ n }}</option>
+                                        </select>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+                </div>
+            </div>
         </div>
+        <div class="row">
+            <div class="form-group">
+                <div class="col-md-12">
+                    <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 10px" ng-click="signup()">S'inscrire</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
 <div ng-include="'partials/footer.html'"></div>
