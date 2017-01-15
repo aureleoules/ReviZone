@@ -613,7 +613,7 @@ app.controller('registerCtrl', function($scope, AuthService, $location, $http, A
 app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, AUTH_EVENTS) {
     $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
         AuthService.logout();
-        $location.path('/connexion');
+        $location.path('/accueil');
     });
     $scope.isActive = function(viewLocation) { //This function is for the NavBar: Set 'active' class if navbar item is selected.
         return viewLocation === $location.path();
@@ -640,7 +640,7 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
 
     $scope.logout = function() {
         AuthService.logout();
-        $location.path('/connexion');
+        $location.path('/accueil');
     };
 
     $rootScope.$on('userLoggedIn', function(data) {
@@ -663,4 +663,8 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT) 
     });
 });
 
-app.controller('404Ctrl', function($scope) {});
+app.controller('404Ctrl', function($scope) {
+    $http.get(API_ENDPOINT.url + '/getEtablissementById').then(function(result) {
+        $scope.randomCours = result.data.cours;
+    });
+});

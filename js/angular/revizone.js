@@ -68,8 +68,12 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: 'partials/exercices.html',
         controller: 'exercicesCtrl'
     }).
-    otherwise({
+    when('/404', {
         title: "Page non trouvée!",
+        templateUrl: 'partials/404.html',
+        controller: '404Ctrl'
+    }).
+    otherwise({
         redirectTo: '/404'
     });
 });
@@ -82,7 +86,7 @@ app.run(['$rootScope', '$location', 'AuthService', function($rootScope, $locatio
             var isAllowed = allowedRoutes.indexOf($location.path()) > -1 || ($location.path().substring(0, '/cours/'.length)) === '/cours/' || ($location.path().substring(0, '/profil/'.length)) === '/profil/'; //checks if the $location.path() is contained in the allowedRoutes array.
             if (!isAllowed)  { //if not allowed -> /login path
                 event.preventDefault();
-                $location.path('/login');
+                $location.path('/accueil');
             }
         }
 
