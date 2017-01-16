@@ -25,7 +25,8 @@
                         Rédigé par <a class="text-info" href="#profil/{{cours.auteur}}">@{{cours.auteur}}</a>
                         <br> Classe: <span class="text-info">{{cours.classe}}</span>
                         <br> Matière: <span class="text-info">{{cours.matiere}}</span>
-                        <br> Chapitre: <span class="text-info">{{cours.chapitre}}</span>
+                        <br> Titre: <span class="text-info">{{cours.titre}}</span>
+                        <br> <span ng-if="cours.chapitre">Chapitre: <span class="text-info">{{cours.chapitre}}</span></span>
                         <br> Lecture<span ng-if="cours.lectures > 1">s</span>: <span class="text-info">{{cours.lectures}}</span>
                         <br> <a href="" ng-click="export('pdf')" style="color: inherit"><i class="fa fa-file-pdf-o"></i></a>
 

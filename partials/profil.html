@@ -8,7 +8,7 @@
                     </div>
                     <div class="panel-body">
                         <div ng-hide="listCours.length < 1">
-                            <a ng-repeat="item in listCours | orderBy:'createdAt'" href="#cours/{{item._id}}" class="list-group-item"><span class="badge">Lu {{item.lectures}} fois</span><span class="label label-primary">{{item.classe}}</span> : <span class=""><b>{{item.matiere}}</b>  -  {{item.titre}}<br><i>{{item.chapitre}}</i></span></a>
+                            <a ng-repeat="item in listCours | orderBy:'-createdAt'" href="#cours/{{item._id}}" class="list-group-item"><span class="badge">Lu {{item.lectures}} fois</span><span class="label label-primary">{{item.classe}}</span> : <span class=""><b>{{item.matiere}}</b>  -  {{item.titre}}<br><i>{{item.chapitre}}</i></span></a>
                         </div>
                         <div ng-show="listCours.length < 1">
                             <center> <i class="fa fa-frown-o fa-3x"></i>
