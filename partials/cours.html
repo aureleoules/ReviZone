@@ -29,7 +29,14 @@
                         <span ng-if="cours.chapitre !== null"><br> Chapitre: <span class="text-info">{{cours.chapitre}}</span></span>
                         <br> Lecture<span ng-if="cours.lectures > 1">s</span>: <span class="text-info">{{cours.lectures}}</span>
                         <br> <a href="" ng-click="export('pdf')" style="color: inherit"><i class="fa fa-file-pdf-o"></i></a>
-
+                        <a ng-show="showAudio" href="" ng-click="export('audio')" style="color: inherit"><i class="fa fa-volume-up"></i></a>
+                        <a ng-show="showPause" href="" ng-click="pauseAudio()" style="color: inherit"><i class="fa fa-pause"></i></a>
+                        <a ng-show="showResume" href="" ng-click="resumeAudio()" style="color: inherit"><i class="fa fa-play"></i></a>
+                        <a ng-hide="showAudio" href="" ng-click="cancelAudio()" style="color: inherit"><i class="fa fa-stop"></i></a>
+                        <select class="form-control" id="voiceSelect">
+                            <option value="French Female">Français</option>
+                            <option ng-repeat="voice in responsiveVoices | orderBy:'name'">{{voice.name}}</option>
+                        </select>
                     </div>
                 </div>
             </div>

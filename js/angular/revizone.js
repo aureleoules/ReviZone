@@ -1,4 +1,4 @@
-var app = angular.module('revizone', ['ngRoute', 'revizone.controllers', 'ngDialog']);
+var app = angular.module('revizone', ['ngRoute', 'revizone.controllers', 'ngDialog', 'oc.lazyLoad']);
 
 app.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(false);

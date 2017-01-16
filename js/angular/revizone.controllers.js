@@ -328,7 +328,7 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
     }
     $scope.getFile = function() {
         fileReader.readAsDataUrl($scope.file, $scope).then(function(result) {
-                $scope.imageSrc = result;
+            $scope.imageSrc = result;
         });
     };
     $scope.edit = function() {
@@ -465,7 +465,13 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
     }
 });
 
-app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, UtilsFactory, AuthService, ngDialog, $location) {
+app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, UtilsFactory, AuthService, ngDialog, $location, $ocLazyLoad) {
+    var scriptLoaded = false;
+    $ocLazyLoad.load('https://code.responsivevoice.org/responsivevoice.js').then(function()  {
+        $scope.responsiveVoices = responsiveVoice.getVoices();
+        scriptLoaded = true;
+    });
+    $ocLazyLoad.load('https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js');
     $scope.isAuthenticated = function()  {
         return AuthService.isAuthenticated();
     }
@@ -538,6 +544,7 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
             }
         });
     }
+    $scope.showAudio = true;
     $scope.export = function(argu)  {
         if (argu === 'pdf')  {
             var doc = new jsPDF();
@@ -545,8 +552,30 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
                 'width': 170
             });
             doc.save($scope.cours.classe + " - " + $scope.cours.matiere + " - " + $scope.cours.chapitre + " par " + $scope.cours.auteur + ".pdf");
+        } else if (argu === 'audio')  {
+            if (scriptLoaded === true)  {
+                responsiveVoice.speak(quill.getText(), $('#voiceSelect option:selected').val());
+                $scope.showPause = true;
+                $scope.showAudio = false;
+            }
         }
 
+    }
+    $scope.pauseAudio =   function()  {
+        responsiveVoice.pause();
+        $scope.showPause = false;
+        $scope.showResume = true;
+    }
+    $scope.cancelAudio =   function()  {
+        responsiveVoice.cancel();
+        $scope.showAudio = true;
+        $scope.showPause = false;
+        $scope.showResume = false;
+    }
+    $scope.resumeAudio = function() {
+        responsiveVoice.resume();
+        $scope.showPause = true;
+        $scope.showResume = false;
     }
 });
 
@@ -666,5 +695,5 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT) 
 app.controller('404Ctrl', function($scope, $http, API_ENDPOINT) {
     $http.get(API_ENDPOINT.url + '/getRandomCours').then(function(result) {
         $scope.randomCours = result.data.cours[0];
-    }); 
+    });
 });
