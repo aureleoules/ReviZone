@@ -644,6 +644,10 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
         AuthService.logout();
         $location.path('/accueil');
     });
+
+$('.navbar-collapse a:not(#nameHeader)').click(function(){
+    $(".navbar-collapse").collapse('hide');
+});
     $scope.isActive = function(viewLocation) { //This function is for the NavBar: Set 'active' class if navbar item is selected.
         return viewLocation === $location.path();
     };
