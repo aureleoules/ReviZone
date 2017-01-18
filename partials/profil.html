@@ -6,9 +6,13 @@
                     <div class="panel-heading">
                         <h2 class="panel-title"><b>Classeur</b> de {{profile.name}}</h2>
                     </div>
-                    <div class="panel-body">
+                    <div class="btn-group btn-group-justified" ng-hide="listCours.length < 1">
+                        <a ng-hide="!matieresList" href="" ng-click="selectMatiere('all')" class="btn btn-primary" ng-class="{active: selectedMatiere === 'all'}"style="border-radius: 0px">Tous</a>
+                        <a href="" ng-click="selectMatiere($index)" ng-repeat="matiere in matieresList" ng-class="{active: $index === selectedMatiere}" class="btn btn-primary" id="btn{{matiere}}" style="border-radius: 0px">{{matiere}}</a>
+                    </div>
+                    <div class="panel-body" style="padding-bottom: 0px">
                         <div ng-hide="listCours.length < 1">
-                            <a ng-repeat="item in listCours | orderBy:'-createdAt'" href="#cours/{{item._id}}" class="list-group-item"><span class="badge">Lu {{item.lectures}} fois</span><span class="label label-primary">{{item.classe}}</span> : <span class=""><b>{{item.matiere}}</b>  -  {{item.titre}}<br><i>{{item.chapitre}}</i></span></a>
+                            <a ng-repeat="item in coursArray | orderBy:'-createdAt'" href="#cours/{{item._id}}" class="list-group-item"><span class="badge">Lu {{item.lectures}} fois</span><span class="label label-primary">{{item.classe}}</span> : <span class=""><b>{{item.matiere}}</b>  -  {{item.titre}}<br><i>{{item.chapitre}}</i></span></a>
                         </div>
                         <div ng-show="listCours.length < 1">
                             <center> <i class="fa fa-frown-o fa-3x"></i>
@@ -32,7 +36,7 @@
                             </div>
                         </div>
                         <div ng-show="!isAuthenticated">
-                            <a style="cursor: default;"data-toggle="tooltip" data-placement="top" title="Connectez-vous pour suivre @{{profile.pseudo}}" class="label label-info followBtn" href="">Suivre @{{profile.pseudo}}</a>
+                            <a style="cursor: default;" data-toggle="tooltip" data-placement="top" title="Connectez-vous pour suivre @{{profile.pseudo}}" class="label label-info followBtn" href="">Suivre @{{profile.pseudo}}</a>
                         </div>
                     </div>
 
@@ -43,7 +47,7 @@
 
                         <div class="twPc-divUser">
                             <div class="twPc-divName">
-                                <a  href="#profil/{{user.pseudo}}">{{profile.name}}</a>
+                                <a href="#profil/{{user.pseudo}}">{{profile.name}}</a>
                             </div>
                             <a href="#profil/{{user.pseudo}}">@{{profile.pseudo}}</a>
                         </div>

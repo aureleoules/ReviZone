@@ -261,8 +261,8 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
                 }
             }).then(function(result) {
                 $scope.listCours = result.data;
+                $scope.coursArray = result.data;
                 var rates = []; //calcul de la moyenne de chaque note de chaque cours.
-
                 for (var i = 0; i < $scope.listCours.length; i++)  {
                     for (var y = 0; y < $scope.listCours[i].rates.length; y++)  {
                         rates.push($scope.listCours[i].rates[y].rate);
@@ -280,7 +280,28 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
                 for (var i = 0; i < $scope.listCours.length; i++)  {
                     $scope.lecturesTotal += $scope.listCours[i].lectures;
                 }
+                $scope.matieresList = [];
+                for (var i = 0; i < $scope.listCours.length; i++)  {
+                    if ($scope.matieresList.indexOf($scope.listCours[i].matiere) === -1) {
+                        $scope.matieresList.push($scope.listCours[i].matiere);
+                    }
+                }
+                $scope.matieresList.sort();
             });
+            $scope.selectedMatiere = 'all';
+            $scope.selectMatiere = function(index)  {
+                $scope.coursArray = [];
+                if (index === 'all')  {
+                    $scope.coursArray = $scope.listCours;
+                } else {
+                    for (var i = 0; i < $scope.listCours.length; i++)  {
+                        if ($scope.listCours[i].matiere === $scope.matieresList[index])  {
+                            $scope.coursArray.push($scope.listCours[i]);
+                        }
+                    }
+                }
+                $scope.selectedMatiere = index;
+            }
         });
         if ($scope.isAuthenticated)  {
             $http.get(API_ENDPOINT.url + '/isFollowed', {
@@ -645,9 +666,9 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
         $location.path('/accueil');
     });
 
-$('.navbar-collapse a:not(#nameHeader)').click(function(){
-    $(".navbar-collapse").collapse('hide');
-});
+    $('.navbar-collapse a:not(#nameHeader)').click(function() {
+        $(".navbar-collapse").collapse('hide');
+    });
     $scope.isActive = function(viewLocation) { //This function is for the NavBar: Set 'active' class if navbar item is selected.
         return viewLocation === $location.path();
     };
