@@ -26,7 +26,6 @@ app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, AP
         });
         AuthService.getUser().then(function(user)  {
             $scope.user = user;
-            console.log()
             $http.get(API_ENDPOINT.url + '/getListCours', {
                 params:  {
                     pseudo: $scope.user.pseudo
@@ -370,7 +369,6 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
         }
         $scope.save = function()  {
             $scope.editedUser['picture'] = $scope.imageSrc;
-            console.log($scope.editedUser);
             $http.put(API_ENDPOINT.url + '/editUser', {
                 user: $scope.editedUser
             }).then(function(result) {
@@ -600,7 +598,7 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
     }
 });
 
-app.controller('exercicesCtrl', function($routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
+app.controller('exercicesCtrl', function(ngDialog, $routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
     var coursId = $routeParams.coursId;
     $http.get(API_ENDPOINT.url + '/getCours', {
         params: {
@@ -611,7 +609,6 @@ app.controller('exercicesCtrl', function($routeParams, $scope, AuthService, $loc
             UtilsFactory.makeAlert(result.data.msg, "danger");
             $location.path('/accueil');
         } else {
-            console.log()
             $scope.cours = result.data[0];
         }
     });
@@ -632,7 +629,6 @@ app.controller('exercicesCtrl', function($routeParams, $scope, AuthService, $loc
 
     function editDistance(s1, s2) {
         s1 = s1.toLowerCase();
-        console.log(s2)
         s2 = s2.toLowerCase();
 
         var costs = new Array();
@@ -657,27 +653,64 @@ app.controller('exercicesCtrl', function($routeParams, $scope, AuthService, $loc
         }
         return costs[s2.length];
     }
-    $http.get(API_ENDPOINT.url + '/getExercices', {
-        params:  {
-            coursId: coursId
-        }
-    }).then(function(result)  {
-        $scope.exercices = result.data.exercices;
-    });
+
+    function getExercices()  {
+        $http.get(API_ENDPOINT.url + '/getExercices', {
+            params:  {
+                coursId: coursId
+            }
+        }).then(function(result)  {
+            $scope.exercices = result.data.exercices;
+        });
+    }
+    getExercices();
     AuthService.getUser().then(function(userData)  {
         $scope.user = userData;
     });
     $scope.resultEx = [];
     $scope.verify = function(index)  {
-        if (similarity($scope.exercices[index].reponse, $scope.reponse[index]) > 0.67) {
-            $scope.resultEx[index] = {
-                success: true
-            };
-        } else {
-            $scope.resultEx[index] = {
-                success: false
-            };
-            $scope.reponse[index] = $scope.exercices[index].reponse;
+        var userAnwser;
+        if ($scope.reponse)  {
+            userAnwser = $scope.reponse[index];
+        }
+        var anwser = $scope.exercices[index].reponse;
+        if (userAnwser)  {
+            if (similarity(anwser, userAnwser) > 0.67) {
+                $scope.resultEx[index] = {
+                    success: true
+                };
+            } else {
+                $scope.resultEx[index] = {
+                    success: false
+                };
+                $scope.reponse[index] = $scope.exercices[index].reponse;
+            }
+        }
+    }
+    $scope.deleteExercice = function(index)  {
+        var exerciceId = $scope.exercices[index]._id;
+        $scope.dialog =   {
+            text: "Êtes-vous certain de vouloir supprimer cet exercice?",
+            confirmBtn: "Oui je veux le supprimer."
+        }
+        ngDialog.open({
+            template: './modals/confirmation.html',
+            className: 'ngdialog-theme-default',
+            scope: $scope
+        });
+        $scope.confirm = function()  {
+            $http.delete(API_ENDPOINT.url + '/supprimerExercice', {
+                params:  {
+                    coursId: coursId,
+                    exerciceId: exerciceId
+                }
+            }).then(function(result)  {
+                if (result.data.success === true)  {
+                    getExercices();
+                } else {
+                    UtilsFactory.makeAlert(result.data.msg, 'danger');
+                }
+            });
         }
     }
 });
@@ -688,7 +721,6 @@ app.controller('redigerExercicesCtrl', function($routeParams, $scope, AuthServic
         question: '',
         reponse: ''
     }];
-    console.log($scope.exercices);
     $scope.addExercice = function(item)  {
         $scope.exercices.push(item);
     }
@@ -711,7 +743,6 @@ app.controller('redigerExercicesCtrl', function($routeParams, $scope, AuthServic
         for (var i = 0; i < $scope.exercices.length; i++)  { //delete id value for each exercise
             delete $scope.exercices[i].id;
         }
-        console.log($scope.exercices);
         $http.post(API_ENDPOINT.url + '/saveExercices', {
             coursId: coursId,
             exercices: $scope.exercices

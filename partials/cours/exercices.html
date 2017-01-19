@@ -4,7 +4,7 @@
             <div class="col-md-9 col-sm-12 well rounded animated slideInLeft">
                 <div ng-repeat="exercice in exercices track by $index">
                     <div class="col-md-12">
-                        <p>{{exercice.question}} <a class="small" href="#profil/{{exercice.auteur}}">@{{exercice.auteur}}</a><span style="margin-left: 15px" ng-if="exercice.auteur == user.pseudo"><button class="btn btn-danger btn-sm" style="padding: 4px 6px" ng-click="deleteExercice">Supprimer cet exercice</button></span></p>
+                        <p>{{exercice.question}} <a class="small" href="#profil/{{exercice.auteur}}">@{{exercice.auteur}}</a><span style="margin-left: 15px" ng-if="exercice.auteur == user.pseudo"><button class="btn btn-danger btn-sm" style="padding: 4px 6px" ng-click="deleteExercice($index)">Supprimer cet exercice</button></span></p>
                         <div class="form-group" ng-class="{'has-error': resultEx[$index].success == false, 'has-success': resultEx[$index].success == true}">
                             <div class="input-group">
                                 <input type="text" class="form-control"  ng-model="$parent.reponse[$index]" placeholder="Votre réponse...">
@@ -16,6 +16,13 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div ng-show="exercices.length < 1">
+                    <center>
+                        <i class="fa fa-frown-o fa-5x"></i>
+                        <h3>Il n'y a aucun exercice pour ce cours.</h3>
+                        <a class="text-info" href="#cours/{{cours._id}}/exercices/creer">Créez-en ! <i class="fa fa-smile-o"></i></a>
+                        <center>
                 </div>
             </div>
             <div class="col-md-3 col-sm-12">
