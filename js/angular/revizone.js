@@ -57,23 +57,28 @@ app.config(function($routeProvider, $locationProvider) {
     }).
     when('/rediger', {
         title: "Rédiger un cours",
-        templateUrl: 'partials/nouveau.html',
+        templateUrl: 'partials/cours/nouveau.html',
         controller: 'newCtrl'
     }).
     when('/cours/:idcours', {
         title: "Cours",
-        templateUrl: 'partials/cours.html',
+        templateUrl: 'partials/cours/cours.html',
         controller: 'coursCtrl'
     }).
     when('/cours/:coursId/modifier', {
         title: "Modifier un cours",
-        templateUrl: 'partials/modifier.html',
+        templateUrl: 'partials/cours/modifier.html',
         controller: 'modifierCtrl'
     }).
     when('/cours/:coursId/exercices', {
         title: "Exercices",
-        templateUrl: 'partials/exercices.html',
+        templateUrl: 'partials/cours/exercices.html',
         controller: 'exercicesCtrl'
+    }).
+    when('/cours/:coursId/exercices/creer', {
+        title: "Rédaction d'exercices",
+        templateUrl: 'partials/cours/creerExercice.html',
+        controller: 'redigerExercicesCtrl'
     }).
     when('/404', {
         title: "Page non trouvée!",

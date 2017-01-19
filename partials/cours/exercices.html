@@ -1,0 +1,39 @@
+<section id="liste">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 col-sm-12 well rounded animated slideInLeft">
+                <div ng-repeat="exercice in exercices track by $index">
+                    <div class="col-md-12">
+                        <p>{{exercice.question}} <a class="small" href="#profil/{{exercice.auteur}}">@{{exercice.auteur}}</a><span style="margin-left: 15px" ng-if="exercice.auteur == user.pseudo"><button class="btn btn-danger btn-sm" style="padding: 4px 6px" ng-click="deleteExercice">Supprimer cet exercice</button></span></p>
+                        <div class="form-group" ng-class="{'has-error': resultEx[$index].success == false, 'has-success': resultEx[$index].success == true}">
+                            <div class="input-group">
+                                <input type="text" class="form-control"  ng-model="$parent.reponse[$index]" placeholder="Votre réponse...">
+                                <span class="input-group-btn">
+                                      <button ng-hide="resultEx[$index]" class="btn btn-primary" type="button" ng-click="verify($index)">Vérifier</button>
+                                      <button class="btn btn-success animated tada" ng-show="resultEx[$index].success == true">Succès! <i class="fa fa-check-circle-o"></i></button>
+                                      <button class="btn btn-danger animated jello" ng-show="resultEx[$index].success == false">Échec! <i class="fa fa-times"></i></button>
+                                 </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12">
+                <div class="panel panel-info animated slideInRight">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Informations du cours</h3>
+                    </div>
+                    <div class="panel-body">
+                        Classe: <span class="text-info">{{cours.classe}}</span>
+                        <br> Matière: <span class="text-info">{{cours.matiere}}</span>
+                        <br> Titre: <span class="text-info">{{cours.titre}}</span>
+                        <span ng-if="cours.chapitre !== null"><br> Chapitre: <span class="text-info">{{cours.chapitre}}</span></span>
+                        <br> Lecture<span ng-if="cours.lectures > 1">s</span>: <span class="text-info">{{cours.lectures}}</span>
+                        <br>Rédigé par <a class="text-info" href="#profil/{{cours.auteur}}">@{{cours.auteur}}</a>
+                        <br><a href="#cours/{{cours._id}}/exercices/creer" class="btn btn-success">Rédiger un exercice</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

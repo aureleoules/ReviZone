@@ -600,7 +600,133 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
     }
 });
 
-app.controller('loginCtrl', function($scope, AuthService, $location) {
+app.controller('exercicesCtrl', function($routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
+    var coursId = $routeParams.coursId;
+    $http.get(API_ENDPOINT.url + '/getCours', {
+        params: {
+            coursId: coursId
+        }
+    }).then(function(result) {
+        if (result.data.success === false)  {
+            UtilsFactory.makeAlert(result.data.msg, "danger");
+            $location.path('/accueil');
+        } else {
+            console.log()
+            $scope.cours = result.data[0];
+        }
+    });
+
+    function similarity(s1, s2) {
+        var longer = s1;
+        var shorter = s2;
+        if (s1.length < s2.length) {
+            longer = s2;
+            shorter = s1;
+        }
+        var longerLength = longer.length;
+        if (longerLength == 0) {
+            return 1.0;
+        }
+        return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+    }
+
+    function editDistance(s1, s2) {
+        s1 = s1.toLowerCase();
+        console.log(s2)
+        s2 = s2.toLowerCase();
+
+        var costs = new Array();
+        for (var i = 0; i <= s1.length; i++) {
+            var lastValue = i;
+            for (var j = 0; j <= s2.length; j++) {
+                if (i == 0)
+                    costs[j] = j;
+                else {
+                    if (j > 0) {
+                        var newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue),
+                                costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+            }
+            if (i > 0)
+                costs[s2.length] = lastValue;
+        }
+        return costs[s2.length];
+    }
+    $http.get(API_ENDPOINT.url + '/getExercices', {
+        params:  {
+            coursId: coursId
+        }
+    }).then(function(result)  {
+        $scope.exercices = result.data.exercices;
+    });
+    AuthService.getUser().then(function(userData)  {
+        $scope.user = userData;
+    });
+    $scope.resultEx = [];
+    $scope.verify = function(index)  {
+        if (similarity($scope.exercices[index].reponse, $scope.reponse[index]) > 0.67) {
+            $scope.resultEx[index] = {
+                success: true
+            };
+        } else {
+            $scope.resultEx[index] = {
+                success: false
+            };
+            $scope.reponse[index] = $scope.exercices[index].reponse;
+        }
+    }
+});
+
+app.controller('redigerExercicesCtrl', function($routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
+    $scope.exercices = [{
+        id: 0,
+        question: '',
+        reponse: ''
+    }];
+    console.log($scope.exercices);
+    $scope.addExercice = function(item)  {
+        $scope.exercices.push(item);
+    }
+    $scope.removeExercice = function(id, question)  {
+        var removeByAttr = function(arr, attr, value) {
+            var i = arr.length;
+            while (i--) {
+                if (arr[i] &&
+                    arr[i].hasOwnProperty(attr) &&
+                    (arguments.length > 2 && arr[i][attr] === value)) {
+                    arr.splice(i, 1);
+                }
+            }
+            return arr;
+        }
+        removeByAttr($scope.exercices, 'id', id)
+    }
+    $scope.saveExercices = function()  {
+        var coursId = $routeParams.coursId;
+        for (var i = 0; i < $scope.exercices.length; i++)  { //delete id value for each exercise
+            delete $scope.exercices[i].id;
+        }
+        console.log($scope.exercices);
+        $http.post(API_ENDPOINT.url + '/saveExercices', {
+            coursId: coursId,
+            exercices: $scope.exercices
+        }).then(function(response)  {
+            if (response.data.success === true)  {
+                UtilsFactory.makeAlert(response.data.msg, 'success');
+                $location.path('/cours/' + coursId + '/exercices')
+            } else {
+                UtilsFactory.makeAlert(response.data.msg, 'danger');
+            }
+        });
+    }
+});
+
+app.controller('loginCtrl', function($scope, AuthService, $location, UtilsFactory) {
     $scope.login = function() {
         AuthService.login($scope.user).then(function(msg) {
             $location.path('/accueil');
