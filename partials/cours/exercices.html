@@ -37,7 +37,7 @@
                         <span ng-if="cours.chapitre !== null"><br> Chapitre: <span class="text-info">{{cours.chapitre}}</span></span>
                         <br> Lecture<span ng-if="cours.lectures > 1">s</span>: <span class="text-info">{{cours.lectures}}</span>
                         <br>Rédigé par <a class="text-info" href="#profil/{{cours.auteur}}">@{{cours.auteur}}</a>
-                        <br><a href="#cours/{{cours._id}}/exercices/creer" class="btn btn-success">Rédiger un exercice</a>
+                        <br><a ng-show="user" href="#cours/{{cours._id}}/exercices/creer" class="btn btn-success">Rédiger un exercice</a>
                     </div>
                 </div>
             </div>

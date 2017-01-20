@@ -596,6 +596,14 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
         $scope.showPause = true;
         $scope.showResume = false;
     }
+
+    $http.get(API_ENDPOINT.url + '/getExercices', {
+        params:  {
+            coursId: coursId
+        }
+    }).then(function(result)  {
+        $scope.exercicesLength = result.data.exercices.length;
+    });
 });
 
 app.controller('exercicesCtrl', function(ngDialog, $routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
