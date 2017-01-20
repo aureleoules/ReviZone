@@ -602,7 +602,11 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
             coursId: coursId
         }
     }).then(function(result)  {
-        $scope.exercicesLength = result.data.exercices.length;
+        if(result.data.exercices === undefined) {
+            $scope.exercicesLength = 0;
+        } else {
+            $scope.exercicesLength = result.data.exercices.length;
+        }
     });
 });
 
