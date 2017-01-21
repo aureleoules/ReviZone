@@ -597,20 +597,20 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
         $scope.showResume = false;
     }
 
-    $http.get(API_ENDPOINT.url + '/getExercices', {
+    $http.get(API_ENDPOINT.url + '/getQuizs', {
         params:  {
             coursId: coursId
         }
     }).then(function(result)  {
-        if(result.data.exercices === undefined) {
-            $scope.exercicesLength = 0;
+        if(result.data.quizs === undefined) {
+            $scope.quizsLength = 0;
         } else {
-            $scope.exercicesLength = result.data.exercices.length;
+            $scope.quizsLength = result.data.quizs.length;
         }
     });
 });
 
-app.controller('exercicesCtrl', function(ngDialog, $routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
+app.controller('quizCtrl', function(ngDialog, $routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
     var coursId = $routeParams.coursId;
     $http.get(API_ENDPOINT.url + '/getCours', {
         params: {
@@ -622,6 +622,7 @@ app.controller('exercicesCtrl', function(ngDialog, $routeParams, $scope, AuthSer
             $location.path('/accueil');
         } else {
             $scope.cours = result.data[0];
+            getQuizs();
         }
     });
 
@@ -666,16 +667,28 @@ app.controller('exercicesCtrl', function(ngDialog, $routeParams, $scope, AuthSer
         return costs[s2.length];
     }
 
-    function getExercices()  {
-        $http.get(API_ENDPOINT.url + '/getExercices', {
+    function getQuizs()  {
+        $http.get(API_ENDPOINT.url + '/getQuizs', {
             params:  {
-                coursId: coursId
+                coursId: $scope.cours._id
             }
         }).then(function(result)  {
-            $scope.exercices = result.data.exercices;
+            $scope.quizs = result.data.quizs;
+            if($scope.cours.chapitre) {
+                $http.get(API_ENDPOINT.url + '/getQuizs', {
+                    params:  {
+                        classe: $scope.cours.classe,
+                        matiere: $scope.cours.matiere,
+                        chapitre: $scope.cours.chapitre
+                    }
+                }).then(function(result)  {
+                    for(var i = 0; i < result.data.quizs.length; i++) { //flatten array and merge them
+                        $scope.quizs.push(result.data.quizs[i]);
+                    }
+                });
+            }
         });
     }
-    getExercices();
     AuthService.getUser().then(function(userData)  {
         $scope.user = userData;
     });
@@ -685,7 +698,7 @@ app.controller('exercicesCtrl', function(ngDialog, $routeParams, $scope, AuthSer
         if ($scope.reponse)  {
             userAnwser = $scope.reponse[index];
         }
-        var anwser = $scope.exercices[index].reponse;
+        var anwser = $scope.quizs[index].reponse;
         if (userAnwser)  {
             if (similarity(anwser, userAnwser) > 0.67) {
                 $scope.resultEx[index] = {
@@ -695,14 +708,14 @@ app.controller('exercicesCtrl', function(ngDialog, $routeParams, $scope, AuthSer
                 $scope.resultEx[index] = {
                     success: false
                 };
-                $scope.reponse[index] = $scope.exercices[index].reponse;
+                $scope.reponse[index] = $scope.quizs[index].reponse;
             }
         }
     }
-    $scope.deleteExercice = function(index)  {
-        var exerciceId = $scope.exercices[index]._id;
+    $scope.deleteQuiz = function(index)  {
+        var quizId = $scope.quizs[index]._id;
         $scope.dialog =   {
-            text: "Êtes-vous certain de vouloir supprimer cet exercice?",
+            text: "Êtes-vous certain de vouloir supprimer ce quiz?",
             confirmBtn: "Oui je veux le supprimer."
         }
         ngDialog.open({
@@ -711,14 +724,13 @@ app.controller('exercicesCtrl', function(ngDialog, $routeParams, $scope, AuthSer
             scope: $scope
         });
         $scope.confirm = function()  {
-            $http.delete(API_ENDPOINT.url + '/supprimerExercice', {
+            $http.delete(API_ENDPOINT.url + '/supprimerQuiz', {
                 params:  {
-                    coursId: coursId,
-                    exerciceId: exerciceId
+                    quizId: quizId
                 }
             }).then(function(result)  {
                 if (result.data.success === true)  {
-                    getExercices();
+                    getQuizs();
                 } else {
                     UtilsFactory.makeAlert(result.data.msg, 'danger');
                 }
@@ -727,16 +739,30 @@ app.controller('exercicesCtrl', function(ngDialog, $routeParams, $scope, AuthSer
     }
 });
 
-app.controller('redigerExercicesCtrl', function($routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
-    $scope.exercices = [{
+app.controller('redigerQuizCtrl', function($routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
+    var coursId = $routeParams.coursId;
+    $http.get(API_ENDPOINT.url + '/getCours', {
+        params: {
+            coursId: coursId
+        }
+    }).then(function(result) {
+        if (result.data.success === false)  {
+            UtilsFactory.makeAlert(result.data.msg, "danger");
+            $location.path('/accueil');
+        } else {
+            $scope.cours = result.data[0];
+        }
+    });
+    $scope.quizs = [{
         id: 0,
         question: '',
-        reponse: ''
+        reponse: '',
+        type: 'qa'
     }];
-    $scope.addExercice = function(item)  {
-        $scope.exercices.push(item);
+    $scope.addQuiz = function(item)  {
+        $scope.quizs.push(item);
     }
-    $scope.removeExercice = function(id, question)  {
+    $scope.removeQuiz = function(id, question)  {
         var removeByAttr = function(arr, attr, value) {
             var i = arr.length;
             while (i--) {
@@ -748,25 +774,52 @@ app.controller('redigerExercicesCtrl', function($routeParams, $scope, AuthServic
             }
             return arr;
         }
-        removeByAttr($scope.exercices, 'id', id)
+        removeByAttr($scope.quizs, 'id', id)
     }
-    $scope.saveExercices = function()  {
+    $scope.saveQuizs = function()  {
         var coursId = $routeParams.coursId;
-        for (var i = 0; i < $scope.exercices.length; i++)  { //delete id value for each exercise
-            delete $scope.exercices[i].id;
+        for (var i = 0; i < $scope.quizs.length; i++)  { //delete id value for each exercise
+            delete $scope.quizs[i].id;
         }
-        $http.post(API_ENDPOINT.url + '/saveExercices', {
-            coursId: coursId,
-            exercices: $scope.exercices
-        }).then(function(response)  {
+        var isForCoursOnly;
+        if($scope.onlyFor === undefined) {
+            if($scope.cours.chapitre) {
+                isForCoursOnly = false;
+            } else {
+                isForCoursOnly = true;
+            }
+        } else {
+            isForCoursOnly = $scope.onlyFor;
+        }
+        var myQuiz;
+        if(isForCoursOnly === true || isForCoursOnly === 'true') {
+            myQuiz = {
+                quizs: $scope.quizs,
+                coursSeulement: isForCoursOnly,
+                coursId: coursId
+            }
+        } else {
+            myQuiz = {
+                quizs: $scope.quizs,
+                coursSeulement: isForCoursOnly,
+                classe: $scope.cours.classe,
+                matiere: $scope.cours.matiere,
+                chapitre: $scope.cours.chapitre
+            }
+        }
+        $http.post(API_ENDPOINT.url + '/saveQuizs', myQuiz).then(function(response)  {
             if (response.data.success === true)  {
                 UtilsFactory.makeAlert(response.data.msg, 'success');
-                $location.path('/cours/' + coursId + '/exercices')
+                $location.path('/cours/' + coursId + '/quiz')
             } else {
                 UtilsFactory.makeAlert(response.data.msg, 'danger');
             }
         });
     }
+});
+
+app.controller('exercerCtrl', function($scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
+    
 });
 
 app.controller('loginCtrl', function($scope, AuthService, $location, UtilsFactory) {

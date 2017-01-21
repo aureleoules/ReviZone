@@ -60,6 +60,16 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: 'partials/cours/nouveau.html',
         controller: 'newCtrl'
     }).
+    when('/exercer', {
+        title: "S'exercer",
+        templateUrl: 'partials/exercer.html',
+        controller: 'exercerCtrl'
+    }).
+    when('/exercer/:classe/:matiere/:chapitre', {
+        title: "S'exercer",
+        templateUrl: 'partials/exercer.html',
+        controller: 'exercerCtrl'
+    }).
     when('/cours/:idcours', {
         title: "Cours",
         templateUrl: 'partials/cours/cours.html',
@@ -70,15 +80,15 @@ app.config(function($routeProvider, $locationProvider) {
         templateUrl: 'partials/cours/modifier.html',
         controller: 'modifierCtrl'
     }).
-    when('/cours/:coursId/exercices', {
+    when('/cours/:coursId/quiz', {
         title: "Exercices",
-        templateUrl: 'partials/cours/exercices.html',
-        controller: 'exercicesCtrl'
+        templateUrl: 'partials/cours/quiz.html',
+        controller: 'quizCtrl'
     }).
-    when('/cours/:coursId/exercices/creer', {
+    when('/cours/:coursId/quiz/creer', {
         title: "Rédaction d'exercices",
-        templateUrl: 'partials/cours/creerExercice.html',
-        controller: 'redigerExercicesCtrl'
+        templateUrl: 'partials/cours/creerQuiz.html',
+        controller: 'redigerQuizCtrl'
     }).
     when('/404', {
         title: "Page non trouvée!",
@@ -95,9 +105,9 @@ app.run(['$rootScope', '$location', 'AuthService', function($rootScope, $locatio
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
         if (!AuthService.isAuthenticated()) {
             var allowedRoutes = ['/', '', '/accueil', '/connexion', '/404', '/inscription', '/trouver', '/cgu', '/mentions-legales', '/a-propos'];
-            var exercicesCreer = $location.path().substring($location.path().length - '/exercices/creer'.length, $location.path().length) === '/exercices/creer';
+            var quizCreer = $location.path().substring($location.path().length - '/quiz/creer'.length, $location.path().length) === '/quiz/creer';
             var isAllowed = allowedRoutes.indexOf($location.path()) > -1 || exercicesCreer === true || ($location.path().substring(0, '/cours/'.length)) === '/cours/' || ($location.path().substring(0, '/profil/'.length)) === '/profil/'; //checks if the $location.path() is contained in the allowedRoutes array.
-            if (!isAllowed || exercicesCreer === true)  { //if not allowed -> /login path
+            if (!isAllowed || quizCreer === true)  { //if not allowed -> /login path
                 event.preventDefault();
                 $location.path('/accueil');
             }
