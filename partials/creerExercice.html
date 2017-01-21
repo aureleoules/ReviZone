@@ -1,0 +1,63 @@
+<section id="redigerquiz">
+    <div class="container  animated pulse">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Création de quiz</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-9">
+                <div class="newquiz" ng-repeat="quiz in quizs track by $index">
+                    <div class="col-md-6 col-sm-12">
+                        <input type="text" ng-model="quiz.question" placeholder="Question du quiz" class="form-control">
+                    </div>
+                    <div class="col-md-5 col-sm-12">
+                        <input type="text" ng-model="quiz.reponse" placeholder="Réponse au quiz" class="form-control">
+                    </div>
+                    <div class="col-md-1" style="margin-bottom: 10px">
+                        <button class="btn btn-danger" ng-disabled="quizs.length == 1" ng-click="$parent.removeQuiz(quiz.id, quiz.question)"><i style="margin: 0"class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <button class="btn btn-success" ng-disabled="!quizs[quizs.length -1].question || !quizs[quizs.length -1].reponse" ng-click="addQuiz({id: quizs.length, question: '', reponse: ''})"><i style="margin: 0" class="fa fa-plus"></i></button>
+                    <button ng-click="saveQuizs()" class="btn btn-success">Enregistrer <span ng-if="quizs.length == 1">mon</span><span ng-if="quizs.length > 1">mes</span> quiz</button>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-12" style="float: right">
+                <div class="panel panel-info animated slideInRight">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Selection du chapitre</h3>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group has-primary">
+                            <div class="col-md-12">
+                                <label for="classeInput">Classe:</label>
+                                <select class="form-control" id="classe" ng-model="classeInput" ng-options="classe for (classe, matiere) in programme">
+                            <option value=''>Tous</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group has-primary">
+                            <div class="col-md-12">
+                                <label for="matiereInput">Matière</label>
+                                <select class="form-control" id="matiere" ng-disabled="!classeInput" ng-model="matiereInput" ng-options="matiere for (matiere, chapitre) in classeInput">
+                            <option value=''>Tous</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group has-primary">
+                            <div class="col-md-12">
+                                <label for="chapitreInput">Chapitre</label>
+                                <select class="form-control" id="chapitre" ng-disabled="!classeInput || !matiereInput" ng-model="chapitreInput" ng-options="chapitre for chapitre in matiereInput">
+                                    <option value=''>Tous</option>
+                            </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+        </div>
+    </div>
+</section>

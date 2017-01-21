@@ -73,10 +73,10 @@
 
             <div class="col-md-3 col-sm-12">
                 <div class="animated slideInRight">
-                    <a style="width: 100%; margin-bottom: 5px" class="btn btn-info" href="#cours/{{cours._id}}/quiz">Quiz <span class="small">({{quizsLength}})</a>
+                    <a style="width: 100%; margin-bottom: 5px" class="btn btn-info" href="#cours/{{cours._id}}/quiz">Quiz <i class="fa fa-question-circle-o ico-r"></i></a>
                     <div ng-show="cours.auteur === user.pseudo">
-                        <a style="width: 100%; margin-bottom: 5px" class="btn btn-warning" href="#cours/{{cours._id}}/modifier">Modifier ce cours</a>
-                        <a style="width: 100%" class="btn btn-danger" href="" ng-click="delete()">Supprimer ce cours</a>
+                        <a style="width: 100%; margin-bottom: 5px" class="btn btn-warning" href="#cours/{{cours._id}}/modifier">Modifier ce cours <i class="fa fa-pencil ico-r"></i></a>
+                        <a style="width: 100%" class="btn btn-danger" href="" ng-click="delete()">Supprimer ce cours <i class="fa fa-trash-o ico-r"></i></a>
                     </div>
                 </div>
             </div>

@@ -1,10 +1,10 @@
-<section id="liste">
+<section>
     <div class="container">
-        <div class="row">
-            <div class="col-md-9 col-sm-12 rounded animated slideInLeft">
+        <div class="row" id="dataResult">
+            <div class="col-md-9 col-sm-12 animated slideInLeft">
                 <div ng-repeat="quiz in quizs track by $index">
                     <div class="col-md-12 well">
-                        <p>{{quiz.question}} <a class="small" href="#profil/{{quiz.auteur}}">@{{quiz.auteur}}</a>  <a ng-if="quiz.chapitre" class="small text-info" style="float: right" href="#exercices/{{quiz.classe}}/{{quiz.matiere}}/{{quiz.chapitre}}">Voir les autres quiz du chapitre</a>
+                        <p>{{quiz.question}} <a class="small" href="#profil/{{quiz.auteur}}">@{{quiz.auteur}}</a>
                             <span style="margin-left: 15px" ng-if="quiz.auteur == user.pseudo">
                                 <button class="btn btn-danger btn-sm" style="padding: 4px 6px" ng-click="deleteQuiz($index)">Supprimer ce quiz <i class="fa fa-trash-o ico-r"></i></button>
                             </span>
@@ -21,27 +21,25 @@
                         </div>
                     </div>
                 </div>
+
                 <div ng-show="quizs.length < 1 || !quizs">
                     <center>
                         <i class="fa fa-frown-o fa-5x"></i>
-                        <h3>Il n'y a aucun quiz pour ce cours.</h3>
-                        <a class="text-info" href="#cours/{{cours._id}}/quiz/creer">Créez-en ! <i class="fa fa-smile-o"></i></a>
+                        <h3>Il n'y a aucun exercice pour ce chapitre.</h3>
+                        <a class="text-info" href="#exercice/creer ">Créez-en ! <i class="fa fa-smile-o"></i></a>
                         <center>
                 </div>
             </div>
-            <div class="col-md-3 col-sm-12">
+            <div class="col-md-3 col-sm-12" ng-hide="quizs.length < 1 || !quizs">
                 <div class="panel panel-info animated slideInRight">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Informations du cours</h3>
+                        <h3 class="panel-title">Informations</h3>
                     </div>
                     <div class="panel-body">
-                        Classe: <span class="text-info">{{cours.classe}}</span>
-                        <br> Matière: <span class="text-info">{{cours.matiere}}</span>
-                        <br> Titre: <span class="text-info">{{cours.titre}}</span>
-                        <span ng-if="cours.chapitre !== null"><br> Chapitre: <span class="text-info">{{cours.chapitre}}</span></span>
-                        <br> Lecture<span ng-if="cours.lectures > 1">s</span>: <span class="text-info">{{cours.lectures}}</span>
-                        <br>Rédigé par <a class="text-info" href="#profil/{{cours.auteur}}">@{{cours.auteur}}</a>
-                        <br><a ng-show="user" href="#cours/{{cours._id}}/quiz/creer" class="btn btn-success">Rédiger un quiz <i class="fa fa-pencil ico-r"></i></a>
+                        Classe: <span class="text-info">{{quizs[0].classe}}</span>
+                        <br> Matière: <span class="text-info">{{quizs[0].matiere}}</span>
+                        <span ng-if="cours.chapitre !== null"><br> Chapitre: <span class="text-info">{{quizs[0].chapitre}}</span></span>
+                        <br><a ng-show="user" href="#exercice/creer" class="btn btn-success">Créer un exercice <i class="fa fa-pencil ico-r"></i></a>
                     </div>
                 </div>
             </div>

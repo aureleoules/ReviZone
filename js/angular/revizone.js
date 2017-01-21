@@ -61,14 +61,19 @@ app.config(function($routeProvider, $locationProvider) {
         controller: 'newCtrl'
     }).
     when('/exercer', {
-        title: "S'exercer",
+        title: "Recherche d'exercice",
         templateUrl: 'partials/exercer.html',
         controller: 'exercerCtrl'
     }).
-    when('/exercer/:classe/:matiere/:chapitre', {
+    when('/exercice/creer', {
+        title: "Création d'exercice",
+        templateUrl: 'partials/creerExercice.html',
+        controller: 'creerExerciceCtrl'
+    }).
+    when('/exercices/:classe/:matiere/:chapitre', {
         title: "S'exercer",
-        templateUrl: 'partials/exercer.html',
-        controller: 'exercerCtrl'
+        templateUrl: 'partials/exercices.html',
+        controller: 'exercicesCtrl'
     }).
     when('/cours/:idcours', {
         title: "Cours",

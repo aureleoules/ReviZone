@@ -413,6 +413,197 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
     }
 });
 
+
+app.controller('exercerCtrl', function($scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT, $routeParams) {
+    $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
+        $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
+    });
+    $scope.rechercher = function()  {
+        var criteres =   {
+            classe: $('#classe option:selected').text(),
+            matiere: $('#matiere option:selected').text(),
+            chapitre: $('#chapitre option:selected').text()
+        }
+        if (!criteres.classe  || !criteres.matiere  || !criteres.chapitre || !criteres.classe === "Choisir" || !criteres.matiere === 'Choisir' || criteres.chapitre === 'Choisir')  {
+            UtilsFactory.makeAlert("Merci d'indiquer un chapitre.", 'info');
+        } else {
+            $location.path('/exercices/' + criteres.classe + '/' + criteres.matiere + '/' + criteres.chapitre);
+        }
+    }
+});
+
+app.controller('creerExerciceCtrl', function($scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT, $routeParams) {
+    $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
+        $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
+    });
+
+    $scope.quizs = [{
+        id: 0,
+        question: '',
+        reponse: '',
+        type: 'qa'
+    }];
+    $scope.addQuiz = function(item)  {
+        $scope.quizs.push(item);
+    }
+    $scope.removeQuiz = function(id, question)  {
+        var removeByAttr = function(arr, attr, value) {
+            var i = arr.length;
+            while (i--) {
+                if (arr[i] &&
+                    arr[i].hasOwnProperty(attr) &&
+                    (arguments.length > 2 && arr[i][attr] === value)) {
+                    arr.splice(i, 1);
+                }
+            }
+            return arr;
+        }
+        removeByAttr($scope.quizs, 'id', id)
+    }
+    $scope.saveQuizs = function()  {
+        var criteres =   {
+            classe: $('#classe option:selected').text(),
+            matiere: $('#matiere option:selected').text(),
+            chapitre: $('#chapitre option:selected').text()
+        }
+        for (var i = 0; i < $scope.quizs.length; i++)  { //delete id value for each exercise
+            delete $scope.quizs[i].id;
+        }
+        var myQuiz = {
+            quizs: $scope.quizs,
+            coursSeulement: "false",
+            classe: criteres.classe,
+            matiere: criteres.matiere,
+            chapitre: criteres.chapitre
+        };
+        $http.post(API_ENDPOINT.url + '/saveQuizs', myQuiz).then(function(response)  {
+            if (response.data.success === true)  {
+                UtilsFactory.makeAlert(response.data.msg, 'success');
+                $location.path('/exercices/' + myQuiz.classe + '/' + myQuiz.matiere + '/' + myQuiz.chapitre);
+            } else {
+                UtilsFactory.makeAlert(response.data.msg, 'danger');
+            }
+        });
+    }
+});
+
+app.controller('exercicesCtrl', function($scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT, $routeParams, ngDialog) {
+    AuthService.getUser().then(function(user)  {
+        $scope.user = user;
+    });
+    var request = {
+        classe: $routeParams.classe,
+        matiere: $routeParams.matiere,
+        chapitre: $routeParams.chapitre
+    }
+    if (request.classe || request.matiere || request.chapitre)  {
+        function similarity(s1, s2) {
+            var longer = s1;
+            var shorter = s2;
+            if (s1.length < s2.length) {
+                longer = s2;
+                shorter = s1;
+            }
+            var longerLength = longer.length;
+            if (longerLength == 0) {
+                return 1.0;
+            }
+            return (longerLength - editDistance(longer, shorter)) / parseFloat(longerLength);
+        }
+
+        function editDistance(s1, s2) {
+            s1 = s1.toLowerCase();
+            s2 = s2.toLowerCase();
+
+            var costs = new Array();
+            for (var i = 0; i <= s1.length; i++) {
+                var lastValue = i;
+                for (var j = 0; j <= s2.length; j++) {
+                    if (i == 0)
+                        costs[j] = j;
+                    else {
+                        if (j > 0) {
+                            var newValue = costs[j - 1];
+                            if (s1.charAt(i - 1) != s2.charAt(j - 1))
+                                newValue = Math.min(Math.min(newValue, lastValue),
+                                    costs[j]) + 1;
+                            costs[j - 1] = lastValue;
+                            lastValue = newValue;
+                        }
+                    }
+                }
+                if (i > 0)
+                    costs[s2.length] = lastValue;
+            }
+            return costs[s2.length];
+        }
+
+        function getExercices()  {
+            $http.get(API_ENDPOINT.url + '/chercherExercices', {
+                params: request
+            }).then(function(result) {
+                if (result.data.success === false) {
+                    UtilsFactory.makeAlert(result.data.msg, 'danger')
+                } else {
+                    $scope.result = result.data;
+                    $scope.quizs = [];
+                    $scope.result.forEach(function(item, index)  {
+                        if (item.type === "qa") {
+                            $scope.quizs.push($scope.result[index]);
+                        }
+                    });
+                }
+            });
+        }
+        getExercices();
+        $scope.resultEx = [];
+        $scope.verify = function(index)  {
+            var userAnwser;
+            if ($scope.reponse)  {
+                userAnwser = $scope.reponse[index];
+            }
+            var anwser = $scope.quizs[index].reponse;
+            if (userAnwser)  {
+                if (similarity(anwser, userAnwser) > 0.67) {
+                    $scope.resultEx[index] = {
+                        success: true
+                    };
+                } else {
+                    $scope.resultEx[index] = {
+                        success: false
+                    };
+                }
+                $scope.reponse[index] = $scope.quizs[index].reponse;
+            }
+        }
+        $scope.deleteQuiz = function(index)  {
+            var quizId = $scope.quizs[index]._id;
+            $scope.dialog =   {
+                text: "Êtes-vous certain de vouloir supprimer ce quiz?",
+                confirmBtn: "Oui je veux le supprimer."
+            }
+            ngDialog.open({
+                template: './modals/confirmation.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+            $scope.confirm = function()  {
+                $http.delete(API_ENDPOINT.url + '/supprimerQuiz', {
+                    params:  {
+                        quizId: quizId
+                    }
+                }).then(function(result)  {
+                    if (result.data.success === true)  {
+                        getExercices()
+                    } else {
+                        UtilsFactory.makeAlert(result.data.msg, 'danger');
+                    }
+                });
+            }
+        }
+    }
+});
+
 app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFactory) {
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
@@ -596,18 +787,6 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
         $scope.showPause = true;
         $scope.showResume = false;
     }
-
-    $http.get(API_ENDPOINT.url + '/getQuizs', {
-        params:  {
-            coursId: coursId
-        }
-    }).then(function(result)  {
-        if(result.data.quizs === undefined) {
-            $scope.quizsLength = 0;
-        } else {
-            $scope.quizsLength = result.data.quizs.length;
-        }
-    });
 });
 
 app.controller('quizCtrl', function(ngDialog, $routeParams, $scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
@@ -674,7 +853,7 @@ app.controller('quizCtrl', function(ngDialog, $routeParams, $scope, AuthService,
             }
         }).then(function(result)  {
             $scope.quizs = result.data.quizs;
-            if($scope.cours.chapitre) {
+            if ($scope.cours.chapitre)  {
                 $http.get(API_ENDPOINT.url + '/getQuizs', {
                     params:  {
                         classe: $scope.cours.classe,
@@ -682,7 +861,7 @@ app.controller('quizCtrl', function(ngDialog, $routeParams, $scope, AuthService,
                         chapitre: $scope.cours.chapitre
                     }
                 }).then(function(result)  {
-                    for(var i = 0; i < result.data.quizs.length; i++) { //flatten array and merge them
+                    for (var i = 0; i < result.data.quizs.length; i++)  { //flatten array and merge them
                         $scope.quizs.push(result.data.quizs[i]);
                     }
                 });
@@ -782,17 +961,17 @@ app.controller('redigerQuizCtrl', function($routeParams, $scope, AuthService, $l
             delete $scope.quizs[i].id;
         }
         var isForCoursOnly;
-        if($scope.onlyFor === undefined) {
-            if($scope.cours.chapitre) {
+        if ($scope.onlyFor === undefined)  {
+            if ($scope.cours.chapitre)  {
                 isForCoursOnly = false;
-            } else {
+            } else  {
                 isForCoursOnly = true;
             }
         } else {
             isForCoursOnly = $scope.onlyFor;
         }
         var myQuiz;
-        if(isForCoursOnly === true || isForCoursOnly === 'true') {
+        if (isForCoursOnly === true || isForCoursOnly === 'true')  {
             myQuiz = {
                 quizs: $scope.quizs,
                 coursSeulement: isForCoursOnly,
@@ -818,9 +997,6 @@ app.controller('redigerQuizCtrl', function($routeParams, $scope, AuthService, $l
     }
 });
 
-app.controller('exercerCtrl', function($scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT) {
-    
-});
 
 app.controller('loginCtrl', function($scope, AuthService, $location, UtilsFactory) {
     $scope.login = function() {
