@@ -109,9 +109,10 @@ app.config(function($routeProvider, $locationProvider) {
 app.run(['$rootScope', '$location', 'AuthService', function($rootScope, $location, AuthService) {
     $rootScope.$on('$routeChangeStart', function(event, next, current) {
         if (!AuthService.isAuthenticated()) {
-            var allowedRoutes = ['/', '', '/accueil', '/connexion', '/404', '/inscription', '/trouver', '/cgu', '/mentions-legales', '/a-propos'];
+            var allowedRoutes = ['/', '', '/accueil', '/connexion', '/404', '/inscription', '/trouver', '/cgu', '/mentions-legales', '/a-propos', '/exercer'];
             var quizCreer = $location.path().substring($location.path().length - '/quiz/creer'.length, $location.path().length) === '/quiz/creer';
-            var isAllowed = allowedRoutes.indexOf($location.path()) > -1 || exercicesCreer === true || ($location.path().substring(0, '/cours/'.length)) === '/cours/' || ($location.path().substring(0, '/profil/'.length)) === '/profil/'; //checks if the $location.path() is contained in the allowedRoutes array.
+            var exerciceCreer = $location.path().substring($location.path().length - '/exercice/creer'.length, $location.path().length) === '/exercice/creer';
+            var isAllowed = allowedRoutes.indexOf($location.path()) > -1 || quizCreer === true || exerciceCreer !== true || ($location.path().substring(0, '/cours/'.length)) === '/cours/' || ($location.path().substring(0, '/profil/'.length)) === '/profil/'; //checks if the $location.path() is contained in the allowedRoutes array.
             if (!isAllowed || quizCreer === true)  { //if not allowed -> /login path
                 event.preventDefault();
                 $location.path('/accueil');
