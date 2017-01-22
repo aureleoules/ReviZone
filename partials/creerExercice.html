@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="col-md-12">
-                    <button class="btn btn-success" ng-disabled="!quizs[quizs.length -1].question || !quizs[quizs.length -1].reponse" ng-click="addQuiz({id: quizs.length, question: '', reponse: ''})"><i style="margin: 0" class="fa fa-plus"></i></button>
+                    <button class="btn btn-success" ng-disabled="!quizs[quizs.length -1].question || !quizs[quizs.length -1].reponse" ng-click="addQuiz({id: quizs.length, question: '', reponse: '', type:'qa'})"><i style="margin: 0" class="fa fa-plus"></i></button>
                     <button ng-click="saveQuizs()" class="btn btn-success">Enregistrer <span ng-if="quizs.length == 1">mon</span><span ng-if="quizs.length > 1">mes</span> quiz</button>
                 </div>
             </div>

@@ -26,7 +26,8 @@
                     <center>
                         <i class="fa fa-frown-o fa-5x"></i>
                         <h3>Il n'y a aucun exercice pour ce chapitre.</h3>
-                        <a class="text-info" href="#exercice/creer ">Créez-en ! <i class="fa fa-smile-o"></i></a>
+                        <a class="text-info" ng-if="user" href="#exercice/creer ">Créez-en ! <i class="fa fa-smile-o"></i></a>
+                        <a class="text-info" ng-if="!user" href="#connexion ">Connectez vous pour en créer ! <i class="fa fa-smile-o"></i></a>
                         <center>
                 </div>
             </div>

@@ -418,6 +418,7 @@ app.controller('exercerCtrl', function($scope, AuthService, $location, UtilsFact
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
+    $scope.isAuthenticated = AuthService.isAuthenticated();
     $scope.rechercher = function()  {
         var criteres =   {
             classe: $('#classe option:selected').text(),
@@ -488,9 +489,11 @@ app.controller('creerExerciceCtrl', function($scope, AuthService, $location, Uti
 });
 
 app.controller('exercicesCtrl', function($scope, AuthService, $location, UtilsFactory, $http, API_ENDPOINT, $routeParams, ngDialog) {
-    AuthService.getUser().then(function(user)  {
-        $scope.user = user;
-    });
+    if (AuthService.isAuthenticated() === true)  {
+        AuthService.getUser().then(function(user)  {
+            $scope.user = user;
+        });
+    }
     var request = {
         classe: $routeParams.classe,
         matiere: $routeParams.matiere,
@@ -999,6 +1002,9 @@ app.controller('redigerQuizCtrl', function($routeParams, $scope, AuthService, $l
 
 
 app.controller('loginCtrl', function($scope, AuthService, $location, UtilsFactory) {
+    if (AuthService.isAuthenticated())  {
+        $location.path('/accueil');
+    }
     $scope.login = function() {
         AuthService.login($scope.user).then(function(msg) {
             $location.path('/accueil');
@@ -1009,53 +1015,57 @@ app.controller('loginCtrl', function($scope, AuthService, $location, UtilsFactor
 });
 
 app.controller('registerCtrl', function($scope, AuthService, $location, $http, API_ENDPOINT, UtilsFactory, fileReader) {
-    $scope.userInfos = {};
-    $scope.imageSrc = "http://i.imgur.com/Dknt6vC.png";
-    $scope.selectImage = function()  {
-        $('#file').click();
-    }
-    $scope.getFile = function() {
-        fileReader.readAsDataUrl($scope.file, $scope)
-            .then(function(result) {
-                $scope.imageSrc = result;
-            });
-    };
-
-    $scope.signup = function() {
-        AuthService.register($scope.userInfos).then(function(msg) {
-            $http.post(API_ENDPOINT.url + '/savePicture', {
-                img: $scope.imageSrc,
-                pseudo: $scope.userInfos.pseudo
-            }).then(function(response)  {});
-            AuthService.login($scope.userInfos).then(function(msg) {
-                $location.path('/accueil');
-            }, function(errMsg) {
-                UtilsFactory.makeAlert(errMsg, "danger", "", 1000);
-            });
-        }, function(error)  {
-            UtilsFactory.makeAlert(error, "danger");
-        });
-    };
-    var isCodePostalReady;
-    $scope.checkIfReady = function()  {
-        if ($('#inputCodePostal').val().length >= 4) {
-            getEtablissements();
+    if (AuthService.isAuthenticated())  {
+        $location.path('/accueil');
+    } else  {
+        $scope.userInfos = {};
+        $scope.imageSrc = "http://i.imgur.com/Dknt6vC.png";
+        $scope.selectImage = function()  {
+            $('#file').click();
         }
-    }
+        $scope.getFile = function() {
+            fileReader.readAsDataUrl($scope.file, $scope)
+                .then(function(result) {
+                    $scope.imageSrc = result;
+                });
+        };
 
-    var getEtablissements = function()  {
-        $http.get(API_ENDPOINT.url + '/getetablissements', {
-            params:  {
-                code_postal: $scope.userInfos.codepostal
+        $scope.signup = function() {
+            AuthService.register($scope.userInfos).then(function(msg) {
+                $http.post(API_ENDPOINT.url + '/savePicture', {
+                    img: $scope.imageSrc,
+                    pseudo: $scope.userInfos.pseudo
+                }).then(function(response)  {});
+                AuthService.login($scope.userInfos).then(function(msg) {
+                    $location.path('/accueil');
+                }, function(errMsg) {
+                    UtilsFactory.makeAlert(errMsg, "danger", "", 1000);
+                });
+            }, function(error)  {
+                UtilsFactory.makeAlert(error, "danger");
+            });
+        };
+        var isCodePostalReady;
+        $scope.checkIfReady = function()  {
+            if ($('#inputCodePostal').val().length >= 4) {
+                getEtablissements();
             }
-        }).then(function(result) {
-            $scope.etablissements = result.data;
+        }
+
+        var getEtablissements = function()  {
+            $http.get(API_ENDPOINT.url + '/getetablissements', {
+                params:  {
+                    code_postal: $scope.userInfos.codepostal
+                }
+            }).then(function(result) {
+                $scope.etablissements = result.data;
+            });
+        }
+
+        $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
+            $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
         });
     }
-
-    $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
-        $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
-    });
 });
 
 app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, AUTH_EVENTS) {
