@@ -37,6 +37,11 @@
                             <option value="French Female">Français</option>
                             <option ng-repeat="voice in responsiveVoices | orderBy:'name'">{{voice.name}}</option>
                         </select>
+                        Partager:
+                        <a href="" socialshare socialshare-provider="twitter" socialshare-text="Apprenez le cours de @{{cours.auteur}}: {{cours.matiere}} - {{cours.titre}}" socialshare-hashtags="ReviZone" socialshare-url="http://www.revizone.fr/#/cours/{{cours._id}}" style="color: inherit"><i class="fa fa-twitter fa-lg"></i></a>
+                        <a href="" socialshare socialshare-provider="facebook" socialshare-text="Apprenez le cours de @{{cours.auteur}}: {{cours.matiere}} - {{cours.titre}}" socialshare-url="http://www.revizone.fr/#/cours/{{cours._id}}" style="color: inherit"><i class="fa fa-facebook fa-lg"></i></a>
+                        <a href="" socialshare socialshare-provider="pinterest" socialshare-text="Apprenez le cours de @{{cours.auteur}}: {{cours.matiere}} - {{cours.titre}}"socialshare-url="http://www.revizone.fr/#/cours/{{cours._id}}" style="color: inherit"><i class="fa fa-pinterest fa-lg"></i></a>
+                        <a href="" socialshare socialshare-provider="google" socialshare-text="Apprenez le cours de @{{cours.auteur}}: {{cours.matiere}} - {{cours.titre}}" socialshare-url="http://www.revizone.fr/#/cours/{{cours._id}}" style="color: inherit"><i class="fa fa-google-plus fa-lg"></i></a>
                     </div>
                 </div>
             </div>
