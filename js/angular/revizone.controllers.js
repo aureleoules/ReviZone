@@ -153,7 +153,8 @@ app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService
     $scope.modifier = function(arg)  {
         var cours = {
             content: quill.getContents(),
-            coursId: $routeParams.coursId
+            coursId: $routeParams.coursId,
+            public: !$('#isPublic').is(':checked')
         }
 
         $http.put(API_ENDPOINT.url + '/editCours', cours).then(function(result)  {
