@@ -679,12 +679,12 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
 });
 
 app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, UtilsFactory, AuthService, ngDialog, $location, $ocLazyLoad) {
-    var scriptLoaded = false;
     $ocLazyLoad.load('https://code.responsivevoice.org/responsivevoice.js').then(function()  {
         $scope.responsiveVoices = responsiveVoice.getVoices();
-        scriptLoaded = true;
     });
     $ocLazyLoad.load('https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js');
+    $ocLazyLoad.load('js/dom2img.min.js');
+
     $scope.isAuthenticated = function()  {
         return AuthService.isAuthenticated();
     }
@@ -758,19 +758,51 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
         });
     }
     $scope.showAudio = true;
+
+    function download(filename, text) {
+        var pom = document.createElement('a');
+        pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        pom.setAttribute('download', filename);
+
+        if (document.createEvent) {
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        } else {
+            pom.click();
+        }
+    }
     $scope.export = function(argu)  {
         if (argu === 'pdf')  {
             var doc = new jsPDF();
-            doc.fromHTML($('#editor-container').html(), 15, 15, {
+
+            var html = $('.ql-editor').html();
+            doc.fromHTML(html, 15, 15, {
                 'width': 170
             });
-            doc.save($scope.cours.classe + " - " + $scope.cours.matiere + " - " + $scope.cours.chapitre + " par " + $scope.cours.auteur + ".pdf");
+            doc.save($scope.cours.classe + " - " + $scope.cours.matiere + " - " + $scope.cours.titre + " par " + $scope.cours.auteur + ".pdf");
         } else if (argu === 'audio')  {
-            if (scriptLoaded === true)  {
-                responsiveVoice.speak(quill.getText(), $('#voiceSelect option:selected').val());
-                $scope.showPause = true;
-                $scope.showAudio = false;
-            }
+            responsiveVoice.speak(quill.getText(), $('#voiceSelect option:selected').val());
+            $scope.showPause = true;
+            $scope.showAudio = false;
+        } else if (argu === 'raw') {
+            download($scope.cours.classe + " - " + $scope.cours.matiere + " - " + $scope.cours.titre + " par " + $scope.cours.auteur + ".txt", quill.getText() + '\n\nVia ReviZone (http://www.revizone.fr)');
+        } else if (argu === 'html') {
+            var html = $('.ql-editor').html();
+            download($scope.cours.classe + " - " + $scope.cours.matiere + " - " + $scope.cours.titre + " par " + $scope.cours.auteur + ".html", html);
+        } else if (argu === 'img') {
+            var html = $('.ql-editor').html();
+            var node = document.getElementById('my-node');
+
+            domtoimage.toPng(html)
+                .then(function(dataUrl) {
+                    var img = new Image();
+                    img.src = dataUrl;
+                    document.body.appendChild(img);
+                })
+                .catch(function(error) {
+                    console.error('oops, something went wrong!', error);
+                });
         }
 
     }
