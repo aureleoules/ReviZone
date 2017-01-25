@@ -62,6 +62,7 @@ app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $lo
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
     var author, classe;
+    $scope.isPrivate = false;
     $scope.save = function(arg)  { //fonction de sauvegarde du cours
         var delta = quill.getContents(); //récupere le contenu du cours
         var classeSel = $('#classe option:selected').text(); //classe séléctionnée
@@ -74,9 +75,9 @@ app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $lo
                 chapitre: chapitreSel,
                 cours: delta,
                 titre: $scope.titre,
-                cours_length: quill.getLength()
+                cours_length: quill.getLength(),
+                public: !$scope.isPrivate
             }
-
             $http.post(API_ENDPOINT.url + '/newCours', cours).then(function(result) { //envois du cours
                 if (result.data.success === false) { //error
                     UtilsFactory.makeAlert(result.data.msg, "danger");
@@ -683,7 +684,6 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
         $scope.responsiveVoices = responsiveVoice.getVoices();
     });
     $ocLazyLoad.load('https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js');
-    $ocLazyLoad.load('js/dom2img.min.js');
 
     $scope.isAuthenticated = function()  {
         return AuthService.isAuthenticated();
@@ -790,19 +790,6 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
         } else if (argu === 'html') {
             var html = $('.ql-editor').html();
             download($scope.cours.classe + " - " + $scope.cours.matiere + " - " + $scope.cours.titre + " par " + $scope.cours.auteur + ".html", html);
-        } else if (argu === 'img') {
-            var html = $('.ql-editor').html();
-            var node = document.getElementById('my-node');
-
-            domtoimage.toPng(html)
-                .then(function(dataUrl) {
-                    var img = new Image();
-                    img.src = dataUrl;
-                    document.body.appendChild(img);
-                })
-                .catch(function(error) {
-                    console.error('oops, something went wrong!', error);
-                });
         }
 
     }

@@ -5,7 +5,7 @@
                 <div class="col-md-12">
                     <span style="position: absolute; padding: 12px 14px" class="label label-primary">{{cours.classe}}</span>
                     <center>
-                        <h3 style="width: 80%" class="text-center text-danger"><u><b>{{cours.matiere}} :</b> {{cours.titre}}</u></h3></center>
+                        <h3 style="width: 80%" class="text-center text-danger"><u><b>{{cours.matiere}} :</b> {{cours.titre}}</u> <i ng-if="cours.public == false" class="text-primary fa fa-lock ico-r"></i></h3></center>
                     <center>
                         <h4 class="text-center text-success"><u>{{cours.chapitre}}</u></h4></center>
                     <div style="background-color: white; color: #2c3e50; margin-bottom: 20px;" class="animated fadeInUp">
