@@ -1131,7 +1131,7 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
 
 });
 
-app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT) {
+app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT, UtilsFactory, ngDialog) {
     $http.get(API_ENDPOINT.url + '/getClasse').then(function(result) {
         $scope.classe = result.data; //recupere le programme de chaque classes.
         $http.get(API_ENDPOINT.url + '/getEtablissementById', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
@@ -1140,9 +1140,61 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT) 
             }
         }).then(function(result) {
             $scope.etablissement = result.data[0];
-
         });
     });
+    AuthService.getUser().then(function(userData) {
+        $scope.user = userData;
+    });
+
+    function getClasseFeed() {
+        $http.get(API_ENDPOINT.url + '/getClasseFeed').then(function(result) {
+            if (result.data.success === true) {
+                $scope.classeFeed = result.data.feed;
+                for (var i = 0; i < $scope.classeFeed.length; i++) {
+                    var date = moment($scope.classeFeed[i].createdAt).format('DD MMMM YYYY: HH-mm');
+                    $scope.classeFeed[i].createdAtDate = date;
+                }
+            } else {
+                $scope.classeFeed = '';
+            }
+        });
+    }
+    getClasseFeed();
+    $scope.sendFeed = function() {
+        $http.post(API_ENDPOINT.url + '/msgClasseFeed', {
+            msg: $scope.post
+        }).then(function(response)  {
+            if (response.data.success === true)  {
+                $scope.post = '';
+                getClasseFeed()
+            } else {
+                UtilsFactory.makeAlert(response.data.msg, 'danger');
+            }
+        });
+    }
+    $scope.removeComment = function(_id) {
+        $scope.dialog = {
+            text: "Êtes-vous certain de vouloir supprimer ce commentaire",
+            confirmBtn: "Oui je veux le supprimer."
+        }
+        ngDialog.open({
+            template: './modals/confirmation.html',
+            className: 'ngdialog-theme-default',
+            scope: $scope
+        });
+        $scope.confirm = function() {
+            $http.delete(API_ENDPOINT.url + '/removeClasseFeed', {
+                params: {
+                    _id: _id
+                }
+            }).then(function(result)  {
+                if (result.data.success === false)  {
+                } else {
+                    getClasseFeed();
+                }
+            });
+        }
+    }
 });
 
 app.controller('404Ctrl', function($scope, $http, API_ENDPOINT) {
