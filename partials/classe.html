@@ -24,7 +24,7 @@
                                 </a>
                             </div>
                             <div class="comment-block">
-                                <span style="float: right; font-size: 11px"><a href="" class="btn btn-danger btn-sm" style="padding: 4px 6px;" ng-click="removeComment(post._id)">Supprimer</a>  <a style="margin-left: 5px"href="#profil/{{post.auteur}}">@{{post.auteur}}</a>
+                                <span style="float: right; font-size: 11px"><a href="" ng-if="post.auteur === user.pseudo" class="btn btn-danger btn-sm" style="padding: 4px 6px;" ng-click="removeComment(post._id)">Supprimer</a>  <a style="margin-left: 5px"href="#profil/{{post.auteur}}">@{{post.auteur}}</a>
 </span>
                                 <p class="comment-text">{{post.msg}}</p>
                                 <div class="bottom-comment">
