@@ -11,7 +11,11 @@
                             <textarea ng-model="post" class="comment-input" name="" id="" cols="30" rows="3" placeholder="Ajouter un commentaire..."></textarea>
                             <div class="item-cours"></div>
                             <div class="comment-publish-actions">
-                                <!-- <a href="" class="small text-primary">Lier un cours <i class="fa fa-paperclip"></i></a> -->
+                                <a href="" class="small text-primary" ng-click="selectCours()">Lier un cours <i class="fa fa-paperclip"></i></a>
+                                <span class="small" ng-show="coursSelected">
+                                    <i>{{coursSelected.classe}} - {{coursSelected.matiere}}: {{coursSelected.titre}}</i>
+                                    <a href="" style="color: inherit" ng-click="removeSelected()"><i class="fa fa-times"></i></a>
+                                </span>
                                 <a class="comment-publish" ng-click="sendFeed()" href="">Publier </a>
                             </div>
                         </div>
@@ -24,14 +28,15 @@
                                 </a>
                             </div>
                             <div class="comment-block">
-                                <span style="float: right; font-size: 11px"><a href="" ng-if="post.auteur === user.pseudo" class="btn btn-danger btn-sm" style="padding: 4px 6px;" ng-click="removeComment(post._id)">Supprimer</a>  <a style="margin-left: 5px"href="#profil/{{post.auteur}}">@{{post.auteur}}</a>
-</span>
+                                <span style="float: right; font-size: 11px"><a href="" ng-if="post.auteur === user.pseudo" class="btn btn-danger btn-sm" style="padding: 4px 6px;" ng-click="removeComment(post._id)">Supprimer</a>  <a style="margin-left: 5px"href="#profil/{{post.auteur}}">@{{post.auteur}}</a></span>
                                 <p class="comment-text">{{post.msg}}</p>
+                                <span ng-if="post.cours"><i class="fa fa-paperclip"></i>
+                                    <a class="small" href="#cours/{{post.cours._id}}">
+                                        {{post.cours.classe}} - {{post.cours.matiere}}: {{post.cours.titre}}
+                                    </a>
+                                </span>
                                 <div class="bottom-comment">
                                     <div class="comment-date">{{post.createdAtDate}}</div>
-                                    <!-- <ul class="comment-actions">
-                                        <li class="reply">Répondre</li>
-                                    </ul> -->
                                 </div>
                             </div>
                         </div>

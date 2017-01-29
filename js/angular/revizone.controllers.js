@@ -1132,6 +1132,7 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
 });
 
 app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT, UtilsFactory, ngDialog) {
+    var coursSelIndex
     $http.get(API_ENDPOINT.url + '/getClasse').then(function(result) {
         $scope.classe = result.data; //recupere le programme de chaque classes.
         $http.get(API_ENDPOINT.url + '/getEtablissementById', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
@@ -1161,12 +1162,20 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT, 
     }
     getClasseFeed();
     $scope.sendFeed = function() {
+        var selCours;
+        if(coursSelIndex) {
+            selCours = $scope.listCours[coursSelIndex];
+        } else {
+            selCours = '';
+        }
         $http.post(API_ENDPOINT.url + '/msgClasseFeed', {
-            msg: $scope.post
+            msg: $scope.post,
+            cours: selCours
         }).then(function(response)  {
             if (response.data.success === true)  {
                 $scope.post = '';
-                getClasseFeed()
+                $scope.removeSelected();
+                getClasseFeed();
             } else {
                 UtilsFactory.makeAlert(response.data.msg, 'danger');
             }
@@ -1188,12 +1197,35 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT, 
                     _id: _id
                 }
             }).then(function(result)  {
-                if (result.data.success === false)  {
-                } else {
+                if (result.data.success === false)  {} else {
                     getClasseFeed();
                 }
             });
         }
+
+    }
+
+    $scope.selectCours = function() {
+        $http.get(API_ENDPOINT.url + '/getListCours', {
+            params:  {
+                pseudo: $scope.user.pseudo
+            }
+        }).then(function(result) {
+            $scope.listCours = result.data;
+            ngDialog.open({
+                template: './modals/selectCours.html',
+                className: 'ngdialog-theme-default',
+                scope: $scope
+            });
+        });
+        $scope.confirm = function(cours) {
+            coursSelIndex = $('#selectedCours').find(':selected').val();
+            $scope.coursSelected = $scope.listCours[coursSelIndex];
+        }
+    }
+    $scope.removeSelected = function() {
+        $scope.coursSelected = '';
+        coursSelIndex = '';
     }
 });
 
