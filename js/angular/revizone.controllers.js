@@ -206,7 +206,7 @@ app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService
     // }
 });
 
-app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location, UtilsFactory, ngDialog, $rootScope, fileReader) { //page de profil
+app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location, UtilsFactory, ngDialog, $rootScope, fileReader, Upload) { //page de profil
     $scope.isAuthenticated = AuthService.isAuthenticated();
     if ($scope.isAuthenticated)  {
         AuthService.getUser().then(function(user)  {
@@ -356,7 +356,6 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
     $scope.edit = function() {
         $scope.editedUser = angular.copy($scope.user);
         $scope.editedUser.scolaire.code_postal = parseInt($scope.editedUser.scolaire.code_postal);
-        $scope.imageSrc = $scope.editedUser.picture;
         getEtablissements();
         $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
             $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
@@ -369,8 +368,17 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
             });
             $rootScope.$on('ngDialog.closing', function(e, $dialog) {});
         }
+        $scope.upload = function(file) {
+            Upload.upload({
+                url: API_ENDPOINT.url + '/savePicture',
+                data: {
+                    file: file,
+                    'username': $scope.user.pseudo
+                }
+            });
+        };
         $scope.save = function()  {
-            $scope.editedUser['picture'] = $scope.imageSrc;
+            $scope.upload($scope.picFile);
             $http.put(API_ENDPOINT.url + '/editUser', {
                 user: $scope.editedUser
             }).then(function(result) {

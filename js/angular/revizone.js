@@ -1,4 +1,4 @@
-var app = angular.module('revizone', ['ngRoute', 'revizone.controllers', 'ngDialog', 'oc.lazyLoad', '720kb.socialshare']);
+var app = angular.module('revizone', ['ngRoute', 'revizone.controllers', 'ngDialog', 'oc.lazyLoad', '720kb.socialshare', 'ngFileUpload']);
 
 app.config(function($routeProvider, $locationProvider) {
     $locationProvider.html5Mode(false);

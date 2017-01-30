@@ -6,25 +6,28 @@
         <div class="input-group">
             <input autocomplete="off" type="text" class="form-control" ng-model="editedUser.name" id="inputNom" placeholder="Prénom et nom">
             <span class="input-group-btn">
-                <a href="" ng-click="selectImage()"><img ng-src="{{imageSrc}}" style="margin-left: 3px; margin-top: 3px; cursor: pointer; cursor: hand" width="40" height="40"></a>
-                <input ng-file-select="onFileSelect($files)" type="file" id="file" name="file" style="visibility: hidden; width: 1px; height: 1px" />
-            </span>
+                <a href="" ngf-select ng-model="$parent.picFile" name="file" ngf-pattern="'image/*'"
+    ngf-accept="'image/*'" ngf-max-size="20MB" type="file" id="file">
+    <img ng-show="!$parent.picFile" ng-src="https://localhost:8089/public/{{editedUser.pseudo}}.png" style="margin-left: 3px; margin-top: 3px; cursor: pointer; cursor: hand" width="40" height="40">
+    <img ng-show="$parent.picFile" ngf-src="$parent.picFile" style="margin-left: 3px; margin-top: 3px; cursor: pointer; cursor: hand" width="40" height="40"></a>
+
+        </span>
         </div>
-        <input style="margin-top: 0px" type="email" class="form-control" ng-model="editedUser.email" placeholder="Email" />
+        <input style="margin-top: 5px" type="email" class="form-control" ng-model="editedUser.email" placeholder="Email" />
         <a class="small text-center" href="" ng-click="changePassword()">Changer mon mot de passe</a><br>
         <label for="inputCodePostal">Informations scolaires</label>
         <input required autocomplete="off" ng-change="checkIfReady()" type="number" class="form-control" ng-model="editedUser.scolaire.code_postal" id="inputCodePostal" placeholder="Code postal" oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);"
             type="number" maxlength="5" minlength="4" ng-value="{{editedUser.scolaire.code_postal | num}}">
-        <select required ng-disabled="!editedUser.scolaire.code_postal" class="form-control" ng-model="editedUser.scolaire.etablissement" id="select">
+            <select required ng-disabled="!editedUser.scolaire.code_postal" class="form-control" ng-model="editedUser.scolaire.etablissement" id="select">
             <option value='{{etablissement.numero_uai}}' ng-repeat="etablissement in etablissements | orderBy:'appellation_officielle'">{{ etablissement.appellation_officielle}}</option>
         </select>
-        <select class="form-control" id="inputClasse" ng-model="editedUser.scolaire.classe" required>
+            <select class="form-control" id="inputClasse" ng-model="editedUser.scolaire.classe" required>
             <option value='{{classe}}' ng-repeat="(classe, key) in programme">{{classe}}</option>
         </select>
-        <select class="form-control" id="inputClasse" ng-model="editedUser.scolaire.numero_classe" required>
+            <select class="form-control" id="inputClasse" ng-model="editedUser.scolaire.numero_classe" required>
             <option ng-repeat="n in [] | range:16" value='{{n}}'>N°{{ n }}</option>
         </select>
-        <button ng-click="save(); closeThisDialog()" class="btn btn-primary" style="width: 100%; margin-top: 10px">Enregistrer les modifications</button>
+            <button ng-click="save(); closeThisDialog()" class="btn btn-primary" style="width: 100%; margin-top: 10px">Enregistrer les modifications</button>
 
     </div>
 </body>
