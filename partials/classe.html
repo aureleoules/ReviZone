@@ -24,7 +24,7 @@
                         <div ng-show="classeFeed.length > 0" class="comment-wrap" ng-repeat="post in classeFeed | orderBy:'-createdAt'">
                             <div class="photo">
                                 <a href="#profil/{{post.auteur}}">
-                                    <div class="avatar" style="background-image: url({{user.picture}})"></div>
+                                    <div class="avatar" style="background-image: url(https://revizone.fr:8089/public/{{post.auteur}}.png)"></div>
                                 </a>
                             </div>
                             <div class="comment-block">

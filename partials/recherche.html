@@ -46,7 +46,7 @@
         <div class="row" id="dataResult">
             <div class="col-md-12">
                 <div ng-show="result" class="item-cours" ng-repeat="cours in result | orderBy:'-lectures'">
-                    <a href="#profil/{{cours.auteur}}"><img class="cours-avatar img-circle" width="35px" height="35px" ng-src="{{cours.picture}}" /></a>
+                    <a href="#profil/{{cours.auteur}}"><img class="cours-avatar img-circle" width="35px" height="35px" ng-src="https://revizone.fr:8089/public/{{cours.auteur}}.png" /></a>
                     <a href="#profil/{{cours.auteur}}">@{{cours.auteur}}</a>
                     <p>
                         <a href="#cours/{{cours._id}}" style="color: inherit">

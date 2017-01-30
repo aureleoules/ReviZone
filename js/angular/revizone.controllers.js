@@ -7,16 +7,6 @@ app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, AP
         $http.get(API_ENDPOINT.url + '/getUserFeed').then(function(result) {
             if (result.data.success === true)  {
                 $scope.feed = result.data.feed;
-                $scope.pictures = {};
-                $scope.feed.forEach(function(item, key)  {
-                    $http.get(API_ENDPOINT.url + '/getPicture', {
-                        params: {
-                            pseudo: item.auteur
-                        }
-                    }).then(function(response)  {
-                        $scope.feed[key].picture = response.data[0].picture;
-                    });
-                });
                 if ($scope.feed.length < 1)  {
                     $scope.showFeed = false;
                 } else {
@@ -657,15 +647,6 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
             } else {
                 $scope.result = result.data.cours;
                 coursLength = result.data.coursLength;
-                $scope.result.forEach(function(item, key)  {
-                    $http.get(API_ENDPOINT.url + '/getPicture', {
-                        params: {
-                            pseudo: item.auteur
-                        }
-                    }).then(function(response)  {
-                        $scope.result[key].picture = response.data[0].picture;
-                    });
-                });
                 if (!$scope.result.length > 0)  {
                     $scope.showSadFace = true;
                 } else {
