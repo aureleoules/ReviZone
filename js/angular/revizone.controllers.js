@@ -335,14 +335,6 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
             });
         }
     }
-    $scope.selectImage = function()  {
-        $('#file').click();
-    }
-    $scope.getFile = function() {
-        fileReader.readAsDataUrl($scope.file, $scope).then(function(result) {
-            $scope.imageSrc = result;
-        });
-    };
     $scope.edit = function() {
         $scope.editedUser = angular.copy($scope.user);
         $scope.editedUser.scolaire.code_postal = parseInt($scope.editedUser.scolaire.code_postal);
@@ -1028,23 +1020,9 @@ app.controller('registerCtrl', function($scope, AuthService, $location, $http, A
         $location.path('/accueil');
     } else  {
         $scope.userInfos = {};
-        $scope.imageSrc = "http://i.imgur.com/Dknt6vC.png";
-        $scope.selectImage = function()  {
-            $('#file').click();
-        }
-        $scope.getFile = function() {
-            fileReader.readAsDataUrl($scope.file, $scope)
-                .then(function(result) {
-                    $scope.imageSrc = result;
-                });
-        };
 
         $scope.signup = function() {
             AuthService.register($scope.userInfos).then(function(msg) {
-                $http.post(API_ENDPOINT.url + '/savePicture', {
-                    img: $scope.imageSrc,
-                    pseudo: $scope.userInfos.pseudo
-                }).then(function(response)  {});
                 AuthService.login($scope.userInfos).then(function(msg) {
                     $location.path('/accueil');
                 }, function(errMsg) {
