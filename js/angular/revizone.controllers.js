@@ -47,7 +47,7 @@ app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, AP
     }
 });
 
-app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory, ngDialog, fileReader) { //création d'un nouveau cours
+app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory, ngDialog) { //création d'un nouveau cours
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
@@ -99,21 +99,21 @@ app.controller('newCtrl', function($scope, $http, API_ENDPOINT, AuthService, $lo
     $scope.confirm = function()  {
         $location.path('/accueil');
     }
-    $scope.fromPicture = function()  {
-        $('#file').click();
-    }
-    $scope.getFile = function() {
-        fileReader.readAsDataUrl($scope.file, $scope)
-            .then(function(result) {
-                $scope.imageSrc = result;
-                $http.post(API_ENDPOINT.url + '/OCR', {
-                    base64Image: $scope.imageSrc
-                }).then(function(result)  {
-                    var text = result.data.ParsedResults[0].ParsedText;
-                    quill.setText(text);
-                });
-            });
-    };
+    // $scope.fromPicture = function()  {
+    //     $('#file').click();
+    // }
+    // $scope.getFile = function() {
+    //     fileReader.readAsDataUrl($scope.file, $scope)
+    //         .then(function(result) {
+    //             $scope.imageSrc = result;
+    //             $http.post(API_ENDPOINT.url + '/OCR', {
+    //                 base64Image: $scope.imageSrc
+    //             }).then(function(result)  {
+    //                 var text = result.data.ParsedResults[0].ParsedText;
+    //                 quill.setText(text);
+    //             });
+    //         });
+    // };
 });
 
 app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService, $location, UtilsFactory, $routeParams) {
@@ -196,7 +196,7 @@ app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService
     // }
 });
 
-app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location, UtilsFactory, ngDialog, $rootScope, fileReader, Upload) { //page de profil
+app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location, UtilsFactory, ngDialog, $rootScope, Upload) { //page de profil
     $scope.isAuthenticated = AuthService.isAuthenticated();
     if ($scope.isAuthenticated)  {
         AuthService.getUser().then(function(user)  {
@@ -234,6 +234,7 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
             }
         }).then(function(result) {
             $scope.profile = result.data[0];
+            $rootScope.title = 'Profil: @' + $scope.profile.pseudo;
             if (!$scope.profile)  {
                 $location.path('/accueil');
                 UtilsFactory.makeAlert("Cet utilisateur n'existe pas.", "danger")
@@ -661,7 +662,7 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
     }
 });
 
-app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, UtilsFactory, AuthService, ngDialog, $location, $ocLazyLoad) {
+app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, UtilsFactory, AuthService, ngDialog, $location, $ocLazyLoad, $rootScope) {
     $ocLazyLoad.load('https://code.responsivevoice.org/responsivevoice.js').then(function()  {
         $scope.responsiveVoices = responsiveVoice.getVoices();
     });
@@ -699,6 +700,7 @@ app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, 
                     }
                 });
             }
+            $rootScope.title = $scope.cours.classe + ' - ' + $scope.cours.matiere + ': ' + $scope.cours.titre + ' par @' + $scope.cours.auteur;
         }
     });
 
@@ -1015,7 +1017,7 @@ app.controller('loginCtrl', function($scope, AuthService, $location, UtilsFactor
     };
 });
 
-app.controller('registerCtrl', function($scope, AuthService, $location, $http, API_ENDPOINT, UtilsFactory, fileReader) {
+app.controller('registerCtrl', function($scope, AuthService, $location, $http, API_ENDPOINT, UtilsFactory) {
     if (AuthService.isAuthenticated())  {
         $location.path('/accueil');
     } else  {
@@ -1055,7 +1057,12 @@ app.controller('registerCtrl', function($scope, AuthService, $location, $http, A
     }
 });
 
-app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, AUTH_EVENTS) {
+app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, AUTH_EVENTS, $http, API_ENDPOINT, $window) {
+    $http.get(API_ENDPOINT.url).then(function successCallback(response) {}, function errorCallback(response) {
+        var route;
+        routes = $location.absUrl().split('#');
+        $window.location.href = routes[0] + 'maintenance.html';
+    });
     $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
         AuthService.logout();
         $location.path('/accueil');

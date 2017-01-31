@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<title>Site en maintenance</title>
+<style>
+    body {
+        text-align: center;
+        padding: 150px;
+    }
+
+    h1 {
+        font-size: 50px;
+    }
+
+    body {
+        font: 20px Helvetica, sans-serif;
+        color: #333;
+    }
+
+    article {
+        display: block;
+        text-align: left;
+        width: 650px;
+        margin: 0 auto;
+    }
+
+    a {
+        color: #dc8100;
+        text-decoration: none;
+    }
+
+    a:hover {
+        color: #333;
+        text-decoration: none;
+    }
+</style>
+
+<article>
+    <h1>Site en maintenance</h1>
+    <div>
+        <p>Nous vous prions de bien vouloir nous excuser pour la gêne occasionée. <b>ReviZone</b> sera de nouveau en ligne <b>bientôt</b>.</p>
+        <p>&mdash; <b>ReviZone</b></p>
+    </div>
+</article>
+<script type="text/javascript">
+    setInterval(function() {
+        window.location.replace(window.location.href.replace('maintenance.html', ''));
+    }, 5000)
+</script>
+
+</html>

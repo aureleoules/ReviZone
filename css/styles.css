@@ -8,12 +8,12 @@
 }
 
 .img-header-1 {
-    background-image: url("../imgs/header-background.jpg");
+    background-image: url("../../imgs/header-background.jpg");
     min-height: 560px;
 }
 
 .img-header-2 {
-    background-image: url("../imgs/header-background-2.jpg");
+    background-image: url("../../imgs/header-background-2.jpg");
     min-height: 350px;
 }
 
@@ -130,7 +130,7 @@ section.mg-top-40 {
 }
 
 .twPc-bg {
-    background-image: url("../imgs/banner1.jpg");
+    background-image: url("../../imgs/banner1.jpg");
     background-position: 0 50%;
     background-size: 100% auto;
     border-bottom: 1px solid #e1e8ed;
