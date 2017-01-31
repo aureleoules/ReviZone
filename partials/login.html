@@ -4,28 +4,31 @@
             <div id="infosperso" class="form-horizontal">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="well border rounded animated flipInY">
-                        <fieldset>
-                            <h2>Connexion</h2>
-                            <div class="form-group has-primary">
-                                <div class="col-md-12">
-                                    <label for="inputPrenom">Pseudo:</label>
-                                    <input autocomplete="off" type="text" class="form-control" ng-model="user.pseudo" id="inputNom" placeholder="Pseudo" required>
-                                </div>
-                            </div>
+                        <form class="" ng-submit="login()">
 
-                            <div class="form-group has-primary">
-                                <div class="col-md-12">
-                                    <label for="inputPrenom">Mot de passe:</label>
-                                    <input autocomplete="off" type="password" class="form-control" ng-model="user.password" id="inputNom" placeholder="Mot de passe" required>
+                            <fieldset>
+                                <h2>Connexion</h2>
+                                <div class="form-group has-primary">
+                                    <div class="col-md-12">
+                                        <label for="inputPrenom">Pseudo:</label>
+                                        <input autocomplete="off" type="text" class="form-control" ng-model="user.pseudo" id="inputNom" placeholder="Pseudo" required>
+                                    </div>
                                 </div>
-                            </div>
 
-                        </fieldset>
-                        <div class="form-group has-primary">
-                            <div class="col-md-12">
-                                <button class="btn btn-primary" ng-click="login()" style="width: 100%; margin-top: 10px">Se connecter</button>
-                            </div>
-                        </div>
+                                <div class="form-group has-primary">
+                                    <div class="col-md-12">
+                                        <label for="inputPrenom">Mot de passe:</label>
+                                        <input autocomplete="off" type="password" class="form-control" ng-model="user.password" id="inputNom" placeholder="Mot de passe" required>
+                                    </div>
+                                </div>
+                                <div class="form-group has-primary">
+                                    <div class="col-md-12">
+                                        <input type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px" value="Se connecter"/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+
                     </div>
                 </div>
             </div>
