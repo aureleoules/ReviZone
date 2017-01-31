@@ -13,14 +13,14 @@
                         <fieldset>
                             <div class="form-group has-primary">
                                 <div class="col-md-12">
-                                    <label for="inputPrenom">Prénom et nom</label>
+                                    <label for="inputPrenom">Prénom et nom:</label>
                                     <input autocomplete="off" type="text" class="form-control" ng-model="userInfos.name" id="inputNom" placeholder="Prénom et nom" required>
                                 </div>
                             </div>
                             <div class="form-group has-primary">
                                 <div class="col-md-12">
-                                    <label for="inputEmail">Adresse email: <small>(Facultatif)</small></label>
-                                    <input type="email" class="form-control" ng-model="userInfos.email" id="inputEmail" placeholder="Email">
+                                    <label for="inputEmail">Adresse email:</label>
+                                    <input required type="text" class="form-control" ng-model="userInfos.email" id="inputEmail" placeholder="Email">
                                 </div>
                             </div>
                             <div class="form-group has-primary">
@@ -52,7 +52,7 @@
                             </div>
                             <div class="form-group has-primary">
                                 <div class="col-md-12">
-                                    <label for="inputPatronyme">Nom de l'établissement</label>
+                                    <label for="inputPatronyme">Nom de l'établissement:</label>
                                     <select ng-disabled="!userInfos.codepostal" class="form-control" ng-model="userInfos.etablissement" id="select" required>
                                             <option value=''>Choisir</option>
                                             <option value='{{etablissement.numero_uai}}' ng-repeat="etablissement in etablissements | orderBy:'appellation_officielle'">{{ etablissement.appellation_officielle}}</option>

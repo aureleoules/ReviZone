@@ -1485,7 +1485,6 @@ app.controller('registerCtrl', ['$scope', 'AuthService', '$location', '$http', '
         $location.path('/accueil');
     } else  {
         $scope.userInfos = {};
-
         $scope.signup = function() {
             AuthService.register($scope.userInfos).then(function(msg) {
                 AuthService.login($scope.userInfos).then(function(msg) {
@@ -1682,8 +1681,7 @@ angular.module('revizone')
 })
 
 .constant('API_ENDPOINT', {
-  url: 'https://www.revizone.fr:8089/api'
-  //  For a simulator use: url: 'http://127.0.0.1:8080/api'
+  url: 'https://localhost:8089/api'
 });
 
 angular.module('revizone')

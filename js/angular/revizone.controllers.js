@@ -1022,7 +1022,6 @@ app.controller('registerCtrl', function($scope, AuthService, $location, $http, A
         $location.path('/accueil');
     } else  {
         $scope.userInfos = {};
-
         $scope.signup = function() {
             AuthService.register($scope.userInfos).then(function(msg) {
                 AuthService.login($scope.userInfos).then(function(msg) {
