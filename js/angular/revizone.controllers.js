@@ -1134,9 +1134,6 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT, 
         });
     }
     getClasseFeed();
-    setInterval(function() {
-        getClasseFeed();
-    }, 5000)
     $scope.sendFeed = function() {
         var selCours;
         if (coursSelIndex) {

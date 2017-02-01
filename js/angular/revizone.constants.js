@@ -5,5 +5,5 @@ angular.module('revizone')
 })
 
 .constant('API_ENDPOINT', {
-  url: 'https://www.revizone.fr:8089/api'
+  url: 'https://localhost:8089/api'
 });

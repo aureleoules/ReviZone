@@ -52,7 +52,7 @@ module.exports = function(grunt) {
         uglify: {
             js: {
                 files: {
-                    'build/js/scripts.min.js': ['build/js/scripts.js']
+                    'build/js/scripts.js': ['build/js/scripts.js']
                 }
             }
         },
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
             },
             css: {
                 files: {
-                    'build/css/styles.min.css': ['build/css/styles.css']
+                    'build/css/styles.css': ['build/css/styles.css']
                 }
             }
         },
