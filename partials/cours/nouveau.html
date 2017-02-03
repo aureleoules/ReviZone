@@ -6,55 +6,54 @@
             </div>
         </div>
         <form name="nouveauForm">
-            <div class="row">
-                <div class="col-md-3 col-xs-12">
-                    <div class="form-group has-primary">
-                        <label for="classe" class="col-lg-2 control-label">Classe</label>
-                        <select required class="form-control" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme">
-                        <option value=''>Choisir</option>
-                </select>
-                    </div>
-                </div>
-                <div class="col-md-3 col-xs-12">
-                    <div class="form-group has-primary">
-
-                        <label for="matiere" class="col-lg-2 control-label">Matière</label>
-                        <select required class="form-control" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres">
-                <option value=''>Choisir</option>
-                </select>
-                    </div>
-                </div>
-                <div class="col-md-3 col-xs-12">
-                    <div class="form-group has-primary">
-                        <label for="chapitre" class="col-lg-12 control-label">Chapitre <small>(facultatif)</small></label>
-                        <select class="form-control" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres">
-                            <option value=''>Choisir</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3 col-xs-12">
-                    <div class="form-group has-primary">
-                        <label for="titre" class="col-lg-12 control-label">Titre</label>
-                        <input required type="text" class="form-control" id="titre" placeholder="Titre de la leçon" ng-model="titre">
-                    </div>
-                </div>
-            </div>
-
             <!-- Create the toolbar container -->
-            <div style="background-color: #fff; color: #2c3e50; margin: 10px 0 10px">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div id="editor-container" style="min-height: 250px; resize: vertical; overflow-x: hidden;"></div>
+            <div class="row">
+                <div class="col-md-9">
+                    <div style="background-color: #fff; color: #2c3e50;">
+                        <div id="editor-container" style="min-height: 450px; resize: vertical; overflow-x: hidden;"></div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="share mrl">
+                        <ul>
+                            <li>
+                                <div class="form-group has-primary">
+                                    <select required class="form-control select select-primary select-block mbl" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme">
+                                        <option value=''>Classe</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group has-primary">
+                                    <select required class="form-control select select-primary select-block mbl" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres">
+                                            <option value=''>Matière</option>
+                                        </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group has-primary">
+                                    <select required class="form-control select select-primary select-block mbl" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres">
+                                            <option value=''>Chapitre <small>(facultatif)</small></option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="form-group" style="margin-bottom: 5px">
+                                    <input required type="text" class="form-control" id="titre" placeholder="Titre de la leçon" ng-model="titre">
+                                </div>
+                            </li>
+                            <li>
+                                <label class="checkbox" for="checkbox1">
+                                    <input type="checkbox" ng-model="isPrivate" value="" id="checkbox1" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                                                  Cours privé  <i class="fa fa-lock ico-r"></i>
+                                </label>
+                            </li>
+                        </ul>
+                        <a href="" ng-click="save('quit')" class="btn btn-primary btn-block btn-large">Enregistrer</a>
                     </div>
                 </div>
             </div>
         </form>
-        <div class="row">
-            <div class="col-md-12">
-                <a style="margin: 0 5px 5px 0" href="" ng-click="save('quit')" class="btn btn-success">Enregistrer mon cours &nbsp<icon class="fa fa-floppy-o"></i></a>
-                  <input type="checkbox" ng-model="isPrivate"> Cours privé <i class="fa fa-lock"></i>
-            </div>
-        </div>
     </div>
     <script type="text/javascript">
         var toolbarOptions = [
@@ -98,6 +97,10 @@
             placeholder: 'Ecris ton cours...',
             theme: 'snow' // or 'bubble'
         });
-        $('.ql-toolbar').append(`<a style="color: inherit" ng-click="fromPicture()" href="">Depuis une image</a><input ng-file-select="onFileSelect($files)" type="file" id="file" name="file" accept="image/x-png,image/gif,image/jpeg" style="visibility: hidden; width: 1px; height: 1px" />`)
+        $('.ql-toolbar').append(
+            `<a style="color: inherit" ng-click="fromPicture()" href="">Depuis une image</a><input ng-file-select="onFileSelect($files)" type="file" id="file" name="file" accept="image/x-png,image/gif,image/jpeg" style="visibility: hidden; width: 1px; height: 1px" />`
+        )
+        $('select').select2();
+        $('#check1').radiocheck();
     </script>
 </section>

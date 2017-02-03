@@ -2,17 +2,17 @@
     <div class="container">
         <div class="row">
             <div class="col-md-7 animated fadeIn">
-                <div class="panel panel-primary ">
+                <div class="panel panel-inverse ">
                     <div class="panel-heading">
                         <h2 class="panel-title"><b>Classeur</b> de {{profile.name}}</h2>
                     </div>
                     <div class="btn-group btn-group-justified" ng-hide="listCours.length < 1">
-                        <a ng-hide="!matieresList" href="" ng-click="selectMatiere('all')" class="btn btn-primary" ng-class="{active: selectedMatiere === 'all'}"style="border-radius: 0px">Tous</a>
-                        <a href="" ng-click="selectMatiere($index)" ng-repeat="matiere in matieresList" ng-class="{active: $index === selectedMatiere}" class="btn btn-primary" id="btn{{matiere}}" style="border-radius: 0px">{{matiere}}</a>
+                        <a ng-hide="!matieresList" href="" ng-click="selectMatiere('all')" class="btn btn-inverse" ng-class="{active: selectedMatiere === 'all'}"style="border-radius: 0px">Tous</a>
+                        <a href="" ng-click="selectMatiere($index)" ng-repeat="matiere in matieresList" ng-class="{active: $index === selectedMatiere}" class="btn btn-inverse" id="btn{{matiere}}" style="border-radius: 0px">{{matiere}}</a>
                     </div>
                     <div class="panel-body" style="padding-bottom: 0px">
                         <div ng-hide="listCours.length < 1">
-                            <a ng-repeat="item in coursArray | orderBy:'-createdAt'" href="#cours/{{item._id}}" class="list-group-item"><span class="badge">Lu {{item.lectures}} fois</span><span class="label label-primary">{{item.classe}}</span> : <span class=""><b>{{item.matiere}}</b>  -  {{item.titre}} <i ng-if="item.public == false" class="fa fa-lock ico-r"></i><br><i>{{item.chapitre}}</i></span></a>
+                            <a ng-repeat="item in coursArray | orderBy:'-createdAt'" href="#cours/{{item._id}}" class="list-group-item"><span class="badge btn-inverse">Lu {{item.lectures}} fois</span><span class="label label-inverse">{{item.classe}}</span> : <span class=""><b>{{item.matiere}}</b>  -  {{item.titre}} <i ng-if="item.public == false" class="fa fa-lock ico-r"></i><br><i>{{item.chapitre}}</i></span></a>
 
                         </div>
                         <div ng-show="listCours.length < 1">
@@ -58,26 +58,26 @@
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="" title="{{listCours.length}} cours">
                                         <span class="twPc-StatLabel twPc-block">Cours</span>
-                                        <span class="twPc-StatValue text-success">{{listCours.length}}</span>
+                                        <span class="twPc-StatValue text-primary">{{listCours.length}}</span>
                                     </a>
                                 </li>
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="" title="{{lecturesTotal}} lectures">
                                         <span class="twPc-StatLabel twPc-block">Lectures</span>
-                                        <span class="twPc-StatValue text-success">{{lecturesTotal}}</span>
+                                        <span class="twPc-StatValue text-primary">{{lecturesTotal}}</span>
                                     </a>
                                 </li>
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="" title="Moyenne de {{average}}/5">
                                         <span class="twPc-StatLabel twPc-block">Note moyenne</span>
-                                        <span class="twPc-StatValue text-success">{{average}}/5</span>
+                                        <span class="twPc-StatValue text-primary">{{average}}/5</span>
                                     </a>
                                 </li>
                             </ul>
                             <ul class="twPc-Arrange">
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="">
-                                        <span class="text-success">{{etablissement.appellation_officielle | uppercase}} - {{profile.scolaire.classe | uppercase}} {{profile.scolaire.numero_classe}}</span>
+                                        <span class="text-primary">{{etablissement.appellation_officielle | uppercase}} - {{profile.scolaire.classe | uppercase}} {{profile.scolaire.numero_classe}}</span>
                                         <br><span class="text-primary">{{etablissement.localite_acheminement_uai | uppercase}}</span>
                                     </a>
                                 </li>

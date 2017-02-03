@@ -6,6 +6,8 @@ module.exports = function(grunt) {
                     'js/jquery.min.js',
                     'js/angular/angular.min.js',
                     'js/angular/revizone.js',
+                    'js/bootstrap/bootstrap.min.js',
+                    'js/bootstrap/flat-ui.js',
                     'js/angular/revizone.controllers.js',
                     'js/angular/revizone.constants.js',
                     'js/angular/revizone.services.js',
@@ -17,17 +19,19 @@ module.exports = function(grunt) {
                     'js/angular/ocLazyLoad.min.js',
                     'js/bootstrap/bootstrap-notify.min.js',
                     'js/bootstrap/bootstrap-tagsinput.min.js',
-                    'js/bootstrap/bootstrap.min.js',
+                    'js/bootstrap/bootstrap-switch.min.js',
                     'js/momentjs/moment.js',
                     'js/quill/quill.min.js',
                     'js/quill/katex.min.js'
+
                 ],
-                dest: 'build/js/scripts.js',
+                dest: 'build/js/scripts.js'
             },
             css: {
                 src: [
                     'css/fonts/imports.css', //must be the first imported file
-                    'css/bootstrap/bootstrap.flat.css',
+                    'css/bootstrap/bootstrap.css',
+                    'css/bootstrap/flat-ui.css',
                     'css/angular/ngDialog-theme-default.min.css',
                     'css/angular/ngDialog.min.css',
                     'css/animate/animate.css',

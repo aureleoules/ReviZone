@@ -99,7 +99,7 @@ label.star:before {
 }
 
 section.mg-top-40 {
-    margin: 40px 0 200px!important;
+    margin: 90px 0 200px!important;
 }
 
 .rounded {
@@ -349,9 +349,11 @@ img.cours-avatar {
     border-radius: 50%;
     background-size: contain;
 }
+
 .comment-publish-actions {
     margin: 8px 0 0px
 }
+
 .comment-publish {
     float: right;
 }
@@ -433,4 +435,79 @@ img.cours-avatar {
 
 .comment-input:-ms-input-placeholder {
     /*color: #ced2db;*/
+}
+
+.label-default {
+    background-color: #bdc3c7
+}
+
+.label-default[href]:hover, .label-default[href]:focus {
+    background-color: #bdc3c7
+}
+
+.label-primary {
+    background-color: #1abc9c
+}
+
+.label-primary[href]:hover, .label-primary[href]:focus {
+    background-color: #1abc9c
+}
+
+.label-success {
+    background-color: #2ecc71
+}
+
+.label-success[href]:hover, .label-success[href]:focus {
+    background-color: #2ecc71
+}
+
+.label-info {
+    background-color: #3498db
+}
+
+.label-info[href]:hover, .label-info[href]:focus {
+    background-color: #3498db
+}
+
+.label-warning {
+    background-color: #f1c40f
+}
+
+.label-warning[href]:hover, .label-warning[href]:focus {
+    background-color: #f1c40f
+}
+
+.label-danger {
+    background-color: #e74c3c
+}
+
+.label-danger[href]:hover, .label-danger[href]:focus {
+    background-color: #e74c3c
+}
+
+.label-inverse {
+    background-color: #34495e;
+    border: 1px solid #34495e!important;
+}
+
+.label-inverse[href]:hover, .label-inverse[href]:focus {
+    background-color: #34495e
+}
+.panel-inverse>.panel-heading {
+    color: #fff;
+    background-color: #34495e;
+    border-color: #34495e
+}
+
+.panel-inverse>.panel-heading+.panel-collapse>.panel-body {
+    border-top-color: #34495e
+}
+
+.panel-inverse>.panel-heading .badge {
+    color: #34495e;
+    background-color: #fff
+}
+
+.panel-inverse>.panel-footer+.panel-collapse>.panel-body {
+    border-bottom-color: #34495e
 }

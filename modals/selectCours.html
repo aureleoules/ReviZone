@@ -1,7 +1,7 @@
 <body>
-    <h2>Choisir un cours</h2>
+    <h4>Selectionnez un cours:</h4>
     <div ng-show="listCours.length > 0" class="item-cours">
-        <select id="selectedCours" size="5" class="form-control">
+        <select id="selectedCours" size="7" class="form-control">
             <option style="display:none" value="">Selectionnez un cours</option>
             <option ng-repeat="cours in listCours track by $index" value="{{$index}}">{{cours.classe}} - {{cours.matiere}} : {{cours.titre}}</option>
         </select>
@@ -11,6 +11,9 @@
             <p>Aucun cours rédigé par <a class="text-info" href="#/profil/{{profile.pseudo}}">@{{profile.pseudo}}</a>.</p>
         </center>
     </div>
-    <a href="" ng-click="closeThisDialog(); confirm()" class="btn btn-success btn-sm">Choisir</a>
-    <a href="" ng-click="closeThisDialog()" class="btn btn-default btn-sm">Annuler</a>
+    <div style="margin-top: 15px">
+        <a href="" ng-click="closeThisDialog(); confirm()" class="btn btn-primary btn-sm">Choisir</a>
+        <a href="" ng-click="closeThisDialog()" class="btn btn-inverse btn-sm">Annuler</a>
+    </div>
+
 </body>

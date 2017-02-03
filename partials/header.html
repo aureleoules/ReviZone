@@ -1,5 +1,5 @@
 <header id="header" ng-controller="AppCtrl">
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -13,32 +13,41 @@
 
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li><a href="#accueil">Accueil</a></li>
+                    <li><a href="#accueil">ACCUEIL <i class="fa fa-home ico-r"></i></a></li>
+                    <li ng-show="isAuthenticated()"><a href="#rediger" class="text-success">RÉDIGER <i class="fa fa-pencil ico-r"></i></a></li>
                 </ul>
-                <div class="navbar-form navbar-left">
-                    <a ng-show="isAuthenticated()" class="btn btn-info" href="#rediger">Rédiger un cours <i class="fa fa-pencil-square-o ico-r"></i></a>
-                    <a class="btn" ng-class="{'btn-info': isAuthenticated() === false, 'btn-primary': isAuthenticated() === true}"href="#trouver">Trouver un cours <i class="fa fa-file-text-o ico-r"></i></a>
-                    <a class="btn btn-primary" href="#exercer">S'exercer <i class="fa fa-pencil ico-r"></i></a>
-                </div>
-                <div class="navbar-form navbar-right" ng-show="!isAuthenticated()">
-                    <a href="#inscription" class="btn btn-info">S'INSCRIRE</a>
-                    <a href="#connexion" class="btn btn-primary">SE CONNECTER</a>
-                </div>
-
-
-                    <ul class="nav navbar-nav navbar-right">
-                        <li ng-show="isAuthenticated()" class="dropdown">
+                <a class="btn btn-default navbar-btn navbar-right" href="#/connexion" ng-hide="isAuthenticated()">SE CONNECTER</a>
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-show="isAuthenticated()" class="dropdown">
                         <a href="" class="dropdown-toggle" id="nameHeader" data-toggle="dropdown" role="button" aria-expanded="false">{{userData.name | uppercase}} <img style="margin-top: -6px; margin-left: 3px" ng-src="https://revizone.fr:8089/public/{{userData.pseudo}}.png" height="28" width="28" class="img-circle"/>  <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#profil"><i class="fa fa-user-circle-o"></i> Profil</a></li>
                             <li><a href="#classe"><i class="fa fa-users"></i> Ma classe</a></li>
                             <li class="divider desktop-only"></li>
-                            <li><center><button class="btn btn-danger" style="width: 95%" ng-click="logout()" >Déconnexion</button></center></li>
+                            <li>
+                                <center><button class="btn btn-danger" style="width: 95%" ng-click="logout()">Déconnexion</button></center>
+                            </li>
                         </ul>
-                </li>
+                    </li>
                 </ul>
-
+                <form class="navbar-form navbar-right" action="#" role="search">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input class="form-control" id="navbarInput-01" type="search" placeholder="Rechercher...">
+                            <span class="input-group-btn">
+                                <button type="submit" class="btn"><span class="fui-search"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </nav>
 </header>
+<script type="text/javascript">
+    $('.input-group').on('focus', '.form-control', function() {
+        $(this).closest('.input-group, .form-group').addClass('focus');
+    }).on('blur', '.form-control', function() {
+        $(this).closest('.input-group, .form-group').removeClass('focus');
+    });
+</script>

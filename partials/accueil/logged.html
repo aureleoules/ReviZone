@@ -2,9 +2,9 @@
     <div class="container">
         <div class="row">
             <div class="col-md-7 well">
-                <div ng-show="showFeed" class="item-cours" ng-repeat="cours in feed | orderBy:'-createdAt'">
+                <div ng-hide="!showFeed" class="item-cours" ng-repeat="cours in feed | orderBy:'-createdAt'">
                     <a href="#profil/{{cours.auteur}}"><img class="cours-avatar img-circle" width="35px" height="35px" ng-src="https://revizone.fr:8089/public/{{cours.auteur}}.png" /></a>
-                    <a href="#profil/{{cours.auteur}}">@{{cours.auteur}}</a>
+                    <a href="#profil/{{cours.auteur}}" class="text-primary">@{{cours.auteur}}</a>
                     <p>
                         <a href="#cours/{{cours._id}}" style="color: inherit">
                             <strong>{{cours.matiere}}</strong> - {{cours.titre}}
@@ -27,7 +27,7 @@
                     <a class="twPc-bg twPc-block"></a>
                     <div class="twPc-button">
                         <div ng-show="isAuthenticated">
-                            <a ng class="label label-success followBtn" href="#profil/{{user.pseudo}}">Voir mon profil</a>
+                            <a ng class="label label-primary" href="#profil/{{user.pseudo}}">Voir mon profil</a>
                         </div>
                     </div>
                     <a href="" class="twPc-avatarLink">
@@ -47,19 +47,19 @@
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="" title="{{listCours.length}} cours">
                                         <span class="twPc-StatLabel twPc-block">Cours</span>
-                                        <span class="twPc-StatValue text-success">{{listCours.length}}</span>
+                                        <span class="twPc-StatValue text-primary">{{listCours.length}}</span>
                                     </a>
                                 </li>
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="" title="{{lecturesTotal}} lectures">
                                         <span class="twPc-StatLabel twPc-block">Lectures</span>
-                                        <span class="twPc-StatValue text-success">{{lecturesTotal}}</span>
+                                        <span class="twPc-StatValue text-primary">{{lecturesTotal}}</span>
                                     </a>
                                 </li>
                                 <li class="twPc-ArrangeSizeFit">
                                     <a href="" title="Moyenne de {{average}}/5">
                                         <span class="twPc-StatLabel twPc-block">Note moyenne</span>
-                                        <span class="twPc-StatValue text-success">{{average}}/5</span>
+                                        <span class="twPc-StatValue text-primary">{{average}}/5</span>
                                     </a>
                                 </li>
                             </ul>
