@@ -1,11 +1,10 @@
-<section id="register">
+<section id="register" class="mg-top-40">
     <div class="container">
         <div class="row">
-            <div id="infosperso" class="form-horizontal">
+            <!-- <div id="infosperso" class="form-horizontal">
                 <div class="col-md-4 col-md-offset-4">
                     <div class="well border rounded animated flipInY">
                         <form class="" ng-submit="login()">
-
                             <fieldset>
                                 <h2>Connexion</h2>
                                 <div class="form-group has-primary">
@@ -31,6 +30,28 @@
 
                     </div>
                 </div>
+            </div> -->
+            <div class="col-md-6 col-center-block col-sm-12">
+                <form ng-submit="login()">
+                    <div class="login-form" style="margin-top: 25%">
+                        <h3 class="text-primary">Connexion</h3>
+                        <div class="form-group">
+                            <input type="text" class="form-control login-field" value="" ng-model="user.pseudo" placeholder="Pseudo ou email" id="login-name">
+                            <label class="login-field-icon fui-user" for="login-name"></label>
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" class="form-control login-field" value="" ng-model="user.password" placeholder="Mot de passe" id="login-pass">
+                            <label class="login-field-icon fui-lock" for="login-pass"></label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="login()" href="">Se connecter</button>
+                        <center>
+                            <a class="login-link" href="#/inscription">Pas d'identifiant ReviZone?</a>
+                            <a class="login-link" href="#/mdp">Mot de passe perdu?</a>
+                        </center>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

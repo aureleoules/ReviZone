@@ -6,41 +6,52 @@
             </div>
         </div>
         <div class="row">
-            <div class="newquiz" ng-repeat="quiz in quizs track by $index">
-                <div class="col-md-6 col-sm-12">
-                    <input type="text" ng-model="quiz.question" placeholder="Question du quiz" class="form-control">
-                </div>
-                <div class="col-md-5 col-sm-12">
-                    <input type="text" ng-model="quiz.reponse" placeholder="Réponse au quiz" class="form-control">
-                </div>
-                <div class="col-md-1" style="margin-bottom: 10px">
-                    <button class="btn btn-danger" ng-disabled="quizs.length == 1" ng-click="$parent.removeQuiz(quiz.id, quiz.question)"><i style="margin: 0"class="fa fa-minus"></i></button>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <button class="btn btn-success" ng-disabled="!quizs[quizs.length -1].question || !quizs[quizs.length -1].reponse" ng-click="addQuiz({id: quizs.length, question: '', reponse: '', type: 'qa'})"><i style="margin: 0" class="fa fa-plus"></i></button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" style="margin-top: 25px">
-                <div class="form-group">
-                    <div class="radio">
-                        <label>
-                           <input type="radio" ng-model="onlyFor" ng-checked="cours.chapitre" value="false" ng-disabled="!cours.chapitre">
-                           Pour le chapitre
-                         </label>
+            <div class="col-md-9" style="margin-bottom: 15px">
+                <div class="newquiz" ng-repeat="quiz in quizs track by $index">
+                    <div class="col-md-6 col-sm-12" style="margin-bottom: 5px">
+                        <input type="text" ng-model="quiz.question" placeholder="Question du quiz" class="form-control">
                     </div>
-                    <div class="radio">
-                        <label>
-                           <input type="radio" ng-model="onlyFor" value="true" ng-checked="!cours.chapitre" ng-disabled="!cours.chapitre">
-                           Seulement pour ce cours
-                         </label>
+                    <div class="col-md-5 col-sm-12" style="margin-bottom: 5px">
+                        <input type="text" ng-model="quiz.reponse" placeholder="Réponse au quiz" class="form-control">
+                    </div>
+                    <div class="col-md-1" style="margin-bottom: 10px">
+                        <button class="btn btn-danger" ng-disabled="quizs.length == 1" ng-click="$parent.removeQuiz(quiz.id, quiz.question)"><i style="margin: 0"class="fa fa-minus"></i></button>
                     </div>
                 </div>
-                <button ng-click="saveQuizs()" class="btn btn-success">Enregistrer <span ng-if="quizs.length == 1">mon</span><span ng-if="quizs.length > 1">mes</span> quiz</button>
+                <button class="btn btn-primary" style="margin-left: 15px" ng-disabled="!quizs[quizs.length -1].question || !quizs[quizs.length -1].reponse" ng-click="addQuiz({id: quizs.length, question: '', reponse: '', type: 'qa'})">
+                    Nouveau <i style="margin: 0" class="fa fa-plus ico-r"></i>
+                </button>
+            </div>
+            <div class="col-md-3 col-md-sm-12">
+                <div class="share mrl">
+                    <ul>
+                        <li>
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                       <input type="radio" data-toggle="radio" class="custom-checkbox" ng-model="onlyFor" ng-checked="cours.chapitre" value="false" ng-disabled="!cours.chapitre">
+                                       Pour le chapitre
+                                     </label>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="form-group">
+                                <div class="radio">
+                                    <label>
+                                       <input type="radio" data-toggle="radio" class="custom-checkbox" ng-model="onlyFor" value="true" ng-checked="!cours.chapitre" ng-disabled="!cours.chapitre">
+                                       Seulement pour ce cours
+                                     </label>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <button ng-click="saveQuizs()" class="btn btn-primary btn-block btn-large">Enregistrer <span ng-if="quizs.length == 1">mon</span><span ng-if="quizs.length > 1">mes</span> quiz</button>
+                </div>
             </div>
         </div>
     </div>
+    <script type="text/javascript">
+        $('.custom-checkbox').radiocheck();
+    </script>
 </section>

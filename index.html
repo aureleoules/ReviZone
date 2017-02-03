@@ -15,8 +15,7 @@
     <link rel="stylesheet" href="build/css/styles.css">
     <meta name="google-site-verification" content="h4xGnbqcWzvJjke_WFJfZQ5fde0RfqtUSCtfjqFJ-XQ" />
 </head>
-
-<body>
+<body ng-class="{'bg-primary': title == 'Connexion' || title == 'Inscription'}">
     <div ng-include="'partials/header.html'"></div>
     <div autoscroll="true" ng-view></div>
 

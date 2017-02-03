@@ -1,36 +1,44 @@
-<section id="liste">
+<section id="liste" class="mg-top-40">
     <div class="container">
         <div class="row">
             <div class="col-md-9 col-sm-12 rounded animated slideInLeft">
                 <div ng-repeat="quiz in quizs track by $index">
                     <div class="col-md-12 well">
-                        <p>{{quiz.question}} <a class="small" href="#profil/{{quiz.auteur}}">@{{quiz.auteur}}</a>  <a ng-if="quiz.chapitre" class="small text-info" style="float: right" href="#exercices/{{quiz.classe}}/{{quiz.matiere}}/{{quiz.chapitre}}">Voir les autres quiz du chapitre</a>
+                        <p>{{quiz.question}} <a class="small" href="#profil/{{quiz.auteur}}">@{{quiz.auteur}}</a> <a ng-if="quiz.chapitre" class="small text-info" style="float: right" href="#exercices/{{quiz.classe}}/{{quiz.matiere}}/{{quiz.chapitre}}">Voir les autres quiz du chapitre</a>
                             <span style="margin-left: 15px" ng-if="quiz.auteur == user.pseudo">
                                 <button class="btn btn-danger btn-sm" style="padding: 4px 6px" ng-click="deleteQuiz($index)">Supprimer ce quiz <i class="fa fa-trash-o ico-r"></i></button>
                             </span>
                         </p>
-                        <div class="form-group" ng-class="{'has-error': resultEx[$index].success == false, 'has-success': resultEx[$index].success == true}">
+                        <div class="form-group" ng-class="{'has-error': resultEx[$index].success == false, 'has-primary': resultEx[$index].success == true}">
                             <div class="input-group">
                                 <input type="text" class="form-control" ng-model="$parent.reponse[$index]" placeholder="Votre réponse...">
                                 <span class="input-group-btn">
                                       <button ng-hide="resultEx[$index]" class="btn btn-primary" type="button" ng-click="verify($index)">Vérifier</button>
                                       <button class="btn btn-success animated tada" ng-show="resultEx[$index].success == true">Succès! <i class="fa fa-check-circle-o"></i></button>
-                                      <button class="btn btn-danger animated jello" ng-show="resultEx[$index].success == false">Échec! <i class="fa fa-times"></i></button>
+                                      <a class="btn btn-danger animated jello" ng-show="resultEx[$index].success == false">Échec! <i class="fa fa-times"></i></a>
                                  </span>
                             </div>
                         </div>
+                        <script type="text/javascript">
+                            $('.input-group').on('focus', '.form-control', function() {
+                                $(this).closest('.input-group, .form-group').addClass('focus');
+                            }).on('blur', '.form-control', function() {
+                                $(this).closest('.input-group, .form-group').removeClass('focus');
+                            });
+                        </script>
                     </div>
                 </div>
                 <div ng-show="quizs.length < 1 || !quizs">
                     <center>
                         <i class="fa fa-frown-o fa-5x"></i>
                         <h3>Il n'y a aucun quiz pour ce cours.</h3>
-                        <a class="text-info" ng-if="user" href="#exercice/creer ">Créez-en ! <i class="fa fa-smile-o"></i></a>
-                        <a class="text-info" ng-if="!user" href="#connexion ">Connectez vous pour en créer ! <i class="fa fa-smile-o"></i></a>                        <center>
+                        <a class="text-primary" ng-if="user" href="#exercice/creer ">Créez-en ! <i class="fa fa-smile-o"></i></a>
+                        <a class="text-primary" ng-if="!user" href="#connexion ">Connectez vous pour en créer ! <i class="fa fa-smile-o"></i></a>
+                        <center>
                 </div>
             </div>
             <div class="col-md-3 col-sm-12">
-                <div class="panel panel-info animated slideInRight">
+                <div class="panel panel-primary animated slideInRight">
                     <div class="panel-heading">
                         <h3 class="panel-title">Informations du cours</h3>
                     </div>
@@ -41,10 +49,11 @@
                         <span ng-if="cours.chapitre !== null"><br> Chapitre: <span class="text-info">{{cours.chapitre}}</span></span>
                         <br> Lecture<span ng-if="cours.lectures > 1">s</span>: <span class="text-info">{{cours.lectures}}</span>
                         <br>Rédigé par <a class="text-info" href="#profil/{{cours.auteur}}">@{{cours.auteur}}</a>
-                        <br><a ng-show="user" href="#cours/{{cours._id}}/quiz/creer" class="btn btn-success">Rédiger un quiz <i class="fa fa-pencil ico-r"></i></a>
+                        <br><a ng-show="user" href="#cours/{{cours._id}}/quiz/creer" class="btn btn-primary">Rédiger un quiz <i class="fa fa-pencil ico-r"></i></a>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </section>

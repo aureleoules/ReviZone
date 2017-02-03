@@ -1,12 +1,7 @@
 <section id="register">
     <div class="container">
         <div class="row">
-            <div class="col-md-12">
-                <h1>Inscription</h1>
-            </div>
-        </div>
-        <div class="row">
-            <form id="infosperso" class="form-horizontal" ng-submit="signup()">
+            <!-- <form id="infosperso" class="form-horizontal" ng-submit="signup()">
                 <div class="col-md-8 col-centered col-sm-12">
                     <div class="well border rounded animated pulse">
                         <h3>Informations <span class="text-primary">personnelles</span></h3>
@@ -59,7 +54,6 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- "classe for (classe, key) in programme -->
                             <div class="form-group has-primary">
                                 <div class="col-md-12">
                                     <label for="inputClasse">Classe:</label>
@@ -86,8 +80,46 @@
                         <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px">S'inscrire</button>
                     </div>
                 </div>
-            </form>
+            </form> -->
+
+            <div class="col-md-6 col-center-block col-sm-12">
+                <form autocomplete="off" ng-submit="signup()">
+                    <!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+                    <div class="login-form" style="margin-top: 25%">
+                        <h3 class="text-primary">Inscription</h3>
+                        <div class="form-group">
+                            <input required type="text" class="form-control login-field" value="" ng-model="userInfos.name" placeholder="Nom et prénom" id="login-name">
+                            <label class="login-field-icon fui-user" for="login-name"></label>
+                        </div>
+
+                        <div class="form-group">
+                            <input required type="text" class="form-control login-field" value="" ng-model="userInfos.pseudo" placeholder="Pseudo" id="login-pseudo">
+                            <label class="login-field-icon fui-user" for="login-email"></label>
+                        </div>
+
+                        <div class="form-group">
+                            <input required type="email" class="form-control login-field" value="" ng-model="userInfos.email" placeholder="Email" id="login-email">
+                            <label class="login-field-icon fui-mail" for="login-email"></label>
+                        </div>
+
+                        <div class="form-group">
+                            <input required type="password" class="form-control login-field" value="" ng-model="userInfos.password" placeholder="Mot de passe" id="login-pass">
+                            <label class="login-field-icon fui-lock" for="login-pass"></label>
+                        </div>
+                        <label class="checkbox" for="checkbox1">
+                            <input required type="checkbox" value="" id="checkbox1" data-toggle="checkbox" class="custom-checkbox"><span class="icons"><span class="icon-unchecked"></span><span class="icon-checked"></span></span>
+                             <span class="text-primary">J'accepte les </span><a href="#cgu" target="_blank">Conditions Générales d'Utilisation</a>.
+                        </label>
+
+                        <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="login()" href="">S'inscrire</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+
 </section>
-<div ng-include="'partials/footer.html'"></div>
+<script type="text/javascript">
+    $('.checkbox').radiocheck();
+</script>
+<!-- <div ng-include="'partials/footer.html'"></div> -->

@@ -1,23 +1,23 @@
-<section id="liste">
+<section id="liste" class="mg-top-40">
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
+            <div ng-init="expanded = false" ng-class="{'col-md-9': expanded === false, 'col-md-12': expanded === true}">
                 <div class="col-md-12">
-                    <span style="position: absolute; padding: 12px 14px" class="label label-primary">{{cours.classe}}</span>
                     <center>
-                        <h3 style="width: 80%" class="text-center text-danger"><u><b>{{cours.matiere}} :</b> {{cours.titre}}</u> <i ng-if="cours.public == false" class="text-primary fa fa-lock ico-r"></i></h3></center>
-                    <center>
-                        <h4 class="text-center text-success"><u>{{cours.chapitre}}</u></h4></center>
-                    <div style="background-color: white; color: #2c3e50; margin-bottom: 20px;" class="animated fadeInUp">
+                        <span style="padding: 12px 14px; float: left" class="label label-primary">{{cours.classe}}</span>
+                        <h3 style="width: 80%" class="text-center text-danger"><u><b>{{cours.matiere}} :</b> {{cours.titre}}</u> <i ng-if="cours.public == false" class="text-primary fa fa-lock ico-r"></i></h3>
+                        <h4 class="text-center text-primary"><u>{{cours.chapitre}}</u></h4>
+                    </center>
+                    <a href="" ng-click="expanded = !expanded" style="float: right; position:relative; z-index:5;"><span ng-if="expanded === true">Réduire</span><span ng-if="!expanded">Agrandir</span> <i class="fa fa-expand ico-r"></i></a>
+                    <div style="margin-bottom: 20px;" class="animated fadeInUp">
                         <div class="row">
-                            <div id="editor-container" style="min-height: 700px; resize: vertical; overflow-x: hidden; background-color: white"></div>
+                            <div id="editor-container" style="width: 100%; min-height: 700px; resize: vertical; color: #2c3e50; overflow-x: hidden; background-color: white"></div>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <div class="col-md-3 col-sm-6">
-                <div class="panel panel-info animated slideInRight">
+            <div class="col-sm-6" ng-class="{'col-md-3': expanded === false, 'col-md-6': expanded === true}">
+                <div class="panel panel-primary animated slideInRight">
                     <div class="panel-heading">
                         <h3 class="panel-title">Informations</h3>
                     </div>
@@ -48,7 +48,7 @@
                 </div>
             </div>
             <div class="col-md-3 col-sm-6">
-                <div class="panel panel-warning animated slideInRight">
+                <div class="panel panel-info animated slideInRight">
                     <div class="panel-heading">
                         <h3 class="panel-title">Noter</h3>
                     </div>

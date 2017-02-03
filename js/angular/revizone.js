@@ -11,7 +11,8 @@ app.config(function($routeProvider, $locationProvider) {
     when('/accueil', {
         title: "Accueil",
         templateUrl: 'partials/home.html',
-        controller: 'homeCtrl'
+        controller: 'homeCtrl',
+        id: 'home'
     }).
     when('/inscription', {
         title: "Inscription",
@@ -43,7 +44,8 @@ app.config(function($routeProvider, $locationProvider) {
     when('/connexion', {
         title: "Connexion",
         templateUrl: 'partials/login.html',
-        controller: 'loginCtrl'
+        controller: 'loginCtrl',
+        id: "login"
     }).
     when('/profil/:user', {
         title: "Profil",

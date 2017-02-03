@@ -233,7 +233,7 @@ ul.twPc-Arrange {
 }
 
 .twPc-divStats a {
-    color: #2b3e50;
+    /*color: #2b3e50;*/
 }
 
 .subinfo {
@@ -493,6 +493,7 @@ img.cours-avatar {
 .label-inverse[href]:hover, .label-inverse[href]:focus {
     background-color: #34495e
 }
+
 .panel-inverse>.panel-heading {
     color: #fff;
     background-color: #34495e;
@@ -510,4 +511,24 @@ img.cours-avatar {
 
 .panel-inverse>.panel-footer+.panel-collapse>.panel-body {
     border-bottom-color: #34495e
+}
+
+.bg-primary {
+    background-color: #1abc9c
+}
+
+.col-center-block {
+    float: none;
+    display: block;
+    margin: 0 auto;
+    /* margin-left: auto; margin-right: auto; */
+}
+
+@media (max-width: 991px) {
+    .mobile-only {
+        display: block !important;
+    }
+    .desktop-only {
+        display: none !important;
+    }
 }

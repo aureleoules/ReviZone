@@ -159,41 +159,6 @@ app.controller('modifierCtrl', function($scope, $http, API_ENDPOINT, AuthService
             }
         });
     };
-    // $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
-    //     $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
-    // });
-
-    // $scope.selectDefaultOptions = function()  {
-    //     //CLASSE:
-    //     $('#classeSelector option').filter(function() {
-    //         return $(this).html() == $scope.cours.classe;
-    //     }).remove();
-    //     $('#classeSelector').append($('<option>', {
-    //         value: $scope.cours.classe,
-    //         text: $scope.cours.classe
-    //     }));
-    //     $('#classeSelector option[value=' + $scope.cours.classe + ']').attr('selected', 'selected');
-    //
-    //     //MATIERE:
-    //     $('#matiereSelector option').filter(function() {
-    //         return $(this).html() == $scope.cours.matiere;
-    //     }).remove();
-    //     $('#matiereSelector').append($('<option>', {
-    //         value: $scope.cours.matiere,
-    //         text: $scope.cours.matiere
-    //     }));
-    //     $('#matiereSelector option[value=' + $scope.cours.matiere + ']').attr('selected', 'selected');
-    //
-    //     //CHAPITRE:
-    //     $('#chapitreSelector option').filter(function() {
-    //         return $(this).html() == $scope.cours.chapitre;
-    //     }).remove();
-    //     $('#chapitreSelector').append($('<option>', {
-    //         value: $scope.cours.chapitre,
-    //         text: $scope.cours.chapitre
-    //     }));
-    //     $('#chapitreSelector option[value=' + $scope.cours.chapitre + ']').attr('selected', 'selected');
-    // }
 });
 
 app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, $routeParams, $location, UtilsFactory, ngDialog, $rootScope, Upload) { //page de profil
@@ -210,21 +175,16 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
     } else {
         callback($routeParams.user);
     }
-    var isCodePostalReady;
-    $scope.checkIfReady = function()  {
-        if ($('#inputCodePostal').val().length >= 4) {
-            getEtablissements();
+    var getEtablissements = function(user)  {
+        if(typeof user.scolaire !== 'undefined' && typeof user.scolaire.classe !== 'undefined') {
+            $http.get(API_ENDPOINT.url + '/getetablissements', {
+                params:  {
+                    code_postal: user.scolaire.code_postal
+                }
+            }).then(function(result) {
+                $scope.etablissements = result.data;
+            });
         }
-    }
-
-    var getEtablissements = function()  {
-        $http.get(API_ENDPOINT.url + '/getetablissements', {
-            params:  {
-                code_postal: $scope.editedUser.scolaire.code_postal
-            }
-        }).then(function(result) {
-            $scope.etablissements = result.data;
-        });
     }
 
     function callback(currentUser)  {
@@ -240,13 +200,7 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
                 UtilsFactory.makeAlert("Cet utilisateur n'existe pas.", "danger")
                 return;
             }
-            $http.get(API_ENDPOINT.url + '/getEtablissementById', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
-                params:  {
-                    id: $scope.profile.scolaire.etablissement
-                }
-            }).then(function(result) {
-                $scope.etablissement = result.data[0];
-            });
+            getEtablissements($scope.profile);
             $http.get(API_ENDPOINT.url + '/getListCours', {
                 params:  {
                     pseudo: currentUser
@@ -337,9 +291,15 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
         }
     }
     $scope.edit = function() {
+        var isCodePostalReady;
+        $scope.checkIfReady = function()  {
+            if ($('#inputCodePostal').val().length >= 4) {
+                getEtablissements($scope.user);
+            }
+        }
         $scope.editedUser = angular.copy($scope.user);
         $scope.editedUser.scolaire.code_postal = parseInt($scope.editedUser.scolaire.code_postal);
-        getEtablissements();
+        getEtablissements($scope.user);
         $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
             $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
         });
@@ -1005,6 +965,7 @@ app.controller('redigerQuizCtrl', function($routeParams, $scope, AuthService, $l
 
 
 app.controller('loginCtrl', function($scope, AuthService, $location, UtilsFactory) {
+    $scope.bodyCss = 'bg-primary';
     if (AuthService.isAuthenticated())  {
         $location.path('/accueil');
     }
@@ -1064,7 +1025,7 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
     });
     $scope.$on(AUTH_EVENTS.notAuthenticated, function(event) {
         AuthService.logout();
-        $location.path('/accueil');
+        $location.path('/');
     });
 
     // $('.navbar-collapse a:not(#nameHeader)').click(function() {
@@ -1095,7 +1056,7 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
 
     $scope.logout = function() {
         AuthService.logout();
-        $location.path('/accueil');
+        $location.path('/');
     };
 
     $rootScope.$on('userLoggedIn', function(data) {

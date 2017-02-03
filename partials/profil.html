@@ -76,9 +76,12 @@
                             </ul>
                             <ul class="twPc-Arrange">
                                 <li class="twPc-ArrangeSizeFit">
-                                    <a href="">
-                                        <span class="text-primary">{{etablissement.appellation_officielle | uppercase}} - {{profile.scolaire.classe | uppercase}} {{profile.scolaire.numero_classe}}</span>
+                                    <a href="" ng-if="profile.scolaire.classe">
+                                        <span class="text-primary">{{etablissement.appellation_officielle | uppercase }} - {{profile.scolaire.classe | uppercase}} {{profile.scolaire.numero_classe}}</span>
                                         <br><span class="text-primary">{{etablissement.localite_acheminement_uai | uppercase}}</span>
+                                    </a>
+                                    <a href="" class="text-primary" ng-if="!profile.scolaire.classe">
+                                        Aucune information scolaire renseignée
                                     </a>
                                 </li>
                             </ul>
