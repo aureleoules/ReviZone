@@ -175,11 +175,11 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
     } else {
         callback($routeParams.user);
     }
-    var getEtablissements = function(user)  {
-        if(typeof user.scolaire !== 'undefined' && typeof user.scolaire.classe !== 'undefined') {
+    var getEtablissements = function(code_postal)  {
+        if (code_postal) {
             $http.get(API_ENDPOINT.url + '/getetablissements', {
                 params:  {
-                    code_postal: user.scolaire.code_postal
+                    code_postal: code_postal
                 }
             }).then(function(result) {
                 $scope.etablissements = result.data;
@@ -194,13 +194,21 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
             }
         }).then(function(result) {
             $scope.profile = result.data[0];
-            $rootScope.title = 'Profil: @' + $scope.profile.pseudo;
             if (!$scope.profile)  {
                 $location.path('/accueil');
                 UtilsFactory.makeAlert("Cet utilisateur n'existe pas.", "danger")
                 return;
             }
-            getEtablissements($scope.profile);
+            $rootScope.title = 'Profil: @' + $scope.profile.pseudo;
+            if (typeof $scope.profile.scolaire !== 'undefined' && typeof $scope.user.scolaire.classe !== 'undefined') {
+                $http.get(API_ENDPOINT.url + '/getEtablissementById', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
+                    params:  {
+                        id: $scope.profile.scolaire.etablissement
+                    }
+                }).then(function(result) {
+                    $scope.etablissement = result.data[0];
+                });
+            }
             $http.get(API_ENDPOINT.url + '/getListCours', {
                 params:  {
                     pseudo: currentUser
@@ -290,16 +298,20 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
             });
         }
     }
-    $scope.edit = function() {
-        var isCodePostalReady;
-        $scope.checkIfReady = function()  {
-            if ($('#inputCodePostal').val().length >= 4) {
-                getEtablissements($scope.user);
-            }
+    var isCodePostalReady;
+    $scope.checkIfReady = function()  {
+        var cp = $('#inputCodePostal').val();
+        if (cp.length >= 4) {
+            getEtablissements(cp);
         }
+    }
+    $scope.edit = function() {
+        $scope.editedUser = '';
         $scope.editedUser = angular.copy($scope.user);
         $scope.editedUser.scolaire.code_postal = parseInt($scope.editedUser.scolaire.code_postal);
-        getEtablissements($scope.user);
+        if (typeof $scope.user.scolaire !== 'undefined' && typeof $scope.user.scolaire.code_postal !== 'undefined') {
+            getEtablissements($scope.user.scolaire.code_postal);
+        }
         $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
             $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
         });
@@ -309,18 +321,22 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
                 className: 'ngdialog-theme-default',
                 scope: $scope
             });
-            $rootScope.$on('ngDialog.closing', function(e, $dialog) {});
+            $rootScope.$on('ngDialog.closing', function(e, $dialog) {
+                $scope.editedUser = {};
+            });
         }
         $scope.upload = function(file) {
             Upload.upload({
                 url: API_ENDPOINT.url + '/savePicture',
                 data: {
-                    file: file,
-                    'username': $scope.user.pseudo
+                    file: file
                 }
             });
         };
         $scope.save = function()  {
+            if (!$scope.editedUser.code_postal) {
+                $scope.editedUser.etablissement = '';
+            }
             $scope.upload($scope.picFile);
             $http.put(API_ENDPOINT.url + '/editUser', {
                 user: $scope.editedUser
@@ -333,7 +349,14 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
                         }
                     }).then(function(result) {
                         $scope.user = result.data[0];
-
+                        $scope.profile = result.data[0];
+                        $http.get(API_ENDPOINT.url + '/getEtablissementById', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
+                            params:  {
+                                id: $scope.profile.scolaire.etablissement
+                            }
+                        }).then(function(result) {
+                            $scope.etablissement = result.data[0];
+                        });
                     });
                 } else {
                     UtilsFactory.makeAlert(result.data.msg, "danger");
@@ -1116,27 +1139,15 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT, 
         });
     }
     $scope.removeComment = function(_id) {
-        $scope.dialog = {
-            text: "Êtes-vous certain de vouloir supprimer ce commentaire",
-            confirmBtn: "Oui je veux le supprimer."
-        }
-        ngDialog.open({
-            template: './modals/confirmation.html',
-            className: 'ngdialog-theme-default',
-            scope: $scope
+        $http.delete(API_ENDPOINT.url + '/removeClasseFeed', {
+            params: {
+                _id: _id
+            }
+        }).then(function(result)  {
+            if (result.data.success === false)  {} else {
+                getClasseFeed();
+            }
         });
-        $scope.confirm = function() {
-            $http.delete(API_ENDPOINT.url + '/removeClasseFeed', {
-                params: {
-                    _id: _id
-                }
-            }).then(function(result)  {
-                if (result.data.success === false)  {} else {
-                    getClasseFeed();
-                }
-            });
-        }
-
     }
 
     $scope.selectCours = function() {

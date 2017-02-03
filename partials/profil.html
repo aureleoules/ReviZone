@@ -7,7 +7,7 @@
                         <h2 class="panel-title"><b>Classeur</b> de {{profile.name}}</h2>
                     </div>
                     <div class="btn-group btn-group-justified" ng-hide="listCours.length < 1">
-                        <a ng-hide="!matieresList" href="" ng-click="selectMatiere('all')" class="btn btn-inverse" ng-class="{active: selectedMatiere === 'all'}"style="border-radius: 0px">Tous</a>
+                        <a ng-hide="!matieresList" href="" ng-click="selectMatiere('all')" class="btn btn-inverse" ng-class="{active: selectedMatiere === 'all'}" style="border-radius: 0px">Tous</a>
                         <a href="" ng-click="selectMatiere($index)" ng-repeat="matiere in matieresList" ng-class="{active: $index === selectedMatiere}" class="btn btn-inverse" id="btn{{matiere}}" style="border-radius: 0px">{{matiere}}</a>
                     </div>
                     <div class="panel-body" style="padding-bottom: 0px">
@@ -33,7 +33,7 @@
                                 <a ng-if="isFollowed" class="label label-danger followBtn" href="" ng-click="unfollow()">Ne plus suivre @{{profile.pseudo}}</a>
                             </div>
                             <div ng-show="profile.pseudo === user.pseudo">
-                                <a ng class="label label-info followBtn" href="" ng-click="edit()">Modifier mes informations</a>
+                                <a ng class="label label-primary" href="" ng-click="edit()">Modifier mes informations</a>
                             </div>
                         </div>
                         <div ng-show="!isAuthenticated">
@@ -76,12 +76,12 @@
                             </ul>
                             <ul class="twPc-Arrange">
                                 <li class="twPc-ArrangeSizeFit">
-                                    <a href="" ng-if="profile.scolaire.classe">
-                                        <span class="text-primary">{{etablissement.appellation_officielle | uppercase }} - {{profile.scolaire.classe | uppercase}} {{profile.scolaire.numero_classe}}</span>
-                                        <br><span class="text-primary">{{etablissement.localite_acheminement_uai | uppercase}}</span>
+                                    <a href="">
+                                        <span class="text-primary" ng-if="profile.scolaire.etablissement">{{etablissement.appellation_officielle | uppercase }} </span><span class="text-primary" ng-if="profile.scolaire.classe">{{profile.scolaire.classe | uppercase}}</span>                                        <span class="text-primary" ng-if="profile.scolaire.etablissement">{{profile.scolaire.numero_classe}}</span>
+                                        <br><span ng-if="profile.scolaire.etablissement" class="text-primary">{{etablissement.localite_acheminement_uai | uppercase}}</span>
                                     </a>
-                                    <a href="" class="text-primary" ng-if="!profile.scolaire.classe">
-                                        Aucune information scolaire renseignée
+                                    <a href="" class="text-primary" ng-if="!profile.scolaire.etablissement && !profile.scolaire.classe">
+                                        Informations scolaires non renseignées
                                     </a>
                                 </li>
                             </ul>
