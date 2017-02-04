@@ -81,13 +81,22 @@ module.exports = function(grunt) {
                     'build/js/scripts.js': ['build/js/scripts.js']
                 }
             }
-        }
+        },
+        copy: {
+            icons: {
+                flatten: true,
+                expand: true,
+                src: 'css/icons/*',
+                dest: 'build/icons/',
+            },
+        },
     });
 
-    grunt.registerTask('all', ['concat:js', 'ngAnnotate', 'uglify:js', 'concat:css', 'cssmin:css']);
+    grunt.registerTask('all', ['js', 'css']);
     grunt.registerTask('js', ['concat:js', 'ngAnnotate', 'uglify:js']);
-    grunt.registerTask('css', ['concat:css', 'cssmin:css']);
+    grunt.registerTask('css', ['concat:css', 'cssmin:css', 'copy:icons']);
 
+    grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');

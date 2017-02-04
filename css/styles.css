@@ -242,7 +242,7 @@ ul.twPc-Arrange {
 
 section, .section {
     margin-top: 40px !important;
-    margin-bottom: 100px;
+    /*margin-bottom: 100px;*/
 }
 
 img.cours-avatar {
@@ -517,6 +517,10 @@ img.cours-avatar {
     background-color: #1abc9c
 }
 
+.bg-default {
+    background-color: #f5f8fa
+}
+
 .col-center-block {
     float: none;
     display: block;
@@ -526,20 +530,43 @@ img.cours-avatar {
 
 @media only screen and (min-width:992px) {
     .mobile-only {
-        display:none !important;
+        display: none !important;
     }
-
     .desktop-only {
-        display: inline-block !important;
+        display: inherit !important;
     }
 }
 
 @media only screen and (max-width: 991px) {
     .mobile-only {
-        display:block !important;
+        display: block !important;
     }
-
     .desktop-only {
-        display:none !important;
+        display: none !important;
     }
+}
+
+.home {
+    font-family: 'Signika', sans-serif;
+}
+
+.home-main-container {
+    height: 100%;
+    padding-top: 150px;
+    padding-bottom: 150px;
+}
+
+.home-container {
+    height: 100%;
+    padding-top: 75px;
+    padding-bottom: 75px;
+}
+
+.home-show-item {
+    padding-bottom: 35px;
+    display: block;
+}
+
+.no-margin-r {
+    margin-right: 0
 }

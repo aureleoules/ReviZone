@@ -1,35 +1,55 @@
-<div id="home" style="height: 100%">
+<section id="home" class="home">
+    <div class="container-fluid bg-primary home-main-container">
+        <div class="row">
+            <div class="col-md-10 col-center-block">
+                <div class="text-center">
+                    <h2>PROGRESSEZ AVEC REVIZONE!</h2>
+                    <h4>Partagez vos cours avec des milliers d'autres élèves!</h4>
+                    <a class="btn btn-inverse btn-large btn-block mobile-only" href="#/inscription">Je m'inscris!</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid bg-default home-container desktop-only">
+        <div class="row demo-tiles no-margin-r">
+            <div class="col-md-10 col-center-block">
+                <div class="col-xs-3">
+                    <div class="tile">
+                        <img src="./build/icons/clocks.svg" alt="Horloge" class="tile-image big-illustration">
+                        <h3 class="tile-title">Rapide</h3>
+                        <p>Apprenez vos leçon en un temps minime!</p>
+                        <a class="btn btn-primary btn-large btn-block" href="#/inscription">Je m'inscris!</a>
+                    </div>
+                </div>
 
+                <div class="col-xs-3">
+                    <div class="tile">
+                        <img src="./build/icons/compas.svg" alt="Compas" class="tile-image">
+                        <h3 class="tile-title">Simple</h3>
+                        <p>Laissez-vous guider par <strong>ReviZone</strong>!</p>
+                        <a class="btn btn-primary btn-large btn-block" href="#/inscription">Je m'inscris!</a>
+                    </div>
+                </div>
 
-    <div class="img-header-1">
-        <div class="caption">
-            <span style="font-size: 30px; color: #2c3e50"><h3>PROGRESSEZ À L'ÉCOLE GRÂCE À</h3></span>
-        </div>
-        <div class="caption" style="margin-top: 75px">
-            <span class="text-border" style="font-size:25px">REVIZONE.FR</span><br>
-        </div>
-    </div>
-    <div style="text-align:center;padding:50px 50px">
-        <center>
-            <h1 style="margin-bottom: 20px"><strong>PROGRESSEZ À L'ÉCOLE GRÂCE À REVIZONE</strong></h1>
-            <h3><strong>J'APPRENDS</strong></h3>
-            <p>
-                <strong>ReviZone</strong> vous permet d'apprendre mieux vos cours en les réécrivant, les relisant, et les réécoutant!
-            </p>
-            <h3><strong>JE M'ENTRAINE</strong></h3>
-            <p>
-                Vérifiez vos acquis grâce aux quiz et exercices rédigés par la communauté ou par <strong>ReviZone</strong>!
-            </p>
-            <h3><strong>JE RESTE INFORMÉ</strong></h3>
-            <p>
-                Les cours d'un élève vous plaisent ? <strong>Suivez</strong> le pour accéder à tous ses cours rapidement!
-            </p>
-        </center>
-    </div>
-    <div class="img-header-2">
-        <div class="caption-center">
-            <a href="#inscription" class="btn btn-success animated infinite pulse" style="font-size:120%;">JE M'INSCRIS GRATUITEMENT</a>
+                <div class="col-xs-3">
+                    <div class="tile">
+                        <img src="./build/icons/pencils.svg" alt="Crayons" class="tile-image">
+                        <h3 class="tile-title">Collaborez!</h3>
+                        <p>Partagez vos cours avec vos camarades!</p>
+                        <a class="btn btn-primary btn-large btn-block" href="#/inscription">Je m'inscris!</a>
+                    </div>
+                </div>
+
+                <div class="col-xs-3">
+                    <div class="tile tile-hot">
+                        <img src="./build/icons/chat.svg" alt="Chat" class="tile-image">
+                        <h3 class="tile-title">Suivez ReviZone!</h3>
+                        <p>Vos commentaires nous aide beaucoup!</p>
+                        <a class="btn btn-primary btn-large btn-block" href="#/inscription">Je m'inscris!</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</section>
 <div ng-include="'partials/footer.html'"></div>
