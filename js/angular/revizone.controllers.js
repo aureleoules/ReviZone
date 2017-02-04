@@ -1138,7 +1138,7 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
             chapitre: $('#chapitre option:selected').text() || 'Tous',
             keywords: $scope.search.keywords || 'Tous'
         }
-        $location.path(`/recherche/${criteres.classe}/${criteres.matiere}/${criteres.chapitre}/${criteres.keywords}`);
+        $location.path('/recherche/' + criteres.classe + '/' + criteres.matiere + '/' + criteres.chapitre + '/' + criteres.keywords);
     }
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
