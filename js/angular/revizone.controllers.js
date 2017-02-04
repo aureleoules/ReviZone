@@ -2,6 +2,17 @@ var app = angular.module('revizone.controllers', []);
 
 //Home Page Controller
 app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, API_ENDPOINT) {
+    $scope.homeTitles = [
+        'Ameliorez vos notes!',
+        'Boostez vos notes!',
+        "Progressez à l'école!",
+        "Augmentez votre moyenne!",
+        'Optimisez votre temps de travail!',
+        'Progressez avec ReviZone!',
+        'Boostez votre moyenne avec ReviZone'
+    ];
+    $scope.num = Math.ceil(Math.random() * $scope.homeTitles.length -1);
+    //Get a random sentence & display it
     $scope.showFeed = true;
     $scope.isAuthenticated = AuthService.isAuthenticated();
     if ($scope.isAuthenticated)  {
