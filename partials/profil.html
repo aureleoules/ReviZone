@@ -76,7 +76,7 @@
                             </ul>
                             <ul class="twPc-Arrange">
                                 <li class="twPc-ArrangeSizeFit">
-                                    <a href="">
+                                    <a href="" ng-if="profile.scolaire.etablissement || profile.scolaire.classe">
                                         <span class="text-primary" ng-if="profile.scolaire.etablissement">{{etablissement.appellation_officielle | uppercase }} </span><span class="text-primary" ng-if="profile.scolaire.classe">{{profile.scolaire.classe | uppercase}}</span>                                        <span class="text-primary" ng-if="profile.scolaire.etablissement">{{profile.scolaire.numero_classe}}</span>
                                         <br><span ng-if="profile.scolaire.etablissement" class="text-primary">{{etablissement.localite_acheminement_uai | uppercase}}</span>
                                     </a>

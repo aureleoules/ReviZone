@@ -308,8 +308,8 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
     $scope.edit = function() {
         $scope.editedUser = '';
         $scope.editedUser = angular.copy($scope.user);
-        $scope.editedUser.scolaire.code_postal = parseInt($scope.editedUser.scolaire.code_postal);
         if (typeof $scope.user.scolaire !== 'undefined' && typeof $scope.user.scolaire.code_postal !== 'undefined') {
+            $scope.editedUser.scolaire.code_postal = parseInt($scope.editedUser.scolaire.code_postal);
             getEtablissements($scope.user.scolaire.code_postal);
         }
         $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
