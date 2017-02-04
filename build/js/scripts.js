@@ -357,6 +357,11 @@ app.config(function($routeProvider, $locationProvider) {
     }).
     when('/trouver', {
         title: "Recherche de cours",
+        templateUrl: 'partials/trouver.html',
+        controller: 'trouverCtrl'
+    }).
+    when('/recherche/:classe/:matiere/:chapitre/:keywords', {
+        title: "Recherche",
         templateUrl: 'partials/recherche.html',
         controller: 'rechercheCtrl'
     }).
@@ -13783,8 +13788,53 @@ app.controller('exercicesCtrl', function($scope, AuthService, $location, UtilsFa
         }
     }
 });
-
-app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFactory) {
+app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFactory, $routeParams) {
+    $scope.currentPage = 0;
+    $scope.pageSize = 10;
+    var coursLength;
+    $scope.numberOfPages = function() {
+        return Math.ceil(coursLength / $scope.pageSize);
+    }
+    $scope.searchLess = function()  {
+        if ($scope.currentPage > 1)  {
+            $scope.currentPage--;
+            $scope.rechercher($scope.currentPage);
+        }
+    }
+    $scope.searchMore = function()  {
+        if ($scope.currentPage < $scope.numberOfPages())  {
+            $scope.currentPage++;
+            $scope.rechercher($scope.currentPage);
+        }
+    }
+    $scope.rechercher = function(page)  {
+        var classe = $routeParams.classe;
+        var matiere = $routeParams.matiere;
+        var chapitre = $routeParams.chapitre;
+        var keywords = $routeParams.keywords;
+        $scope.currentPage = page;
+        var criteres =   {
+            keywords: keywords,
+            classe: classe,
+            matiere: matiere,
+            chapitre: chapitre,
+            page: $scope.currentPage
+        }
+        $http.get(API_ENDPOINT.url + '/chercherCours', {
+            params: criteres
+        }).then(function(result) {
+            if (result.data.success === false) {
+                UtilsFactory.makeAlert(result.data.msg, 'danger')
+            } else {
+                $scope.result = result.data.cours;
+                console.log($scope.result);
+                coursLength = result.data.coursLength;
+            }
+        });
+    }
+    $scope.rechercher(1);
+});
+app.controller('trouverCtrl', function($scope, $http, API_ENDPOINT, UtilsFactory) {
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
         $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
@@ -14285,6 +14335,19 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
 
     $rootScope.$on('userLoggedIn', function(data) {
         getUserData();
+    });
+
+    $scope.search = function() {
+        var criteres = {
+            classe: $('#classe option:selected').text() || 'Tous',
+            matiere: $('#matiere option:selected').text() || 'Tous',
+            chapitre: $('#chapitre option:selected').text() || 'Tous',
+            keywords: $scope.search.keywords || 'Tous'
+        }
+        $location.path(`/recherche/${criteres.classe}/${criteres.matiere}/${criteres.chapitre}/${criteres.keywords}`);
+    }
+    $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
+        $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
     });
 
 });

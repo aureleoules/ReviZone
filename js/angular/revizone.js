@@ -21,6 +21,11 @@ app.config(function($routeProvider, $locationProvider) {
     }).
     when('/trouver', {
         title: "Recherche de cours",
+        templateUrl: 'partials/trouver.html',
+        controller: 'trouverCtrl'
+    }).
+    when('/recherche/:classe/:matiere/:chapitre/:keywords', {
+        title: "Recherche",
         templateUrl: 'partials/recherche.html',
         controller: 'rechercheCtrl'
     }).

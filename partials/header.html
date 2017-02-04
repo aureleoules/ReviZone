@@ -22,7 +22,7 @@
                         <a href="" class="dropdown-toggle" id="nameHeader" data-toggle="dropdown" role="button" aria-expanded="false">{{userData.name | uppercase}} <img style="margin-top: -6px; margin-left: 3px" ng-src="https://revizone.fr:8089/public/{{userData.pseudo}}.png" height="28" width="28" class="img-circle"/>  <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#profil"><i class="fa fa-user-circle-o"></i> Profil</a></li>
-                            <li><a href="#classe" ><i class="fa fa-users"></i> Ma classe</a></li>
+                            <li><a href="#classe"><i class="fa fa-users"></i> Ma classe</a></li>
                             <li class="divider desktop-only"></li>
                             <li>
                                 <center><button class="btn btn-danger" style="width: 95%" ng-click="logout()">Déconnexion</button></center>
@@ -30,10 +30,30 @@
                         </ul>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-right" action="#" role="search">
+                <form class="navbar-form navbar-right" ng-submit="search()" role="search">
                     <div class="form-group">
+                        <div class="btn-group">
+                            <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-sliders"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-inverse" role="menu">
+                                <li>
+                                    <select style="padding-top: 15px" required class="form-control select select-primary select-block mbl" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme">
+                                        <option value='Tous'>Classe</option>
+                                    </select>
+                                </li>
+                                <li>
+                                    <select required class="form-control select select-primary select-block mbl" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres">
+                                            <option value='Tous'>Matière</option>
+                                        </select>
+                                </li>
+                                <li>
+                                    <select style="padding-bottom: 15px"required class="form-control select select-primary select-block mbl" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres">
+                                            <option value='Tous'>Chapitre</option>
+                                    </select>
+                                </li>
+                            </ul>
+                        </div>
                         <div class="input-group">
-                            <input class="form-control" id="navbarInput-01" type="search" placeholder="Rechercher...">
+                            <input class="form-control" ng-model="search.keywords" id="navbarInput-01" type="search" placeholder="Rechercher...">
                             <span class="input-group-btn">
                                 <button type="submit" class="btn btn-primary" id="check"><span class="fui-search"></span></button>
                             </span>
@@ -50,4 +70,5 @@
     }).on('blur', '.form-control', function() {
         $(this).closest('.input-group, .form-group').removeClass('focus');
     });
+    $("select").select2();
 </script>
