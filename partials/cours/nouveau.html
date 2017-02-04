@@ -18,21 +18,21 @@
                         <ul>
                             <li>
                                 <div class="form-group has-primary">
-                                    <select required class="form-control select select-primary select-block mbl" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme">
+                                    <select required class="form-control select select-primary select-block" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme">
                                         <option value=''>Classe</option>
                                     </select>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-group has-primary">
-                                    <select required class="form-control select select-primary select-block mbl" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres">
+                                    <select required class="form-control select select-primary select-block" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres">
                                             <option value=''>Matière</option>
                                         </select>
                                 </div>
                             </li>
                             <li>
                                 <div class="form-group has-primary">
-                                    <select required class="form-control select select-primary select-block mbl" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres">
+                                    <select required class="form-control select select-primary select-block" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres">
                                             <option value=''>Chapitre <small>(facultatif)</small></option>
                                     </select>
                                 </div>
