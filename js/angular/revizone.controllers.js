@@ -583,6 +583,7 @@ app.controller('exercicesCtrl', function($scope, AuthService, $location, UtilsFa
     }
 });
 app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFactory, $routeParams) {
+    $scope.filter = '-average';
     $scope.getNumber = function(num) {
         return new Array(num);
     }

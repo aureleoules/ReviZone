@@ -5,9 +5,9 @@
                 <h2>Résulats: <small style="display: inline-block" ng-if="coursLength !== 0" class="text-primary">({{coursLength}} résultat<span ng-if="coursLength > 1">s</span>)</small></h2>
                 <label style="margin-top: 5px">Trier par: </label>
                 <select class="form-control select select-primary select-block mbl" ng-model="filter">
-                      <option selected value="-createdAt">Date (récent)</option>
+                      <option selected value="-average">Notation</option>
+                      <option value="-createdAt">Date (récent)</option>
                       <option value="createdAt">Date (ancien)</option>
-                      <option value="-average">Notation</option>
                       <option value="-lectures">Lectures</option>
                 </select>
                 <div class="item-cours" ng-repeat="cours in result | orderBy:filter">
@@ -19,7 +19,7 @@
                         </a>
                         <br>
                         <i class="cours-titre">{{cours.chapitre}}</i>
-                        <div style="display: inline; float: right"ng-repeat="star in getNumber(cours.average) track by $index">
+                        <div style="display: inline; float: right" ng-repeat="star in getNumber(cours.average) track by $index">
                             <i class="fa fa-star text-primary"></i>
                         </div>
                         <div class="bottom-comment">
