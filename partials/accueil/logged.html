@@ -1,7 +1,8 @@
 <section id="home" class="mg-top-40">
     <div class="container">
         <div class="row">
-            <div class="col-md-7 well">
+            <div class="col-md-7">
+                <div class="well">
                 <center><i ng-if="!feed" class="text-center fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i></center>
                 <div ng-hide="!feed || feed.length < 1" class="item-cours" ng-repeat="cours in feed | orderBy:'-createdAt'">
                     <a href="#profil/{{cours.auteur}}"><img class="cours-avatar img-circle" width="35px" height="35px" ng-src="https://revizone.fr:8089/public/{{cours.auteur}}.png" /></a>
@@ -22,6 +23,7 @@
                         <center>
                 </div>
 
+                </div>
             </div>
             <div class="col-md-4 col-md-push-1">
                 <div class="twPc-div animated flipInY">
