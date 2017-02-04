@@ -11,9 +11,9 @@
                         <a href="" ng-click="selectMatiere($index)" ng-repeat="matiere in matieresList" ng-class="{active: $index === selectedMatiere}" class="btn btn-inverse" id="btn{{matiere}}" style="border-radius: 0px">{{matiere}}</a>
                     </div>
                     <div class="panel-body" style="padding-bottom: 0px">
+                        <center><i style="margin-bottom: 15px" ng-if="!coursArray" class="text-center fa fa-spinner fa-spin fa-lg" aria-hidden="true"></i></center>
                         <div ng-hide="listCours.length < 1">
                             <a ng-repeat="item in coursArray | orderBy:'-createdAt'" href="#cours/{{item._id}}" class="list-group-item"><span class="badge btn-inverse">Lu {{item.lectures}} fois</span><span class="label label-inverse">{{item.classe}}</span> : <span class=""><b>{{item.matiere}}</b>  -  {{item.titre}} <i ng-if="item.public == false" class="fa fa-lock ico-r"></i><br><i>{{item.chapitre}}</i></span></a>
-
                         </div>
                         <div ng-show="listCours.length < 1">
                             <center> <i class="fa fa-frown-o fa-3x"></i>
@@ -50,6 +50,7 @@
                             <div class="twPc-divName">
                                 <a href="#profil/{{profile.pseudo}}">{{profile.name}}</a>
                             </div>
+                            <center><i ng-if="!profile" class="text-center fa fa-spinner fa-spin fa-lg" aria-hidden="true"></i></center>
                             <a href="#profil/{{profile.pseudo}}">@{{profile.pseudo}}</a>
                         </div>
 

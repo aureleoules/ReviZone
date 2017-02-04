@@ -73,13 +73,15 @@
                 </div>
             </div>
         </div>
-        <div class="row" ng-show="!user.scolaire || !user.scolaire.etablissement || !user.scolaire.classe || !user.scolaire.numero_classe">
+        <div class="row">
             <div class="col-md-12">
                 <div style="margin-top: 15%">
-
                     <center>
-                        <i class="fa fa-frown-o fa-5x"></i>
-                        <h4>Merci d'indiquer votre établissement et votre classe sur votre <a href="#profil">profil</a>.</h4>
+                        <i ng-if="!user.scolaire" class="text-center fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i>
+                        <div ng-show="showError">
+                            <i class="fa fa-frown-o fa-5x"></i>
+                            <h4>Merci d'indiquer votre établissement et votre classe sur votre <a href="#profil">profil</a>.</h4>
+                        </div>
                     </center>
                 </div>
             </div>

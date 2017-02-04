@@ -1,6 +1,7 @@
 <section id="recherche" class="mg-top-40">
     <div class="container">
         <div class="row" id="dataResult">
+            <center><i ng-if="!result" class="text-center fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i></center>
             <div class="col-md-12" ng-show="result.length > 0">
                 <h2>Résulats: <small style="display: inline-block" ng-if="coursLength !== 0" class="text-primary">({{coursLength}} résultat<span ng-if="coursLength > 1">s</span>)</small></h2>
                 <label style="margin-top: 5px">Trier par: </label>
@@ -37,7 +38,7 @@
                 </center>
             </div>
             <div class="col-md-12">
-                <div ng-show="!result || result.length < 1">
+                <div ng-show="result.length < 1">
                     <center>
                         <i class="fa fa-frown-o fa-5x"></i>
                         <br> Aucun résultat correspondant à cette recherche.

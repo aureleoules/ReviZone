@@ -1111,7 +1111,7 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
 app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT, UtilsFactory, ngDialog) {
     var coursSelIndex
     $http.get(API_ENDPOINT.url + '/getClasse').then(function(result) {
-        $scope.classe = result.data; //recupere le programme de chaque classes.
+        $scope.classe = result.data;
         $http.get(API_ENDPOINT.url + '/getEtablissementById', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
             params:  {
                 id: $scope.classe[0].scolaire.etablissement
@@ -1120,8 +1120,12 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT, 
             $scope.etablissement = result.data[0];
         });
     });
+    $scope.showError = false;
     AuthService.getUser().then(function(userData) {
         $scope.user = userData;
+        if(!$scope.user.scolaire.etablissement || !$scope.user.scolaire.classe || !$scope.user.scolaire.numero_classe) {
+            $scope.showError = true;
+        }
     });
 
     function getClasseFeed() {
