@@ -200,7 +200,7 @@ app.controller('profilCtrl', function($scope, $http, API_ENDPOINT, AuthService, 
                 return;
             }
             $rootScope.title = 'Profil: @' + $scope.profile.pseudo;
-            if (typeof $scope.profile.scolaire !== 'undefined' && typeof $scope.user.scolaire.classe !== 'undefined') {
+            if (typeof $scope.profile.scolaire !== 'undefined') {
                 $http.get(API_ENDPOINT.url + '/getEtablissementById', { //récupere le nom du lycée de l'utilsateur grâce a l'ID du lycée
                     params:  {
                         id: $scope.profile.scolaire.etablissement
