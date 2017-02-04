@@ -583,11 +583,27 @@ app.controller('exercicesCtrl', function($scope, AuthService, $location, UtilsFa
     }
 });
 app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFactory, $routeParams) {
+    $scope.getNumber = function(num) {
+        return new Array(num);
+    }
+    var getAverage = function(cours) {
+        var average = 0;
+        var rates = [];
+        for (var i = 0; i < cours.rates.length; i++) {
+            rates.push(cours.rates[i].rate);
+        }
+        var totalRates = 0;
+        for (var j = 0; j < rates.length; j++) {
+            totalRates += rates[j];
+        }
+        average = Math.round(totalRates / rates.length);
+        return average;
+    }
     $scope.currentPage = 0;
     $scope.pageSize = 10;
-    var coursLength;
+    $scope.coursLength = 0;
     $scope.numberOfPages = function() {
-        return Math.ceil(coursLength / $scope.pageSize);
+        return Math.ceil($scope.coursLength / $scope.pageSize);
     }
     $scope.searchLess = function()  {
         if ($scope.currentPage > 1)  {
@@ -621,73 +637,16 @@ app.controller('rechercheCtrl', function($scope, $http, API_ENDPOINT, UtilsFacto
                 UtilsFactory.makeAlert(result.data.msg, 'danger')
             } else {
                 $scope.result = result.data.cours;
-                console.log($scope.result);
-                coursLength = result.data.coursLength;
+                $scope.coursLength = result.data.coursLength;
+                for (var i = 0; i < $scope.result.length; i++) {
+                    var date = moment($scope.result[i].createdAt).format('DD MMMM YYYY: HH:mm');
+                    $scope.result[i].createdAtDate = date;
+                    $scope.result[i].average = getAverage($scope.result[i]);
+                }
             }
         });
     }
     $scope.rechercher(1);
-});
-app.controller('trouverCtrl', function($scope, $http, API_ENDPOINT, UtilsFactory) {
-    $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
-        $scope.programme = result.data[0].classes; //recupere le programme de chaque classes.
-    });
-    $scope.showSadFace = false;
-    $scope.currentPage = 0;
-    $scope.pageSize = 10;
-    var coursLength;
-    $scope.numberOfPages = function() {
-        return Math.ceil(coursLength / $scope.pageSize);
-    }
-    $scope.searchLess = function()  {
-        if ($scope.currentPage > 1)  {
-            $scope.currentPage--;
-            $scope.rechercher($scope.currentPage);
-        }
-    }
-    $scope.searchMore = function()  {
-        if ($scope.currentPage < $scope.numberOfPages())  {
-            $scope.currentPage++;
-            $scope.rechercher($scope.currentPage);
-        }
-    }
-    $scope.rechercher = function(page, slide)  {
-        $scope.currentPage = page;
-        var criteres =   {
-            keywords: $('#tagsInput').val(),
-            classe: $('#classe option:selected').text(),
-            matiere: $('#matiere option:selected').text(),
-            chapitre: $('#chapitre option:selected').text(),
-            page: $scope.currentPage
-        }
-        $http.get(API_ENDPOINT.url + '/chercherCours', {
-            params: criteres
-        }).then(function(result) {
-            if (result.data.success === false) {
-                UtilsFactory.makeAlert(result.data.msg, 'danger')
-            } else {
-                $scope.result = result.data.cours;
-                coursLength = result.data.coursLength;
-                if (!$scope.result.length > 0)  {
-                    $scope.showSadFace = true;
-                } else {
-                    $scope.showSadFace = false;
-                }
-            }
-            if (slide === true)  {
-                $scope.slide();
-            }
-        });
-    }
-    $scope.icon = "fa-caret-down";
-    $scope.slide = function() {
-        $("#rechercheDiv").slideToggle();
-        if ($scope.icon === "fa-caret-down") {
-            $scope.icon = "fa-caret-up";
-        } else {
-            $scope.icon = "fa-caret-down";
-        }
-    }
 });
 
 app.controller('coursCtrl', function($scope, $routeParams, $http, API_ENDPOINT, UtilsFactory, AuthService, ngDialog, $location, $ocLazyLoad, $rootScope) {
@@ -1133,11 +1092,12 @@ app.controller('AppCtrl', function($rootScope, $scope, $location, AuthService, A
 
     $scope.search = function() {
         var criteres = {
-            classe: $('#classe option:selected').text() || 'Tous',
-            matiere: $('#matiere option:selected').text() || 'Tous',
-            chapitre: $('#chapitre option:selected').text() || 'Tous',
+            classe: $('#classe option:selected').val() || 'Tous',
+            matiere: $('#matiere option:selected').val() || 'Tous',
+            chapitre: $('#chapitre option:selected').val() || 'Tous',
             keywords: $scope.search.keywords || 'Tous'
         }
+        $('.navbar-collapse').collapse('hide');
         $location.path('/recherche/' + criteres.classe + '/' + criteres.matiere + '/' + criteres.chapitre + '/' + criteres.keywords);
     }
     $http.get(API_ENDPOINT.url + '/getprogramme').then(function(result) {
@@ -1167,7 +1127,7 @@ app.controller('classeCtrl', function($scope, AuthService, $http, API_ENDPOINT, 
             if (result.data.success === true) {
                 $scope.classeFeed = result.data.feed;
                 for (var i = 0; i < $scope.classeFeed.length; i++) {
-                    var date = moment($scope.classeFeed[i].createdAt).format('DD MMMM YYYY: HH-mm');
+                    var date = moment($scope.classeFeed[i].createdAt).format('DD MMMM YYYY: HH:mm');
                     $scope.classeFeed[i].createdAtDate = date;
                 }
             } else {

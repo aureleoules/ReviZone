@@ -524,11 +524,22 @@ img.cours-avatar {
     /* margin-left: auto; margin-right: auto; */
 }
 
-@media (max-width: 991px) {
+@media only screen and (min-width:992px) {
     .mobile-only {
-        display: block !important;
+        display:none !important;
     }
+
     .desktop-only {
-        display: none !important;
+        display: inline-block !important;
+    }
+}
+
+@media only screen and (max-width: 991px) {
+    .mobile-only {
+        display:block !important;
+    }
+
+    .desktop-only {
+        display:none !important;
     }
 }

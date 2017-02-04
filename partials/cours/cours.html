@@ -5,10 +5,10 @@
                 <div class="col-md-12">
                     <center>
                         <span style="padding: 12px 14px; float: left" class="label label-primary">{{cours.classe}}</span>
-                        <h3 style="width: 80%" class="text-center text-danger"><u><b>{{cours.matiere}} :</b> {{cours.titre}}</u> <i ng-if="cours.public == false" class="text-primary fa fa-lock ico-r"></i></h3>
+                        <h3 style="width: 80" class="text-center text-danger"><u><b>{{cours.matiere}} :</b> {{cours.titre}}</u> <i ng-if="cours.public == false" class="text-primary fa fa-lock ico-r"></i></h3>
                         <h4 class="text-center text-primary"><u>{{cours.chapitre}}</u></h4>
                     </center>
-                    <a href="" ng-click="expanded = !expanded" style="float: right; position:relative; z-index:5;"><span ng-if="expanded === true">Réduire</span><span ng-if="!expanded">Agrandir</span> <i class="fa fa-expand ico-r"></i></a>
+                    <a href="" class="desktop-only" ng-click="expanded = !expanded" style="float: right; position:relative; z-index:5;"><span ng-if="expanded === true">Réduire</span><span ng-if="!expanded">Agrandir</span> <i class="fa fa-expand ico-r"></i></a>
                     <div style="margin-bottom: 20px;" class="animated fadeInUp">
                         <div class="row">
                             <div id="editor-container" style="width: 100%; min-height: 700px; resize: vertical; color: #2c3e50; overflow-x: hidden; background-color: white"></div>

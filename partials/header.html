@@ -23,31 +23,30 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="#profil"><i class="fa fa-user-circle-o"></i> Profil</a></li>
                             <li><a href="#classe"><i class="fa fa-users"></i> Ma classe</a></li>
-                            <li class="divider desktop-only"></li>
                             <li>
                                 <center><button class="btn btn-danger" style="width: 95%" ng-click="logout()">Déconnexion</button></center>
                             </li>
                         </ul>
                     </li>
                 </ul>
-                <form class="navbar-form navbar-right" ng-submit="search()" role="search">
+                <form class="navbar-form navbar-right" ng-submit="search()" role="search" name="searchbox" novalidate>
                     <div class="form-group">
-                        <div class="btn-group">
+                        <div class="btn-group desktop-only">
                             <a href="" data-toggle="dropdown" class="dropdown-toggle"><i class="fa fa-sliders"></i></a>
                             <ul class="dropdown-menu dropdown-menu-inverse" role="menu">
                                 <li>
-                                    <select style="padding-top: 15px" required class="form-control select select-primary select-block mbl" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme">
-                                        <option value='Tous'>Classe</option>
+                                    <select style="padding-top: 15px" required class="form-control select select-primary select-block mbl" id="classe" ng-model="matieres" ng-options="classe for (classe, matiere) in programme track by classe">
+                                        <option selected value=''>Classe</option>
                                     </select>
                                 </li>
                                 <li>
-                                    <select required class="form-control select select-primary select-block mbl" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres">
-                                            <option value='Tous'>Matière</option>
+                                    <select required class="form-control select select-primary select-block mbl" id="matiere" ng-disabled="!matieres" ng-model="chapitres" ng-options="matiere for (matiere, chapitre) in matieres track by matiere">
+                                            <option selected value=''>Matière</option>
                                         </select>
                                 </li>
                                 <li>
-                                    <select style="padding-bottom: 15px"required class="form-control select select-primary select-block mbl" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres">
-                                            <option value='Tous'>Chapitre</option>
+                                    <select style="padding-bottom: 15px" required class="form-control select select-primary select-block mbl" id="chapitre" ng-disabled="!chapitres || !matieres" ng-model="chapitre" ng-options="chapitre for chapitre in chapitres track by chapitre">
+                                            <option selected value=''>Chapitre</option>
                                     </select>
                                 </li>
                             </ul>
@@ -69,6 +68,11 @@
         $(this).closest('.input-group, .form-group').addClass('focus');
     }).on('blur', '.form-control', function() {
         $(this).closest('.input-group, .form-group').removeClass('focus');
+    });
+    $(document).on('click', '.navbar-collapse.in', function(e) {
+        if ($(e.target).is('a')) {
+            $(this).collapse('hide');
+        }
     });
     $("select").select2();
 </script>
