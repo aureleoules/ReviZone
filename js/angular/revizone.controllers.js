@@ -2,6 +2,7 @@ var app = angular.module('revizone.controllers', []);
 
 //Home Page Controller
 app.controller('homeCtrl', function($scope, AuthService, $http, UtilsFactory, API_ENDPOINT) {
+    $scope.showFeed = true;
     $scope.isAuthenticated = AuthService.isAuthenticated();
     if ($scope.isAuthenticated)  {
         $http.get(API_ENDPOINT.url + '/getUserFeed').then(function(result) {

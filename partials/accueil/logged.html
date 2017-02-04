@@ -2,7 +2,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-7 well">
-                <div ng-hide="!showFeed" class="item-cours" ng-repeat="cours in feed | orderBy:'-createdAt'">
+                <center><i ng-if="!feed" class="text-center fa fa-spinner fa-spin fa-5x" aria-hidden="true"></i></center>
+                <div ng-hide="!feed || feed.length < 1" class="item-cours" ng-repeat="cours in feed | orderBy:'-createdAt'">
                     <a href="#profil/{{cours.auteur}}"><img class="cours-avatar img-circle" width="35px" height="35px" ng-src="https://revizone.fr:8089/public/{{cours.auteur}}.png" /></a>
                     <a href="#profil/{{cours.auteur}}" class="text-primary">@{{cours.auteur}}</a>
                     <p>
@@ -13,7 +14,7 @@
                         <i class="cours-titre">{{cours.chapitre}}</i>
                     </p>
                 </div>
-                <div ng-hide="showFeed">
+                <div ng-if="feed.length < 1">
                     <center>
                         <i class="fa fa-frown-o fa-5x"></i>
                         <h3>Vous n'avez aucun fil d'actualités.</h3>
